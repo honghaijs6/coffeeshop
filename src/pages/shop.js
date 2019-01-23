@@ -1,134 +1,89 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 
-import { Container, Icon, Header, Tab, Tabs, ScrollableTab, Content, Button } from 'native-base';
+// Lib
+import BenTabs  from "../components/BenTabs";
+import BenStatusBar  from "../components/BenStatusBar";
+
+import FeedPage from './feeds/';
+import OrderPage from './orders/';
+import MissionPage from './missions/';
+import StorePage from './stores/';
+
+import AccountPage from './users/';
+
+
+
 
 
 class shop extends Component {
 
 
-    
+    state = {
+      tabs:[
+        { tab:'feed',icon:'paper',name:'Feeds' },
+        { tab:'feedview',icon:'paper',name:'Feed View', hidden:true },
+
+        { tab:'order',icon:'cafe',name:'Orders' },
+        { tab:'mission',icon:'aperture',name:'Missions' },
+        { tab:'store',icon:'pin',name:'Stores' },
+        { tab:'account',icon:'person',name:'Account' },
+      ],
+      onTab:'feed',
+      tab:{}
+    }
+
+    _onChangeTab(data){
+      this.setState({
+        onTab:data.tab,
+        tab:data
+      })
+    }
+
+    switchTab(){
+
+
+
+      switch(this.state.onTab){
+        case 'feed':
+          return (<FeedPage { ...this.state } />)
+        break;
+        case 'order':
+          return (<OrderPage { ...this.state } />)
+        break;
+        case 'mission':
+          return (<MissionPage { ...this.state } />)
+        break;
+        case 'store':
+          return (<StorePage { ...this.state } />)
+        break;
+        case 'account':
+          return (<AccountPage { ...this.state } />)
+        break;
+
+      }
+    }
     render() {
 
-        const colorStyle = {
-            color:'#333'
-        }
-        const coffeeStyle = {
-            color:'#904E1A'
-        }
+
         return (
-            <View style={{
-                flex:1,
-                justifyContent:'space-between'
-            }}>
+            <BenTabs
+              onPress={(data)=>{ this._onChangeTab(data) }}
+              onTab={ this.state.onTab }
+              data={ this.state.tabs }
+            >
 
-                
+              <BenStatusBar/>
 
-                <Content>
-                        <Text>Home </Text>
-                </Content>
+              { /* this.switchTab() */}
 
-                <View style={{
-                    height:60,
-                    flexDirection:'row',
-                    borderTopColor:'rgba(0,0,0,0.1)',
-                    borderTopWidth:0.5,
-                    alignItems:'center'
-                }}>
-                    <View style={s.tab}>
-                        <Button transparent style={{
-                            flexDirection:'column',
-                            justifyContent:'center',
-                            
-                            alignSelf:'center'
-                        }} >
-                            <Icon style={coffeeStyle} name="paper"></Icon>
-                            <Text style={[
-                                {fontSize:12},
-                                coffeeStyle
-                            ]} > New Feed</Text>
-                        </Button>
-                    </View>
-                    
-                    <View style={s.tab}>
-                        <Button transparent style={{
-                            flexDirection:'column',
-                            justifyContent:'center',
-                            
-                            alignSelf:'center'
-                        }} >
-                            <Icon style={colorStyle} name="flash"></Icon>
-                            <Text style={[
-                                {fontSize:12},
-                                colorStyle
-                            ]}> Orders </Text>
-                        </Button>
-                    </View>
+              <FeedPage { ...this.state } />
+              <OrderPage { ...this.state } />
+              <MissionPage { ...this.state } />
+              <StorePage { ...this.state } />
+              <AccountPage { ...this.state } />
 
-                    <View style={s.tab}>
-                        <Button transparent style={{
-                            flexDirection:'column',
-                            justifyContent:'center',
-                            
-                            alignSelf:'center'
-                        }} >
-                            <Icon style={colorStyle} name="glasses"></Icon>
-                            <Text style={[
-                                {fontSize:12},
-                                colorStyle
-                            ]}> Missions</Text>
-                        </Button>
-                    </View>
-
-
-                    <View style={s.tab}>
-                        <Button transparent style={{
-                            flexDirection:'column',
-                            justifyContent:'center',
-                            
-                            alignSelf:'center'
-                        }} >
-                            <Icon style={colorStyle} name="pin"></Icon>
-                            <Text style={[
-                                {fontSize:12},
-                                colorStyle
-                            ]}> Stores</Text>
-                        </Button>
-                    </View>
-
-                    <View style={s.tab}>
-                        <Button transparent style={{
-                            flexDirection:'column',
-                            justifyContent:'center',
-                            
-                            alignSelf:'center'
-                        }} >
-                            <Icon style={colorStyle} name="person"></Icon>
-                            <Text style={[
-                                {fontSize:12},
-                                colorStyle
-                            ]}> Account</Text>
-                        </Button>
-                    </View>
-                   
-                    
-                </View>
-
-
-            </View>
+            </BenTabs>
         );
     }
 }
-
-const s = StyleSheet.create({
-    container:{
-        flex:1,
-        
-    },
-    tab:{
-        flex:1,
-        alignItems:'center'
-    }
-})
-
 export default shop;
