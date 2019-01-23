@@ -3,7 +3,11 @@ import { View, Text, StyleSheet } from 'react-native';
 
 import { Container, Icon, Header, Tab, Tabs, ScrollableTab, Content, Button } from 'native-base';
 
-import { GREY_COLOR } from '../../config/const'
+import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
+
+import BenHeader from '../../components/BenHeader' ;
+
+import NoData from './NoData';
 
 export default class MissionPage extends Component{
 
@@ -25,11 +29,25 @@ export default class MissionPage extends Component{
         backgroundColor:GREY_COLOR,
         display:  this.props.onTab === this.state.tab ? 'block':'none'
       }}>
+      <BenHeader type="single">
+         <View>
+            <Text style={{
+              fontSize:18,
+              fontFamily:'Roboto'
+            }}> Missions </Text>
+         </View>
+      </BenHeader>
         <Content>
-          <View>
-              <Text>
-                Missions here
-              </Text>
+
+          <View style={{
+            width:'95%',
+            justifyContent:'center',
+            alignItems:'center',
+
+          }}>
+
+            <NoData />
+
           </View>
 
         </Content>
