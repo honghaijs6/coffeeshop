@@ -42,12 +42,12 @@ export default class App extends React.Component {
         <View style={styles.container}>
 
           <Route exact path="/" component={Shop} />
-          
+
 
         </View>
 
       </NativeRouter>
-      
+
     );
   }
 }
