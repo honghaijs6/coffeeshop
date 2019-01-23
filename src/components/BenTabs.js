@@ -6,9 +6,13 @@ import { COFFEE_COLOR, GREY_COLOR} from '../config/const'
 
 export default class BenTabs extends Component {
 
+    constructor(props){
 
-    state = {
-      onTab:'feed',
+      super(props);
+
+      this.state = {
+        onTab:props.onTab
+      }
     }
 
     _onPress(data){
