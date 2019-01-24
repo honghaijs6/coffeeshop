@@ -50,7 +50,7 @@ export default class FeedViewPage extends Component{
                   <Icon style={s.icon} name="arrow-back" />
 
                </TouchableOpacity>
-               <Text style={s.txt}> asdasd </Text>
+               <Text style={s.txt}> Article view </Text>
            </View>
 
 
