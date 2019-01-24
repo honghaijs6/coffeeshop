@@ -11,18 +11,21 @@ export default class BenTabs extends Component {
       super(props);
 
       this.state = {
-        onTab:props.onTab
+        onTab:props.onTab,
+
       }
     }
 
     _onPress(data){
       this.props.onPress(data);
       this.setState({
-        onTab:data.tab
+        onTab:data.tab,
+        data:data
       });
+
     }
 
-
+  
     render() {
 
         const data = this.props.data ;
@@ -35,14 +38,14 @@ export default class BenTabs extends Component {
 
               { this.props.children }
 
-              <View style={ s.tabbar}>
+              <View style={ [s.tabbar]}>
 
 
                       {
                         data.map((item,index)=>{
 
                           const activeColor = this.state.onTab === item.tab ? tabColor : BLACK_COLOR;
-                          
+
                           if(!item.hidden ){
                             return(
                               <View key={ index } style={s.tab}>
@@ -82,7 +85,8 @@ const s = StyleSheet.create({
     container:{
         flex:1,
         justifyContent:'space-between',
-        backgroundColor:'#fff'
+        backgroundColor:'#fff',
+
     },
     tabbar:{
       height:55,
@@ -90,6 +94,7 @@ const s = StyleSheet.create({
       borderTopColor:'rgba(0,0,0,0.2)',
       borderTopWidth:0.5,
       alignItems:'center'
+
     },
     tab:{
         flex:1,
