@@ -12,19 +12,19 @@ class Register extends Component {
 
             <ImageBackground source={require('../../assets/images/bg.jpg')} style={{width: '100%', height: '100%'}}>
 
-                <Container 
+                <Container
                 style={{
-                    
+
                     flex:1,
-                    backgroundColor:'rgba(255,255,255,0.9)',
-                    
+                    backgroundColor:'rgba(255,255,255,0.6)',
+
 
                 }}>
 
                 <View style={{paddingTop:14}}></View>
                 <View style={s.header} >
                     <View style={{ width:'35%',}}>
-                        <Link to="/" style={ s.btn}>  
+                        <Link to="/" style={ s.btn}>
                             <Icon style={[s.text,{marginLeft:10}]} name='arrow-back' />
                         </Link>
                     </View>
@@ -34,7 +34,7 @@ class Register extends Component {
                     </View>
                 </View>
                 <Content>
-                    
+
                     <View style={{
                         width:'80%',
                         marginTop:'15%',
@@ -47,19 +47,19 @@ class Register extends Component {
                             height:180
                         }}>
 
-                            <Item style={ s.item}> 
+                            <Item style={ s.item}>
                                 <Icon style={s.text} name='person' />
-                                <Input placeholderTextColor="rgba(0,0,0,0.3)" style={s.text} placeholder='Your full name'/>
+                                <Input placeholderTextColor="rgba(0,0,0,0.6)" style={s.text} placeholder='Your full name'/>
                             </Item>
-                        
-                            <Item style={ s.item}> 
+
+                            <Item style={ s.item}>
                                 <Icon style={s.text} name='mail' />
-                                <Input placeholderTextColor="rgba(0,0,0,0.3)" style={s.text} placeholder='Type your E-mail'/>
+                                <Input placeholderTextColor="rgba(0,0,0,0.6)" style={s.text} placeholder='Type your E-mail'/>
                             </Item>
-                            
+
                             <Item style={ s.item}>
                                 <Icon style={s.text} name='unlock' />
-                                <Input placeholderTextColor="rgba(0,0,0,0.3)" style={s.text}  placeholder='Password'/>
+                                <Input placeholderTextColor="rgba(0,0,0,0.6)" style={s.text}  placeholder='Password'/>
                             </Item>
                         </View>
 
@@ -72,21 +72,21 @@ class Register extends Component {
                                 <Text style={{color:'#fff'}} > Register </Text>
                             </Button>
 
-                            
-                        
+
+
                         </View>
-                        
-                        
+
+
                     </View>
-                
-                </Content> 
-               
-            </Container>    
-                
+
+                </Content>
+
+            </Container>
+
             </ImageBackground>
-                
-            
-      
+
+
+
         );
     }
 }
@@ -95,14 +95,14 @@ class Register extends Component {
 
 const s = StyleSheet.create({
 
-    
+
     header:{
         flexDirection:'row',
         height:50,
         borderBottomWidth:0.3,
         alignItems:'center',
         borderBottomColor:'rgba(87,60,35,0.3)',
-                    
+
         fontFamily: 'Roboto',
     },
     text:{ fontFamily:'Roboto',color:'rgba(87,60,35,0.9)'},
@@ -112,14 +112,14 @@ const s = StyleSheet.create({
         height:50
     },
     input:{
-        
+
     },
-    item:{ 
+    item:{
        borderWidth:0.5,
        borderBottomColor:'rgba(87,60,35,0.3)'
-    
+
     },
-    
+
 });
 
 export default Register;
