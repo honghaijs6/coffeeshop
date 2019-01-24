@@ -24,13 +24,13 @@ class shop extends Component {
       tabs:[
         { tab:'feed',icon:'paper',name:'Feeds' },
         { tab:'feedview',icon:'paper',name:'Feed View', hidden:true },
-        
+
         { tab:'mission',icon:'aperture',name:'Missions' },
         { tab:'order',icon:'cafe',name:'Orders' },
         { tab:'store',icon:'pin',name:'Stores' },
         { tab:'account',icon:'person',name:'Account' },
       ],
-      onTab:'order',
+      onTab:'feed',
       tab:{}
     }
 
