@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button, Icon } from 'native-base';
 
-import { COFFEE_COLOR, GREY_COLOR} from '../config/const'
+import { COFFEE_COLOR, GREY_COLOR, BLACK_COLOR} from '../config/const'
 
 export default class BenTabs extends Component {
 
@@ -29,6 +29,7 @@ export default class BenTabs extends Component {
         let tabColor = COFFEE_COLOR;
 
 
+
         return (
           <View style={ s.container} >
 
@@ -40,15 +41,16 @@ export default class BenTabs extends Component {
                       {
                         data.map((item,index)=>{
 
-                          const activeColor = this.state.onTab === item.tab ? tabColor : '#333';
-
+                          const activeColor = this.state.onTab === item.tab ? tabColor : BLACK_COLOR;
+                          
                           if(!item.hidden ){
                             return(
                               <View key={ index } style={s.tab}>
                                 <Button onPress={ ()=>{ this._onPress(item) } }  transparent  style={{
                                     flexDirection:'column',
                                     justifyContent:'center',
-                                    alignSelf:'center'
+                                    alignSelf:'center',
+
                                 }} >
                                     <Icon style={{
                                       color:activeColor
@@ -85,7 +87,7 @@ const s = StyleSheet.create({
     tabbar:{
       height:55,
       flexDirection:'row',
-      borderTopColor:'rgba(0,0,0,0.1)',
+      borderTopColor:'rgba(0,0,0,0.2)',
       borderTopWidth:0.5,
       alignItems:'center'
     },
