@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Container, Icon, Card, CardItem, Body, Text,Left, Content, Button, Thumbnail } from 'native-base';
+import { Container, Icon,  Text, Content } from 'native-base';
 
 // LIB Component
 import BenHeader from '../../components/BenHeader'
@@ -43,7 +43,12 @@ export default class FeedPage extends Component{
     alert('click notifications')
   }
 
-
+  _onCardPress(data){
+      this.props.onStateChange({
+        onAction:'change_tab',
+        toTab:'feedview'
+      })
+  }
   render(){
     return(
       <Container style={{
@@ -107,6 +112,7 @@ export default class FeedPage extends Component{
                 </CardHeader>
 
                 <CardImage
+                  onPress={()=>{ this._onCardPress() }}
                   uri="https://i-cdn.embed.ly/1/display?key=fd92ebbc52fc43fb98f69e50e7893c13&url=https%3A%2F%2Fi.redd.it%2F6oezmf7cw7f11.jpg"
                 />
 
@@ -142,6 +148,7 @@ export default class FeedPage extends Component{
                 </CardHeader>
 
                 <CardImage
+                  onPress={()=>{ this._onCardPress() }}
                   uri="https://scontent.fsgn5-4.fna.fbcdn.net/v/t1.0-9/49128234_331015080960848_5154945226128752640_n.jpg?_nc_cat=102&_nc_oc=AQlShfz3MyrFWXJwNEpfPEzTUXidhO7gd-xk-JqcX_EB08DA73WNb6pvWpYa0N-zeHddynAsPtr3cQ09LySYe4Ut&_nc_ht=scontent.fsgn5-4.fna&oh=35bac5787d8b4a33c2c1fbaa9d0ceac5&oe=5CCCB622"
                 />
 
