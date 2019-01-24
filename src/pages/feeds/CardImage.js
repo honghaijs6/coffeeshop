@@ -10,9 +10,11 @@ import {
 } from 'react-native';
 
 export default class CardImage extends Component {
+
+
   render() {
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={ this.props.onPress }>
         <Image source={{uri: this.props.uri}}
         style={{height: 200, width: null, flex: 1}}
         />
