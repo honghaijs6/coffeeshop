@@ -17,7 +17,7 @@ export default class BenHeader extends Component {
     let type = this.props.type || 'multi' ;
     type = type === 'multi' ? 'space-between' : 'center';
 
-    
+
 
     return (
       <View style={[
@@ -35,8 +35,8 @@ export default class BenHeader extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection:'row',
-    height:50,borderBottomWidth:0.5,
-    borderBottomColor:'rgba(0,0,0,0.1)',
+    height:55,borderBottomWidth:0.5,
+    borderBottomColor:'rgba(0,0,0,0.2)',
     alignItems:'center',
     backgroundColor:'#fff'
   },
