@@ -101,11 +101,11 @@ export default class StorePage extends Component{
 
         <MapView
           style={{ flex: 1 }}
-          zoom={50}
+          
           provider={PROVIDER_GOOGLE}
           showsUserLocation={ true }
           customMapStyle={
-            NightMapStyle
+            RetroMapStyle
           }
 
           region={mapRegion}
