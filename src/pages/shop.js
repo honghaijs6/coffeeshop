@@ -5,6 +5,8 @@ import BenTabs  from "../components/BenTabs";
 import BenStatusBar  from "../components/BenStatusBar";
 
 import FeedPage from './feeds/';
+import FeedViewPage from './feedview';
+
 import OrderPage from './orders/';
 import MissionPage from './missions/';
 import StorePage from './stores/';
@@ -22,13 +24,13 @@ class shop extends Component {
       tabs:[
         { tab:'feed',icon:'paper',name:'Feeds' },
         { tab:'feedview',icon:'paper',name:'Feed View', hidden:true },
-
-        { tab:'order',icon:'cafe',name:'Orders' },
+        
         { tab:'mission',icon:'aperture',name:'Missions' },
+        { tab:'order',icon:'cafe',name:'Orders' },
         { tab:'store',icon:'pin',name:'Stores' },
         { tab:'account',icon:'person',name:'Account' },
       ],
-      onTab:'feed',
+      onTab:'order',
       tab:{}
     }
 
@@ -39,28 +41,18 @@ class shop extends Component {
       })
     }
 
-    switchTab(){
+    onStateChange(newState){
 
+       switch (newState.onAction) {
+         case 'change_tab' :
+            this.setState({
+              onTab:newState.toTab
+            });
+         break;
+         default:
 
+       }
 
-      switch(this.state.onTab){
-        case 'feed':
-          return (<FeedPage { ...this.state } />)
-        break;
-        case 'order':
-          return (<OrderPage { ...this.state } />)
-        break;
-        case 'mission':
-          return (<MissionPage { ...this.state } />)
-        break;
-        case 'store':
-          return (<StorePage { ...this.state } />)
-        break;
-        case 'account':
-          return (<AccountPage { ...this.state } />)
-        break;
-
-      }
     }
     render() {
 
@@ -74,9 +66,9 @@ class shop extends Component {
 
               <BenStatusBar/>
 
-              { /* this.switchTab() */}
+              <FeedPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
+              <FeedViewPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  {...this.state} />
 
-              <FeedPage { ...this.state } />
               <OrderPage { ...this.state } />
               <MissionPage { ...this.state } />
               <StorePage { ...this.state } />
