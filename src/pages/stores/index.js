@@ -63,7 +63,7 @@ export default class StorePage extends Component{
    } else {
      this.setState({ hasLocationPermissions: true });
 
-     console.log('acces local ok');
+     
    }
 
    let location = await Location.getCurrentPositionAsync({});
@@ -101,7 +101,7 @@ export default class StorePage extends Component{
 
         <MapView
           style={{ flex: 1 }}
-          
+
           provider={PROVIDER_GOOGLE}
           showsUserLocation={ true }
           customMapStyle={
