@@ -22,7 +22,7 @@ export default class BenHeader extends Component {
     return (
       <View style={[
           styles.container,
-          { justifyContent:type }
+          { justifyContent:type },
         ]}>
 
         { this.props.children }
