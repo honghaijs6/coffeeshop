@@ -28,6 +28,8 @@ export default class OrderPage extends Component{
 
 
   render(){
+
+    
     return(
       <Container style={{
         backgroundColor:GREY_COLOR,
