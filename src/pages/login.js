@@ -8,6 +8,8 @@ import { Container, Content,Item,Icon , Input, Text, Button } from 'native-base'
 
 class login extends Component {
     render() {
+
+        
         return (
 
             <ImageBackground source={require('../../assets/images/bg.jpg')} style={{width: '100%', height: '100%'}}>
