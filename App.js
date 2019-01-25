@@ -8,6 +8,8 @@ import Login from './src/pages/login';
 import Register from './src/pages/register';
 import Shop from './src/pages/shop';
 
+import FeedView from './src/pages/feedview';
+
 
 
 export default class App extends React.Component {
@@ -42,7 +44,9 @@ export default class App extends React.Component {
         <View style={styles.container}>
 
           <Route exact path="/" component={Shop} />
-
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/feedview" component={ FeedView } />
 
         </View>
 
