@@ -23,7 +23,7 @@ class shop extends Component {
     state = {
       tabs:[
         { tab:'feed',icon:'paper',name:'Feeds' },
-        { tab:'feedview',icon:'paper',name:'Feed View', hidden:true },
+
 
         { tab:'mission',icon:'aperture',name:'Missions' },
         { tab:'order',icon:'cafe',name:'Orders' },
@@ -67,12 +67,14 @@ class shop extends Component {
               <BenStatusBar/>
 
               <FeedPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
-              <FeedViewPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  {...this.state} />
-
               <OrderPage { ...this.state } />
               <MissionPage { ...this.state } />
               <StorePage { ...this.state } />
               <AccountPage { ...this.state } />
+
+                <FeedViewPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  {...this.state} />
+
+
 
             </BenTabs>
         );
