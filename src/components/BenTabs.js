@@ -25,7 +25,7 @@ export default class BenTabs extends Component {
 
     }
 
-  
+
     render() {
 
         const data = this.props.data ;
@@ -70,9 +70,7 @@ export default class BenTabs extends Component {
 
                         })
                       }
-
-
-
+                      
               </View>
 
           </View>
