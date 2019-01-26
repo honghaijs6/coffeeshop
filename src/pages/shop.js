@@ -36,7 +36,7 @@ class shop extends Component {
         { tab:'store',icon:'pin',name:'Stores' },
         { tab:'account',icon:'person',name:'Account' },
       ],
-      onTab:'menu',
+      onTab:'feed',
       tab:{}
     }
 
@@ -75,8 +75,8 @@ class shop extends Component {
               <FeedPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
               <FeedViewPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  {...this.state} />
 
-              <OrderPage { ...this.state } />
-              <MenuPage { ...this.state } />
+              <OrderPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
+              <MenuPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
 
               <MissionPage { ...this.state } />
               <StorePage { ...this.state } />
