@@ -7,7 +7,9 @@ import BenStatusBar  from "../components/BenStatusBar";
 import FeedPage from './feeds/';
 import FeedViewPage from './feedview';
 
-import OrderPage from './orders/';
+import OrderPage from './orders';
+import MenuPage from './menu';
+
 import MissionPage from './missions/';
 import StorePage from './stores/';
 
@@ -23,14 +25,18 @@ class shop extends Component {
     state = {
       tabs:[
         { tab:'feed',icon:'paper',name:'Feeds' },
-
+        { tab:'feedview',icon:'paper',name:'Feeds',hidden:true },
 
         { tab:'mission',icon:'aperture',name:'Missions' },
+
         { tab:'order',icon:'cafe',name:'Orders' },
+        { tab:'menu',icon:'cafe',name:'Menu', hidden:true },
+
+
         { tab:'store',icon:'pin',name:'Stores' },
         { tab:'account',icon:'person',name:'Account' },
       ],
-      onTab:'feed',
+      onTab:'menu',
       tab:{}
     }
 
@@ -67,12 +73,15 @@ class shop extends Component {
               <BenStatusBar/>
 
               <FeedPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
+              <FeedViewPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  {...this.state} />
+
               <OrderPage { ...this.state } />
+              <MenuPage { ...this.state } />
+
               <MissionPage { ...this.state } />
               <StorePage { ...this.state } />
               <AccountPage { ...this.state } />
 
-                <FeedViewPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  {...this.state} />
 
 
 
