@@ -29,9 +29,14 @@ export default class OrderPage extends Component{
 
 
   /*WHEN*/
-
+   
   _onCateItemPress = (item)=>{
-    alert(JSON.stringify(item))
+
+    this.props.onStateChange({
+      onAction:'change_tab',
+      toTab:'menu'
+    })
+
   }
 
   render(){
