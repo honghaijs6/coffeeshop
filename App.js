@@ -46,8 +46,7 @@ export default class App extends React.Component {
           <Route exact path="/" component={Shop} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          <Route exact path="/feedview" component={ FeedView } />
-
+          
         </View>
 
       </NativeRouter>
