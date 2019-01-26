@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-import { Container, Icon, Header, Tab, Tabs, ScrollableTab, Content, Button } from 'native-base';
+import { Container, Icon, Content } from 'native-base';
 
 import { GREY_COLOR, COFFEE_COLOR } from '../config/const' ;
 
