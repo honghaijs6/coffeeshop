@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-import { Container, Icon, Header, Tab, Tabs, ScrollableTab, Content, Button } from 'native-base';
+import { Container, Icon, Content, } from 'native-base';
+
 
 import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
 
@@ -27,9 +28,15 @@ export default class OrderPage extends Component{
   }
 
 
+  /*WHEN*/
+
+  _onCateItemPress = (item)=>{
+    alert(JSON.stringify(item))
+  }
+
   render(){
 
-    
+
     return(
       <Container style={{
         backgroundColor:GREY_COLOR,
@@ -53,11 +60,8 @@ export default class OrderPage extends Component{
                   {
                     this.state.categories.map((item)=>{
 
-                      console.log(item.uri);
-
-                      const uri = '../../../assets/milktea.jpg';
                        return(
-                         <TouchableOpacity key={item.id} style={{
+                         <TouchableOpacity onPress={()=>{ this._onCateItemPress(item) }} key={item.id} style={{
                              width: '48%',
                              borderRadius: 6,
                              marginBottom: 14
@@ -91,15 +95,8 @@ export default class OrderPage extends Component{
                     })
                   }
 
-
-
-
-
                 </View>
-
-
             </OrderBody>
-
 
         </Content>
       </Container>
