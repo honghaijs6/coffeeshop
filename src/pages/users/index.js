@@ -9,7 +9,10 @@ import BenAvatar from '../../components/BenAvatar';
 
 import { GREY_COLOR, COFFEE_COLOR } from '../../config/const';
 
-import { doSignOut } from '../../model/initFireBase';
+
+import store from '../../redux/store';
+import { benAuth } from '../../model/authen';
+
 
 export default class AccountPage extends Component{
 
@@ -20,7 +23,10 @@ export default class AccountPage extends Component{
 
       typeAction:'',
       onAction:'',
-      tab:'account'
+      tab:'account',
+
+      userInfo: store.getState().user.userInfo
+
     }
 
     this._onSignOut = this._onSignOut.bind(this);
@@ -28,7 +34,7 @@ export default class AccountPage extends Component{
 
   _onSignOut(){
 
-    doSignOut(()=>{
+    benAuth.doSignOut(()=>{
       //alert('signed out okay')
     },(err)=>{ console.log(err); });
 
@@ -44,12 +50,11 @@ export default class AccountPage extends Component{
 
         <BenHeader>
           <BenAvatar
-             onPress={ this._onPressAvarar }
-             data={{
-              uri:'https://scontent.fsgn5-6.fna.fbcdn.net/v/t1.0-1/p160x160/41795526_2082548408445932_7771390061051904000_n.jpg?_nc_cat=109&_nc_oc=AQnW3o2N69YmcjDnxCqPK-AYEGDWGy58AdAu6F6mG8LqDBuhXpyRoKX2l_I27tW92Fek7R-R893bbrzdjUPf59qk&_nc_ht=scontent.fsgn5-6.fna&oh=927a69754880b732e2c3ce267d1a0af9&oe=5CFA7E33',
-              name:'Benjamin',
-              point:100
-            }}
+            data={{
+             uri: this.state.userInfo.photoURL ,
+             name: this.state.userInfo.name ,
+             point:this.state.userInfo.point
+           }}
           />
         </BenHeader>
         <View style={s.holder }>
