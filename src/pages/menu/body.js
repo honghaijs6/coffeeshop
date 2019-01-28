@@ -19,7 +19,7 @@ const MenuBody = (props) => (
 
     <Tabs>
         <Tab heading="Drinks">
-            <BodyDrinks/>
+            <BodyDrinks onPressItem={(data)=>{ props.onPressItem(data) }} data={ props.data } />
         </Tab>
         <Tab heading="Foods">
             <BodyFoods/>
