@@ -9,7 +9,8 @@ import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
 import OrderHeader from './Header';
 import OrderBody from './Body';
 
-import DrinkCates from './categories.json';
+import DrinkCates from  '../../data/categories.json';
+
 
 export default class OrderPage extends Component{
 
@@ -29,12 +30,14 @@ export default class OrderPage extends Component{
 
 
   /*WHEN*/
-   
+
   _onCateItemPress = (item)=>{
 
+    /* send data item to menu page */
     this.props.onStateChange({
       onAction:'change_tab',
-      toTab:'menu'
+      toTab:'menu',
+      data:item
     })
 
   }
@@ -48,7 +51,7 @@ export default class OrderPage extends Component{
         display:  this.props.onTab === this.state.tab ? 'block':'none'
       }}>
 
-        <OrderHeader />
+        <OrderHeader onPress={()=>{  this.props.onStateChange({onAction:'change_tab',toTab:'delivery'})  }} userInfo={ this.props.userInfo } />
 
         <Content>
 
