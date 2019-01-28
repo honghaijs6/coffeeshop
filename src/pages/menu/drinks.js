@@ -15,14 +15,33 @@ import {  Icon, Content } from 'native-base';
 import BenBody from '../../components/BenBody';
 
 import drinksData from './data.json';
+import NoData from '../../components/NoData';
+
 
 
 
 export default class BodyDrinks extends Component{
 
+
+  constructor(props){
+    super(props);
+
+    this.data = props.data ;
+
+  }
+
+
+  _onPressItem(data){
+
+    this.props.onPressItem(data);
+
+  }
   render(){
 
-    
+
+    const data = this.props.data ;
+
+
     return(
       <Content style={{
           backgroundColor: GREY_COLOR
@@ -31,7 +50,7 @@ export default class BodyDrinks extends Component{
         <BenBody>
 
             {
-              drinksData.drinks.map((item, index)=>{
+              data.map((item, index)=>{
 
                 return (
                   <View key={index} style={{
@@ -42,7 +61,7 @@ export default class BodyDrinks extends Component{
                     paddingBottom: 15
                   }}>
 
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{ this._onPressItem(item) }} >
                       <Image style={{width:120,height: 120}}  source={{uri: item.photo }}  />
                     </TouchableOpacity>
 
@@ -54,7 +73,7 @@ export default class BodyDrinks extends Component{
 
 
                     }}>
-                       <TouchableOpacity>
+                       <TouchableOpacity onPress={()=>{ this._onPressItem(item) }}>
                           <Text style={[s.txt,s.h4]}> { item.name }  </Text>
                        </TouchableOpacity>
 
@@ -67,6 +86,7 @@ export default class BodyDrinks extends Component{
                 )
               })
             }
+            { data.length == 0 ? <NoData icon="cafe" message=" On update data .. " /> : null }
 
         </BenBody>
 
