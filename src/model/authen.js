@@ -4,22 +4,42 @@ import { AVATAR_URL } from '../config/const';
 
 import store from '../redux/store';
 
+
 export const benAuth = {
 
   localStorage:{
 
   },
 
-  store:store,
+
 
   isLoged(){
     // DETECT localStorage ;
 
   },
 
+
+
   _whereStateChange(newState){
 
     store.dispatch(newState);
+  },
+
+  updateInfo(data,onSuccess,onError){
+    const userRef = database.ref().child('users');
+
+    userRef.child(data.uid).update({...data})
+        .then(() => {
+            onSuccess(data);
+
+            this._whereStateChange({
+              type:'LOGIN',
+              isLoggedIn:true,
+              userInfo:data
+            });
+
+        })
+        .catch((error) => { onError(error); });
   },
 
   register(data,onSuccess,onError) {
@@ -28,19 +48,26 @@ export const benAuth = {
     auth.createUserWithEmailAndPassword(data.email, data.password)
         .then((resp) => {
 
-            console.log(resp);
 
             data.uid = resp.user.uid;
 
             data.createdAt = new Date().getTime();
             data.updatedAt = data.createdAt;
             data.photoURL = AVATAR_URL;
-
-            /*data.createdAt  = resp.user.createdAt;
-            data.lastLoginAt = resp.user.lastLoginAt;
-            data.photoURL = resp.user.photoURL;
-            data.phoneNumber = resp.user.phoneNumber;
-            */
+            data.point = 0 ;
+            data.type = 0 ; /* 0 :  customer - staff - admin*/
+            data.status = 1 ; /*  0 : 1 =? available */
+            data.level = 1 ; /* silver - gold - diamond */
+            data.gender = 1 ;
+            data.is_admin = 0 ;
+            data.salary_set = 0 ;
+            data.salary_balance = 0 ;
+            data.address = ''; // cuurent address
+            data.home_address = '';
+            data.work_address = '';
+            data.recent_address = '';
+            data.phone = '';
+            data.is_remote_working = 0 ;
 
 
             const userRef = database.ref().child('users');
@@ -48,6 +75,13 @@ export const benAuth = {
             userRef.child(data.uid).update({...data})
                 .then(() => {
                     onSuccess(data);
+
+                    this._whereStateChange({
+                      type:'LOGIN',
+                      isLoggedIn:true,
+                      userInfo:data
+                    });
+
                 })
                 .catch((error) => { onError(error); });
         })
@@ -79,7 +113,7 @@ export const benAuth = {
                     this._whereStateChange({
                       type:'LOGIN',
                       isLoggedIn:true,
-                      userInfo:user
+                      userInfo:snapshot.val()
                     });
 
                     onSuccess({exists, user});
@@ -94,6 +128,7 @@ export const benAuth = {
     auth.signOut()
         .then(() =>  {
 
+          alert('login out from auten')
           this._whereStateChange({
             type:'LOGIN',
             isLoggedIn:false
@@ -121,6 +156,12 @@ export const benAuth = {
                     //if the user exist in the DB, replace the user variable with the returned snapshot
                     if (exists) user = snapshot.val();
                     //if (exists) dispatch({type: t.LOGGED_IN, user});
+
+                    this._whereStateChange({
+                      type:'LOGIN',
+                      isLoggedIn:true,
+                      userInfo:snapshot.val()
+                    })
 
                     callback(exists, isLoggedIn);
                 })
