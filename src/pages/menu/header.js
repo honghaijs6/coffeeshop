@@ -14,7 +14,8 @@ import BackButton from '../../components/BackButton'
 
 const MyComponent = (props) => (
   <BenHeader type="single">
-      <BackButton/>
+
+      <BackButton onPress={ props.onBackBtnPress } />
 
       <TextInput style={{
         borderWidth: 0.5,
