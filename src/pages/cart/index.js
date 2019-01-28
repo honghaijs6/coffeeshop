@@ -35,51 +35,97 @@ export default class Cart extends Component {
       tab:'cart',
 
 
+      data: this.props.shopingCart ,
+
+      userInfo:props.userInfo
     }
+
+    this._onOrderNow = this._onOrderNow.bind(this);
   }
 
+  _onChangeText(json){
+
+    this.setState(Object.assign(this.state.userInfo,json));
+
+
+  }
+  _onOrderNow(){
+
+    let msg = '';
+    if(this.state.userInfo.phone.length < 6 ){
+      msg = 'Please enter your phone number ';
+    }else if(this.state.userInfo.recent_address.length < 20){
+      msg = 'Please enter your delivery address '
+    }else{
+
+      this.props.onStateChange({
+        onAction:'change_tab',
+        toTab:'checkout'
+      })
+    }
+
+    msg !== '' ? alert(msg) : null
+
+  }
+  _onBackBtnPress(){
+    this.props.onStateChange({
+      onAction:'change_tab',
+      toTab:'order'
+    })
+  }
   render() {
-    return (
-      <Container style={{
-        backgroundColor:GREY_COLOR,
-        display:  this.props.onTab === this.state.tab ? 'block':'none'
-      }}>
-        <BenHeader>
-          <BackButton />
-          <View>
-            <Text style={{
-              fontSize: 16, fontFamily: 'Roboto'
-            }}> Your Orders Cart </Text>
+
+    if(this.props.onTab === this.state.tab){
+
+      return (
+        <Container style={{
+          backgroundColor:GREY_COLOR,
+          display:  this.props.onTab === this.state.tab ? 'block':'none'
+        }}>
+          <BenHeader>
+            <BackButton onPress={()=>{ this._onBackBtnPress() }} />
+            <View>
+              <Text style={{
+                fontSize: 16, fontFamily: 'Roboto'
+              }}> Your Orders Cart </Text>
+            </View>
+
+            <Text>  </Text>
+          </BenHeader>
+
+          <View style={{
+            flex: 1,
+            justifyContent: 'space-between'
+          }}>
+
+              <Content>
+                <CartBody onChangeText={ (data)=>{ this._onChangeText(data) } } data={this.state.data} userInfo={ this.props.userInfo } />
+              </Content>
+
+              {/* FOOTER BUTTON */}
+              <TouchableOpacity onPress={ this._onOrderNow } style={{
+                height: 50,
+                backgroundColor: COFFEE_COLOR,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <Text style={[s.txt, {color: '#fff', fontFamily: 'Roboto', fontSize: 16}]}> Order Now </Text>
+
+
+              </TouchableOpacity>
+
           </View>
 
-          <Text>  </Text>
-        </BenHeader>
+        </Container>
+      );
 
-        <View style={{
-          flex: 1,
-          justifyContent: 'space-between'
-        }}>
+    }
 
-            <Content>
-              <CartBody/>
-            </Content>
-
-            {/* FOOTER BUTTON */}
-            <TouchableOpacity style={{
-              height: 50,
-              backgroundColor: COFFEE_COLOR,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-              <Text style={[s.txt, {color: '#fff', fontFamily: 'Roboto', fontSize: 16}]}> Order Now </Text>
+    return(
+      <View></View>
+    )
 
 
-            </TouchableOpacity>
-
-        </View>
-
-      </Container>
-    );
   }
 }
 
