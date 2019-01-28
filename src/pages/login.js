@@ -4,12 +4,73 @@ import { View, StyleSheet, ImageBackground  } from 'react-native';
 import {  Link } from "react-router-native";
 
 import { Container, Content,Item,Icon , Input, Text, Button } from 'native-base';
+import Toast, {DURATION} from 'react-native-easy-toast';
 
 
-class login extends Component {
-    render() {
+import { benAuth } from '../model/authen';
 
-        
+
+/* hook */
+import {detectForm} from '../hook/before/';
+
+class LoginPage extends Component {
+
+  constructor(){
+    super();
+
+    this.state = {
+      email:'',
+      password:''
+    }
+
+    this._onSubmitLogin = this._onSubmitLogin.bind(this);
+    this._onSubmitLoginWithFacebook = this._onSubmitLoginWithFacebook.bind(this);
+
+
+  }
+
+  /*WHEN*/
+
+
+
+   async _onSubmitLogin(){
+
+
+     if(detectForm(['email','password'],this.state)===''){
+
+       benAuth.doLogin(this.state,(data)=>{
+
+            
+
+       },(err)=>{
+         this.refs.toast.show(err.message,3000)
+
+       })
+
+     }else{
+       this.refs.toast.show("Please enter your correct infomation",1000)
+     }
+
+
+  }
+
+  _onSubmitLoginWithFacebook(){
+    alert('login with facebook')
+  }
+
+  _onChangeText(json){
+    this._whereStateChange(json);
+  }
+
+  /* WHERE */
+  _whereStateChange(newState){
+    this.setState(Object.assign(this.state,newState));
+
+
+  }
+  render() {
+
+
         return (
 
             <ImageBackground source={require('../../assets/images/bg.jpg')} style={{width: '100%', height: '100%'}}>
@@ -41,25 +102,25 @@ class login extends Component {
                         }}>
                             <Item style={ s.item}>
                                 <Icon style={{ color:'#fff' }} name='mail' />
-                                <Input placeholderTextColor="rgba(255,255,255,0.3)" style={{ color:'#ffffff'}} placeholder='E-mail'/>
+                                <Input keyboardType='email-address' returnKeyType='next'  placeholderTextColor="rgba(255,255,255,0.3)" autoCapitalize='none' onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={{ color:'#ffffff'}} placeholder='E-mail'/>
                             </Item>
 
                             <Item style={ s.item}>
                                 <Icon style={{ color:'#fff' }} name='unlock' />
-                                <Input secureTextEntry={true} placeholderTextColor="rgba(255,255,255,0.3)" style={{ color:'#ffffff'}}   placeholder='Password'/>
+                                <Input secureTextEntry returnKeyType='go' onChangeText={(text)=>{ this._onChangeText({password:text}) }} autoCapitalize='none' placeholderTextColor="rgba(255,255,255,0.3)" style={{ color:'#ffffff'}}   placeholder='Password'/>
                             </Item>
                         </View>
 
                         <View style={{
                             marginTop:'15%',
                             justifyContent:'space-between',
-                            height:140
+                            height:150
                         }}>
-                            <Button full style={s.button}>
+                            <Button onPress={ this._onSubmitLogin } full style={s.button}>
                                 <Text style={[s.text, {color: 'rgba(87,60,35,0.8)'}]}> Login </Text>
                             </Button>
 
-                            <Button full style={[s.button,{backgroundColor:'rgba(68,103,176,0.6)'}]}>
+                            <Button onPress={ this._onSubmitLoginWithFacebook } full style={[s.button,{backgroundColor:'rgba(68,103,176,0.6)'}]}>
                                 <Icon style={{ color:'#fff' }} name='logo-facebook' />
                                 <Text style={s.text}> Login with Facebook </Text>
                             </Button>
@@ -70,10 +131,12 @@ class login extends Component {
                                 alignItems:'center',
                                 paddingTop:40
                             }}>
-                             <Text style={s.text}> Don't have an account? </Text>
-                             <Link>
 
-                                <Text style={ s.text}> Sign up  </Text>
+                             <Link to="/register" underlayColor="rgba(255,255,255,0.5)">
+                                <View style={{alignItems: 'center', padding: 6}}>
+                                  <Text style={s.text}> Don't have an account? </Text>
+                                  <Text style={ s.text}> Sign up  </Text>
+                                </View>
                             </Link>
 
                         </View>
@@ -81,7 +144,13 @@ class login extends Component {
                     </View>
 
                 </Content>
+                <Toast position='top'
+                positionValue={200}
+                  fadeInDuration={750}
+                  fadeOutDuration={1000}
+                  opacity={0.8}
 
+                 ref="toast"/>
             </Container>
 
             </ImageBackground>
@@ -92,7 +161,7 @@ class login extends Component {
     }
 }
 
-export default login;
+export default LoginPage;
 
 const s = StyleSheet.create({
     text:{ fontFamily:'Roboto',color:'#fff'},
