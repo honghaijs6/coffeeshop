@@ -9,6 +9,8 @@ import FeedViewPage from './feedview';
 
 import OrderPage from './orders';
 import MenuPage from './menu';
+import ProductItemPage from './productItem';
+import CartPage from './cart';
 
 import MissionPage from './missions/';
 import StorePage from './stores/';
@@ -77,6 +79,9 @@ class shop extends Component {
 
               <OrderPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
               <MenuPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
+              <ProductItemPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state }  />
+              <CartPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state }  />
+
 
               <MissionPage { ...this.state } />
               <StorePage { ...this.state } />
