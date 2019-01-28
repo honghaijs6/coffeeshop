@@ -9,7 +9,7 @@ export function validateEmail(email) {
 }
 
 export function validatePassword(password) {
-    return (password.length > 6);
+    return (password.length > 5);
 }
 
 export function confirmPassword(c_password, password) {
