@@ -9,6 +9,8 @@ import BenAvatar from '../../components/BenAvatar';
 
 import { GREY_COLOR, COFFEE_COLOR } from '../../config/const';
 
+import { doSignOut } from '../../model/initFireBase';
+
 export default class AccountPage extends Component{
 
   constructor(props){
@@ -20,6 +22,16 @@ export default class AccountPage extends Component{
       onAction:'',
       tab:'account'
     }
+
+    this._onSignOut = this._onSignOut.bind(this);
+  }
+
+  _onSignOut(){
+
+    doSignOut(()=>{
+      //alert('signed out okay')
+    },(err)=>{ console.log(err); });
+
   }
 
 
@@ -71,7 +83,7 @@ export default class AccountPage extends Component{
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={ s.btnItem }>
+          <TouchableOpacity onPress={ this._onSignOut } style={ s.btnItem }>
 
             <Icon name="log-out" style={s.icon} ></Icon>
             <Text style={s.txt}>
