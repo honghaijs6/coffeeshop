@@ -128,7 +128,7 @@ export const benAuth = {
     auth.signOut()
         .then(() =>  {
 
-          alert('login out from auten')
+
           this._whereStateChange({
             type:'LOGIN',
             isLoggedIn:false
