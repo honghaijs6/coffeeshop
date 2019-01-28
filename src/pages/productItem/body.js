@@ -19,15 +19,15 @@ const BodyItem = (props) => (
         borderBottomWidth: 0.5,
         borderBottomColor: 'rgba(0,0,0,0.2)'
       }}>
-         <Image style={{height: 300,width: null}} source={{uri:"https://static.vietnammm.com/images/restaurants/vn/NQ01R1R/products/mon-sua-tuoi-tran-chau-duong-den.png"}} />
+         <Image style={{height: 300,width: null}} source={{uri: props.info.photo }} />
 
          <View style={{
            backgroundColor: '#fff',
            padding: 10,
          }}>
 
-           <Text style={s.h4}> Black Milk Tea </Text>
-           <Text style={s.txt}> Tea Description </Text>
+           <Text style={s.h4}> { props.info.name } </Text>
+           <Text style={s.txt}> Take some description... </Text>
 
          </View>
       </View>
