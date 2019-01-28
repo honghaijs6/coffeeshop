@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
 import * as Expo from 'expo';
 
+import store from './src/redux/store';
+
 
 import Login from './src/pages/login';
 import Register from './src/pages/register';
@@ -22,7 +24,7 @@ export default class App extends React.Component {
     this.state = {
 
         isReady:false,
-        login: benAuth.store.getState().user.isLoggedIn || false  ,
+        login: store.getState().user.isLoggedIn || false  ,
         onAction:''
     }
 
@@ -35,16 +37,23 @@ export default class App extends React.Component {
     this._listenStore();
   }
 
+
   _listenStore(){
-    this.unsubscribe =  benAuth.store.subscribe(()=>{
+
+    this.unsubscribe = store.subscribe(()=>{
 
         this.setState({
-          login: benAuth.store.getState().user.isLoggedIn || false
+          login: store.getState().user.isLoggedIn || false
         })
 
-      })
+    })
+
   }
 
+  componentWillUnmount(){
+
+      this.unsubscribe();
+  }
 
   componentWillMount(){
     this.loadFonts();
