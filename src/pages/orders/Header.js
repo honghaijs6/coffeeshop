@@ -13,18 +13,24 @@ import BenHeader from '../../components/BenHeader';
 export default class OrderHeader extends Component{
 
 
+  constructor(props){
+
+    super(props);
+
+
+  }
   truncate = (text)=>{
       return text.length > 32 ? `${text.substr(0, 32)}...` : text;
   }
   render(){
 
-    let address = "2055 Beaver Ruin Rd Suite B Norcross, GA 30071";
+    let address = this.props.userInfo.recent_address ;
     address = this.truncate(address);
 
     return(
       <View>
           <BenHeader>
-              <TouchableOpacity style={{ flexDirection: 'row', paddingLeft: 10}}>
+              <TouchableOpacity onPress={ this.props.onPress }  style={{ flexDirection: 'row', paddingLeft: 10}}>
                   <Icon style={{ fontSize: 32, color: COFFEE_COLOR}} name="bicycle"></Icon>
                   <View style={{ paddingHorizontal: 10, width: '90%'}}>
                       <Text style={{ fontSize: 10, color: BLACK_COLOR}}><Icon style={{fontSize: 12, color: BLACK_COLOR}} name="pin" /> Delivery to </Text>
