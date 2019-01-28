@@ -8,7 +8,9 @@ import Login from './src/pages/login';
 import Register from './src/pages/register';
 import Shop from './src/pages/shop';
 
-import FeedView from './src/pages/feedview';
+
+import { benAuth } from './src/model/authen';
+
 
 
 
@@ -18,13 +20,38 @@ export default class App extends React.Component {
     super();
 
     this.state = {
-        isReady:false
+
+        isReady:false,
+        login: benAuth.store.getState().user.isLoggedIn || false  ,
+        onAction:''
     }
+
+
+    this._setup();
   }
+
+  _setup(){
+
+    this._listenStore();
+  }
+
+  _listenStore(){
+    this.unsubscribe =  benAuth.store.subscribe(()=>{
+
+        this.setState({
+          login: benAuth.store.getState().user.isLoggedIn || false
+        })
+
+      })
+  }
+
 
   componentWillMount(){
     this.loadFonts();
   }
+
+
+
 
   async loadFonts() {
     await Expo.Font.loadAsync({
@@ -32,8 +59,24 @@ export default class App extends React.Component {
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
       Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
     });
+
+
+
     this.setState({ isReady: true });
   }
+
+  componentDidMount(){
+
+    //
+
+    benAuth.checkLoginStatus((exists,isLoggedIn)=>{
+
+      isLoggedIn ? this.setState({login:true}) : null ;
+
+
+    })
+  }
+
   render() {
 
     if (!this.state.isReady) {
@@ -41,13 +84,20 @@ export default class App extends React.Component {
     }
     return (
       <NativeRouter>
-        <View style={styles.container}>
 
-          <Route exact path="/" component={Shop} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          
-        </View>
+
+          {
+             this.state.login ? (<Route path="/" name="Home" component={Shop} />) : (
+               <View style={styles.container}>
+                  <Route exact path="/" name="Login Page" component={Login} />
+                  <Route exact path="/register" name="Login Page" component={Register} />
+
+               </View>
+             )
+          }
+
+
+
 
       </NativeRouter>
 
