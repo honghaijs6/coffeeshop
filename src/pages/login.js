@@ -10,6 +10,7 @@ import Toast, {DURATION} from 'react-native-easy-toast';
 import { benAuth } from '../model/authen';
 
 
+
 /* hook */
 import {detectForm} from '../hook/before/';
 
@@ -22,6 +23,9 @@ class LoginPage extends Component {
       email:'',
       password:''
     }
+
+
+
 
     this._onSubmitLogin = this._onSubmitLogin.bind(this);
     this._onSubmitLoginWithFacebook = this._onSubmitLoginWithFacebook.bind(this);
@@ -40,7 +44,8 @@ class LoginPage extends Component {
 
        benAuth.doLogin(this.state,(data)=>{
 
-            
+          
+
 
        },(err)=>{
          this.refs.toast.show(err.message,3000)
