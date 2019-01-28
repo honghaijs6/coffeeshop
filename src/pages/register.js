@@ -8,14 +8,17 @@ import Toast, {DURATION} from 'react-native-easy-toast';
 
 
 
-/* MODEL */
-import moFire from '../model/moFirebase';
+import store from '../redux/store';
 
-import { register } from '../model/initFireBase';
+/* MODEL */
+import { benAuth } from '../model/authen';
 
 
 /* hook */
 import {detectForm} from '../hook/before/';
+
+import { validateEmail, validatePassword, confirmPassword } from '../hook/ultil/validate';
+
 
 class Register extends Component {
 
@@ -40,18 +43,11 @@ class Register extends Component {
       repassword:''
     }
 
-    this._setup();;
 
     this._onSubmit = this._onSubmit.bind(this);
 
   }
 
-  _setup(model){
-    this.moUser = new moFire('users');
-
-  }
-
-  /* WHEN */
   _onChangeText(json){
 
      Object.assign(this.data,json);
@@ -59,8 +55,6 @@ class Register extends Component {
      this.setState({
        onAction:'typing'
      })
-
-
 
   }
 
@@ -84,17 +78,35 @@ class Register extends Component {
 
 
     this._onProsess();
-    if(detectForm(['name','email','password'], this.data )===''){
+    if(detectForm(['name','email','password','repassword'], this.data )===''){
 
-          register(this.data,(data)=>{
-              this._onSuccess();
-          },(err)=>{
+          let msg = '' ;
 
-            this.refs.toast.show(err.message,3000);
+          if(!validateEmail(this.data.email)){
+            msg = 'Please enter your correct email format';
+          }else if(!validatePassword(this.data.password)){
+            msg = 'please enter your at least 6 digit for your password';
+          }else if(!confirmPassword(this.data.password,this.data.repassword)){
+            msg = 'Your password  unmatch';
+          }else{
+            benAuth.register(this.data,(data)=>{
+                this._onSuccess();
+            },(err)=>{
+
+              this.refs.toast.show(err.message,3000);
+              this._onFree();
+
+            });
+          }
+
+          if(msg!==''){
+            this.refs.toast.show(msg,3000);
             this._onFree();
+          }
 
 
-          });
+
+
 
 
     }else{
