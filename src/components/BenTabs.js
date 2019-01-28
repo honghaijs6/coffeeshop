@@ -70,7 +70,7 @@ export default class BenTabs extends Component {
 
                         })
                       }
-                      
+
               </View>
 
           </View>
