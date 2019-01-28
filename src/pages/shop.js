@@ -12,35 +12,74 @@ import MenuPage from './menu';
 import ProductItemPage from './productItem';
 import CartPage from './cart';
 
+import DeliveryPage from './delivery';
+import CheckOutPage from './checkout';
+
+
+
+
 import MissionPage from './missions/';
 import StorePage from './stores/';
 
 import AccountPage from './users/';
 
 
-
+import store from '../redux/store';
 
 
 class shop extends Component {
 
+    constructor(){
+      super();
 
-    state = {
-      tabs:[
-        { tab:'feed',icon:'paper',name:'Feeds' },
-        { tab:'feedview',icon:'paper',name:'Feeds',hidden:true },
+      this.state = state = {
+        tabs:[
+          { tab:'feed',icon:'paper',name:'Feeds' },
+          { tab:'mission',icon:'aperture',name:'Missions' },
 
-        { tab:'mission',icon:'aperture',name:'Missions' },
-
-        { tab:'order',icon:'cafe',name:'Orders' },
-        { tab:'menu',icon:'cafe',name:'Menu', hidden:true },
+          { tab:'order',icon:'cafe',name:'Orders' },
 
 
-        { tab:'store',icon:'pin',name:'Stores' },
-        { tab:'account',icon:'person',name:'Account' },
-      ],
-      onTab:'feed',
-      tab:{}
+          { tab:'store',icon:'pin',name:'Stores' },
+          { tab:'account',icon:'person',name:'Account' },
+        ],
+        onTab:'feed',
+        tab:{},
+
+        shopingCart:[],
+
+        userInfo:store.getState().user.userInfo
+      }
+
+      this._setup();
+
     }
+
+
+    _setup(){
+
+      this._listenStore();
+    }
+
+    _listenStore(){
+
+      this.unsubscribe = store.subscribe(()=>{
+
+
+          this.setState({
+            userInfo: store.getState().user.userInfo
+          })
+
+      })
+
+    }
+
+    componentWillUnmount(){
+
+        this.unsubscribe();
+    }
+
+
 
     _onChangeTab(data){
       this.setState({
@@ -53,9 +92,13 @@ class shop extends Component {
 
        switch (newState.onAction) {
          case 'change_tab' :
-            this.setState({
-              onTab:newState.toTab
-            });
+
+
+            let combineState = Object.assign(this.state,newState);
+            combineState.onTab = newState.toTab
+
+            this.setState( combineState );
+
          break;
          default:
 
@@ -81,6 +124,14 @@ class shop extends Component {
               <MenuPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
               <ProductItemPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state }  />
               <CartPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state }  />
+              <DeliveryPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  { ...this.state }  />
+
+              <CheckOutPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  { ...this.state } />
+
+
+
+
+
 
 
               <MissionPage { ...this.state } />
