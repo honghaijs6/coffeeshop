@@ -17,7 +17,7 @@ const BackButton = (props) => (
     flexDirection: 'row',
     alignItems: 'center'
   }}>
-      <TouchableOpacity  style={{
+      <TouchableOpacity onPress={()=>{ props.onPress() }}  style={{
         width: 40,
         justifyContent: 'center',
         alignItems: 'center',
