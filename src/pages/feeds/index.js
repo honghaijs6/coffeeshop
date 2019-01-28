@@ -18,6 +18,9 @@ import CardImage from './CardImage';
 
 import Box from './Box';
 
+import store from '../../redux/store';
+import { benAuth } from '../../model/authen';
+
 export default class FeedPage extends Component{
 
   constructor(props){
@@ -27,12 +30,25 @@ export default class FeedPage extends Component{
 
       typeAction:'',
       onAction:'',
-      tab:'feed'
+      tab:'feed',
+
+      userInfo: store.getState().user.userInfo
     }
+
+
+    this._setup();
 
     this._onPressAvarar  = this._onPressAvarar.bind(this);
     this._onPressNoti = this._onPressNoti.bind(this) ;
   }
+
+  _setup(){
+    //alert('hello')
+    //console.log(this.state.userInfo);
+    //this._listenStore();
+  }
+
+  /* WHEN*/
 
 
   _onPressAvarar(){
@@ -50,6 +66,8 @@ export default class FeedPage extends Component{
       })
   }
   render(){
+
+
     return(
       <Container style={{
         backgroundColor:GREY_COLOR,
@@ -57,11 +75,11 @@ export default class FeedPage extends Component{
       }}>
         <BenHeader>
            <BenAvatar
-              onPress={ this._onPressAvarar }
+
               data={{
-               uri:'https://scontent.fsgn5-6.fna.fbcdn.net/v/t1.0-1/p160x160/41795526_2082548408445932_7771390061051904000_n.jpg?_nc_cat=109&_nc_oc=AQnW3o2N69YmcjDnxCqPK-AYEGDWGy58AdAu6F6mG8LqDBuhXpyRoKX2l_I27tW92Fek7R-R893bbrzdjUPf59qk&_nc_ht=scontent.fsgn5-6.fna&oh=927a69754880b732e2c3ce267d1a0af9&oe=5CFA7E33',
-               name:'Benjamin',
-               point:100
+               uri: this.state.userInfo.photoURL ,
+               name: this.state.userInfo.name ,
+               point:this.state.userInfo.point
              }}
            />
            <BenNoti onPress={ this._onPressNoti }  />
