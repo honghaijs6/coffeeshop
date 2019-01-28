@@ -30,7 +30,7 @@ export default class BenNoti extends Component {
             top:-3,
             backgroundColor:RED_COLOR
           }} danger>
-            <Text style={{ fontSize:11, color:'#fff' }}> 10 </Text>
+            <Text style={{ fontSize:11, color:'#fff', display: 'none'}}> 10 </Text>
           </View>
         </TouchableOpacity>
       </View>
