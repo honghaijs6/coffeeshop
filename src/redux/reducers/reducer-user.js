@@ -26,69 +26,15 @@ export default function(state = iniState ,action = {}){
      case 'LOGIN':
        return {
          ...state,
+         userInfo:action.userInfo,
          isLoggedIn:action.isLoggedIn
        }
      break;
-     case 'STATE-'+MODE:
-       return {
-         ...state,
-         state:action.state
-
-       }
-     break;
-
-    /* PROACTIVE : DATA */
-    case 'GET-'+MODE:
-
-      return {
-        ...state,
-        list:action.list
-      }
-
-    break ;
-
-    case 'POST-'+MODE:
-
-
-      return {
-        ...state,
-        list:action.list
-      }
-
-    break ;
-
-    case 'PUT-'+MODE:
-
-      return {
-        ...state,
-        list:action.list
-      }
-
-    break ;
-
-    case 'DELETE-'+MODE:
-
-
-      return {
-        ...state,
-        list:action.list
-      }
-
-    break ;
-
-    /* PASSIVE DATA : realtime received on listenServer  */
-    case 'reset-'+MODE:
-
-      return {
-        ...state,
-        list:action.list
-      }
-    break ;
 
 
     default:
 
-      return state;
+    return state;
 
   }
 };
