@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ImageBackground  } from 'react-native';
+import { View, StyleSheet, ImageBackground, ScrollView,Text,InputText,KeyboardAvoidingView,TouchableOpacity  } from 'react-native';
 
 import {  Link } from "react-router-native";
 
-import { Container, Content,Item,Icon , Input, Text, Button } from 'native-base';
+import { Container, Content,Item,Icon , Input,  Button } from 'native-base';
 import Toast, {DURATION} from 'react-native-easy-toast';
+
+import { Ionicons } from '@expo/vector-icons';
 
 
 import { benAuth } from '../model/authen';
@@ -37,14 +39,14 @@ class LoginPage extends Component {
 
 
 
-   async _onSubmitLogin(){
+   _onSubmitLogin(){
 
 
      if(detectForm(['email','password'],this.state)===''){
 
        benAuth.doLogin(this.state,(data)=>{
 
-          
+
 
 
        },(err)=>{
@@ -80,8 +82,8 @@ class LoginPage extends Component {
 
             <ImageBackground source={require('../../assets/images/bg.jpg')} style={{width: '100%', height: '100%'}}>
 
-                <Container
-                style={{
+                <View
+                  style={{
 
                     flex:1,
                     backgroundColor:'rgba(87,60,35,0.8)',
@@ -98,7 +100,7 @@ class LoginPage extends Component {
                         alignSelf:'center',
                         justifyContent:'space-between'
                     }}>
-                        <ImageBackground source={require('../../assets/mylogo.png')} style={{width: 80, height: 106, alignSelf: 'center', marginBottom: 20}} />
+                        <ImageBackground source={require('../../assets/images/mylogo.png')} style={{width: 80, height: 106, alignSelf: 'center', marginBottom: 20}} />
 
 
                         <View style={{
@@ -107,12 +109,12 @@ class LoginPage extends Component {
                         }}>
                             <Item style={ s.item}>
                                 <Icon style={{ color:'#fff' }} name='mail' />
-                                <Input keyboardType='email-address' returnKeyType='next'  placeholderTextColor="rgba(255,255,255,0.3)" autoCapitalize='none' onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={{ color:'#ffffff'}} placeholder='E-mail'/>
+                                <Input keyboardType="email-address"  placeholderTextColor="rgba(255,255,255,0.3)" autoCapitalize='none' onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={{ color:'#ffffff'}} placeholder='E-mail'/>
                             </Item>
 
                             <Item style={ s.item}>
                                 <Icon style={{ color:'#fff' }} name='unlock' />
-                                <Input secureTextEntry returnKeyType='go' onChangeText={(text)=>{ this._onChangeText({password:text}) }} autoCapitalize='none' placeholderTextColor="rgba(255,255,255,0.3)" style={{ color:'#ffffff'}}   placeholder='Password'/>
+                                <Input type="password"  onChangeText={(text)=>{ this._onChangeText({password:text}) }} autoCapitalize='none' placeholderTextColor="rgba(255,255,255,0.3)" style={{ color:'#ffffff'}}   placeholder='Password'/>
                             </Item>
                         </View>
 
@@ -137,12 +139,13 @@ class LoginPage extends Component {
                                 paddingTop:40
                             }}>
 
-                             <Link to="/register" underlayColor="rgba(255,255,255,0.5)">
+                             <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('Register') }}  >
                                 <View style={{alignItems: 'center', padding: 6}}>
+                                  <Ionicons name="md-checkmark-circle" size={20} style={{color: '#fff'}} />
                                   <Text style={s.text}> Don't have an account? </Text>
                                   <Text style={ s.text}> Sign up  </Text>
                                 </View>
-                            </Link>
+                            </TouchableOpacity>
 
                         </View>
 
@@ -156,7 +159,7 @@ class LoginPage extends Component {
                   opacity={0.8}
 
                  ref="toast"/>
-            </Container>
+             </View>
 
             </ImageBackground>
 
