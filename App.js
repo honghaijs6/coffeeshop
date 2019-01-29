@@ -1,7 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
-import * as Expo from 'expo';
+import { Font, AppLoading } from 'expo';
+
+
+import { createStackNavigator, createAppContainer } from "react-navigation";
+
 
 import store from './src/redux/store';
 
@@ -13,8 +17,46 @@ import Shop from './src/pages/shop';
 
 import { benAuth } from './src/model/authen';
 
+class HomeScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Home Screen</Text>
+        <Button
+          title="Go to Details"
+          onPress={() => { this.props.navigation.push('Details') } }
+        />
+      </View>
+    );
+  }
+}
+
+class DetailsScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Details Screen</Text>
+      </View>
+    );
+  }
+}
 
 
+const RootStack = createStackNavigator(
+  {
+    Home: Login,
+    Register: Register
+  },
+  {
+    initialRouteName: "Home",
+    headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false,
+    }
+  }
+);
+
+const AppContainer = createAppContainer(RootStack);
 
 export default class App extends React.Component {
 
@@ -29,12 +71,6 @@ export default class App extends React.Component {
     }
 
 
-    this._setup();
-  }
-
-  _setup(){
-
-    this._listenStore();
   }
 
 
@@ -55,15 +91,16 @@ export default class App extends React.Component {
       this.unsubscribe();
   }
 
+  componentDidMount(){
+    this._listenStore();
+  }
   componentWillMount(){
     this.loadFonts();
   }
 
 
-
-
   async loadFonts() {
-    await Expo.Font.loadAsync({
+    await Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
       Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
@@ -89,26 +126,11 @@ export default class App extends React.Component {
   render() {
 
     if (!this.state.isReady) {
-      return <Expo.AppLoading />;
+      return <AppLoading />;
     }
     return (
-      <NativeRouter>
 
-
-          {
-             this.state.login ? (<Route path="/" name="Home" component={Shop} />) : (
-               <View style={styles.container}>
-                  <Route exact path="/" name="Login Page" component={Login} />
-                  <Route exact path="/register" name="Login Page" component={Register} />
-
-               </View>
-             )
-          }
-
-
-
-
-      </NativeRouter>
+      <AppContainer />
 
     );
   }
