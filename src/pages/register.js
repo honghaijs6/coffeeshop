@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ImageBackground, TextInput  } from 'react-native';
+import { View, StyleSheet, ImageBackground, TextInput, TouchableOpacity  } from 'react-native';
 
 import {  Link, Redirect } from "react-router-native";
 
@@ -144,9 +144,9 @@ class Register extends Component {
                 <View style={{paddingTop:14}}></View>
                 <View style={s.header} >
                     <View style={{ width:'35%',}}>
-                        <Link underlayColor="transparent" to="/" style={ s.btn}>
+                        <TouchableOpacity onPress={()=>{ this.props.navigation.goBack() }} style={ s.btn}>
                             <Icon style={[s.text,{marginLeft:10}]} name='arrow-back' />
-                        </Link>
+                        </TouchableOpacity>
                     </View>
 
                     <View style={{ width:'65%'}}>
