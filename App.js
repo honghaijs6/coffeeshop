@@ -6,7 +6,7 @@ import { Font, AppLoading } from 'expo';
 
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
-
+// th
 import store from './src/redux/store';
 
 
