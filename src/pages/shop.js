@@ -1,33 +1,32 @@
 import React, { Component } from 'react';
 
+
+import store from '../redux/store';
+
+
 // Lib
 import BenTabs  from "../components/BenTabs";
 import BenStatusBar  from "../components/BenStatusBar";
 
 
+/* TABS : 5 tab items */
 import FeedTab from './feedTab/';
-import MissionTab from './missions/';
-import OrderTab from './orders';
-import StoreTab from './stores/';
-import AccountTab from './users/';
+import MissionTab from './missionTab/';
+import OrderTab from './orderTab';
+import StoreTab from './storeTab/';
+import AccountTab from './userTab/';
 
 
-import MenuTab from './menu';
+/*import MenuTab from './menu';
 
 import ProductItemPage from './productItem';
 import CartPage from './cart';
 
 import DeliveryPage from './delivery';
-import CheckOutPage from './checkout';
+import CheckOutPage from './checkout';*/
 
 
 
-
-
-
-
-
-import store from '../redux/store';
 
 
 class shop extends Component {
@@ -40,18 +39,13 @@ class shop extends Component {
         tabs:[
           { tab:'feed',icon:'paper',name:'Feeds' },
           { tab:'mission',icon:'aperture',name:'Missions' },
-
           { tab:'order',icon:'cafe',name:'Orders' },
-
-
           { tab:'store',icon:'pin',name:'Stores' },
           { tab:'account',icon:'person',name:'Account' },
         ],
         onTab:'feed',
         tab:{},
-
         shopingCart:[],
-
         userInfo:store.getState().user.userInfo
       }
 
