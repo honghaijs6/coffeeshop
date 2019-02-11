@@ -6,7 +6,7 @@ import { Font, AppLoading } from 'expo';
 
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
-// test  write more on local
+// test lan II nha cac ban hahah
 import store from './src/redux/store';
 
 
