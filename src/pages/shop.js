@@ -5,7 +5,7 @@ import BenTabs  from "../components/BenTabs";
 import BenStatusBar  from "../components/BenStatusBar";
 
 
-import FeedTab from './feeds/';
+import FeedTab from './feedTab/';
 import MissionTab from './missions/';
 import OrderTab from './orders';
 import StoreTab from './stores/';
