@@ -6,11 +6,6 @@ import { Font, AppLoading } from 'expo';
 
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
-<<<<<<< HEAD
-// test lan II nha cac ban hahah
-=======
-// test  edit from github
->>>>>>> 5de0225cf631bdeda794c80b4491b7ac5dbd4c17
 import store from './src/redux/store';
 
 
