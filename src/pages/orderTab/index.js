@@ -33,12 +33,20 @@ export default class OrderPage extends Component{
 
   _onCateItemPress = (item)=>{
 
-    /* send data item to menu page */
+    /* send data item to menu page
     this.props.onStateChange({
       onAction:'change_tab',
       toTab:'menu',
       data:item
-    })
+    });*/
+    
+
+
+    this.props.navigation.navigate('MenuPage', {
+        cateInfo: item,
+        shopingCart:this.props.shopingCart
+    });
+
 
   }
 

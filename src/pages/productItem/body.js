@@ -19,7 +19,7 @@ const BodyItem = (props) => (
         borderBottomWidth: 0.5,
         borderBottomColor: 'rgba(0,0,0,0.2)'
       }}>
-         <Image style={{height: 300,width: null}} source={{uri: props.info.photo }} />
+         <Image style={{height: 320,width: null}} source={{uri: props.info.photo }} />
 
          <View style={{
            backgroundColor: '#fff',

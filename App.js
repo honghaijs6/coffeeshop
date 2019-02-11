@@ -14,6 +14,11 @@ import Register from './src/pages/register';
 import Shop from './src/pages/shop';
 
 import FeedView from './src/pages/feedview';
+import MenuPage from './src/pages/menu';
+
+import ProItem from './src/pages/productItem';
+
+
 
 
 
@@ -23,7 +28,9 @@ const RootStack = createStackNavigator(
   {
     Home: Shop,
     FeedView:FeedView,
-    Register: Register,
+    MenuPage:MenuPage,
+    ProItem:ProItem
+
 
 
   },

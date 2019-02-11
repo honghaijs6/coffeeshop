@@ -15,6 +15,9 @@ import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
 import products from '../../data/products.json';
 
 import MenuHeader from './header';
+import BenStatusBar  from "../../components/BenStatusBar";
+
+
 import MenuBody from './body'
 
 function ButtonOrder (props){
@@ -50,24 +53,24 @@ export default class Menu extends Component {
 
 
   _onBackBtnPress(){
-    this._whereStateChange({
-      onAction:'change_tab',
-      toTab:'order'
-    })
+
+    this.props.navigation.goBack();
+
   }
 
   _whereStateChange(newState){
     this.props.onStateChange(newState);
   }
 
-  _onPressItem(data){
+  _onPressItem(info,shopingCart){
 
 
-    this._whereStateChange({
-      onAction:'change_tab',
-      toTab:'productitem',
-      proInfo:data,
-    });
+    this.props.navigation.navigate('ProItem',{
+      proInfo:info,
+      shopingCart:shopingCart
+    })
+
+
 
   }
 
@@ -80,31 +83,31 @@ export default class Menu extends Component {
   render() {
 
 
+    const { navigation } = this.props;
+    const cateInfo = navigation.getParam('cateInfo', null);
+    const shopingCart = navigation.getParam('shopingCart',[]);
 
-    if(this.props.onTab === this.state.tab){
-
-      const data = this.state.data[this.props.data.code];
-
-      return(
-        <Container style={{
-          backgroundColor:GREY_COLOR,
-        }}>
-
-          <MenuHeader onBackBtnPress={()=>{ this._onBackBtnPress() }} />
-
-          <MenuBody onPressItem={(item)=>{ this._onPressItem(item) }}  data={ data } />
-
-          { this.props.shopingCart.length > 0 ? <ButtonOrder onPress={()=>{  this._onPressOrder() }} /> : null }
+    const data = this.state.data[cateInfo.code];
 
 
 
-        </Container>
-      )
-    }
+    return(
+      <Container>
 
-    return (
-      <View></View>
+        <BenStatusBar/>
+
+        <MenuHeader onBackBtnPress={()=>{ this._onBackBtnPress() }} />
+
+        <MenuBody onPressItem={(item)=>{ this._onPressItem(item,shopingCart) }}   data={ data } />
+
+        { shopingCart.length > 0 ? <ButtonOrder onPress={()=>{  this._onPressOrder() }} /> : null }
+
+
+      </Container>
     )
+
+
+
 
   }
 }

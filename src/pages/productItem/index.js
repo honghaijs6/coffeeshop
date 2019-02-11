@@ -12,6 +12,8 @@ import { Container,  Content, Icon } from 'native-base';
 import { GREY_COLOR, COFFEE_COLOR, RED_COLOR } from '../../config/const' ;
 
 import BenHeader from '../../components/BenHeader';
+import BenStatusBar  from "../../components/BenStatusBar";
+
 import BackButton from '../../components/BackButton';
 import LikeButton from '../../components/LikeButton';
 
@@ -69,10 +71,8 @@ export default class ProductItem extends Component {
   }
 
   goBack(){
-    this.props.onStateChange({
-      onAction:'change_tab',
-      toTab:'menu'
-    })
+    this.props.navigation.goBack();
+
   }
 
   _onBtnOrder(){
@@ -81,24 +81,27 @@ export default class ProductItem extends Component {
       const cart = this.state.info;
       cart.amount = this.state.amount;
 
-      this.props.shopingCart.push(cart);
+      this.state.shopingCart.push(cart);
+  
 
       this.goBack();
+
 
 
     }
   }
   render() {
 
+      this.state.info = this.props.navigation.getParam('proInfo',{});
+      this.state.shopingCart = this.props.navigation.getParam('shopingCart',[]);
 
-    if(this.props.onTab === this.state.tab){
 
-      this.state.info = this.props.proInfo ;
 
       const total = this.state.amount * this.state.info.price ;
       return (
-        <Container style={{ backgroundColor:GREY_COLOR }}>
+        <Container>
 
+          <BenStatusBar/>
           <BenHeader>
             <BackButton onPress={ this._onBackBtnPress } />
 
@@ -181,12 +184,9 @@ export default class ProductItem extends Component {
 
 
         </Container>
-      );
-    }
+    );
 
-    return (
-      <View></View>
-    )
+
 
 
   }
