@@ -6,6 +6,8 @@ import { Container, Icon, Content } from 'native-base';
 import { GREY_COLOR, COFFEE_COLOR } from '../config/const' ;
 
 import BenHeader from '../components/BenHeader';
+import BenStatusBar  from "../components/BenStatusBar";
+
 
 
 export default class FeedViewPage extends Component{
@@ -23,19 +25,14 @@ export default class FeedViewPage extends Component{
 
   _onPressBack = ()=>{
 
-      this.props.onStateChange({
-        onAction:'change_tab',
-        toTab:'feed'
-      })
+    this.props.navigation.goBack();
   }
 
   render(){
     return(
-      <Container style={{
-        backgroundColor:GREY_COLOR,
-        display:  this.props.onTab === this.state.tab ? 'block':'none'
-      }}>
+      <Container>
 
+        <BenStatusBar/>
         <BenHeader>
 
            <View style={{

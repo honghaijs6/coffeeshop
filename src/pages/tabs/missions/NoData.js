@@ -9,7 +9,7 @@ import {
 
 import { Icon } from 'native-base';
 
-import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
+import { GREY_COLOR, COFFEE_COLOR } from '../../../config/const' ;
 
 export default class NoData extends Component {
   render() {

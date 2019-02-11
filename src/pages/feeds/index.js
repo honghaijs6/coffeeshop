@@ -60,10 +60,11 @@ export default class FeedPage extends Component{
   }
 
   _onCardPress(data){
-      this.props.onStateChange({
-        onAction:'change_tab',
-        toTab:'feedview'
-      })
+
+      this.props.navigation.navigate('FeedView');
+
+
+
   }
   render(){
 

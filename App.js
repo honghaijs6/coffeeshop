@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { NativeRouter, Route, Link } from "react-router-native";
 import { Font, AppLoading } from 'expo';
 
 
 import { createStackNavigator, createAppContainer } from "react-navigation";
+
 
 import store from './src/redux/store';
 
@@ -13,38 +13,19 @@ import Login from './src/pages/login';
 import Register from './src/pages/register';
 import Shop from './src/pages/shop';
 
+import FeedView from './src/pages/feedview';
+
+
 
 import { benAuth } from './src/model/authen';
 
-class HomeScreen extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Home Screen</Text>
-        <Button
-          title="Go to Details"
-          onPress={() => { this.props.navigation.push('Details') } }
-        />
-      </View>
-    );
-  }
-}
-
-class DetailsScreen extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Details Screen</Text>
-      </View>
-    );
-  }
-}
-
-
 const RootStack = createStackNavigator(
   {
-    Home: Login,
-    Register: Register
+    Home: Shop,
+    FeedView:FeedView,
+    Register: Register,
+
+
   },
   {
     initialRouteName: "Home",
@@ -55,7 +36,22 @@ const RootStack = createStackNavigator(
   }
 );
 
-const AppContainer = createAppContainer(RootStack);
+const LoginStack = createStackNavigator(
+  {
+    Home: Login,
+    Register: Register,
+
+  },
+  {
+    initialRouteName: "Home",
+    headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false,
+    }
+  }
+);
+
+
 
 export default class App extends React.Component {
 
@@ -79,22 +75,23 @@ export default class App extends React.Component {
 
         this.setState({
           login: store.getState().user.isLoggedIn || false
-        })
+        });
+
+
 
     })
 
   }
 
   componentWillUnmount(){
-
-      this.unsubscribe();
+    this.unsubscribe();
   }
 
-  componentDidMount(){
-    this._listenStore();
-  }
+
+
   componentWillMount(){
     this.loadFonts();
+
   }
 
 
@@ -105,14 +102,12 @@ export default class App extends React.Component {
       Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
     });
 
-
-
     this.setState({ isReady: true });
   }
 
   componentDidMount(){
 
-    //
+    this._listenStore();
 
     benAuth.checkLoginStatus((exists,isLoggedIn)=>{
 
@@ -123,6 +118,9 @@ export default class App extends React.Component {
   }
 
   render() {
+
+    const AppContainer = createAppContainer(this.state.login ? RootStack : LoginStack );
+
 
     if (!this.state.isReady) {
       return <AppLoading />;

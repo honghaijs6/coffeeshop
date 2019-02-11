@@ -4,11 +4,16 @@ import React, { Component } from 'react';
 import BenTabs  from "../components/BenTabs";
 import BenStatusBar  from "../components/BenStatusBar";
 
-import FeedPage from './feeds/';
-import FeedViewPage from './feedview';
 
-import OrderPage from './orders';
-import MenuPage from './menu';
+import FeedTab from './feeds/';
+import MissionTab from './missions/';
+import OrderTab from './orders';
+import StoreTab from './stores/';
+import AccountTab from './users/';
+
+
+import MenuTab from './menu';
+
 import ProductItemPage from './productItem';
 import CartPage from './cart';
 
@@ -18,10 +23,8 @@ import CheckOutPage from './checkout';
 
 
 
-import MissionPage from './missions/';
-import StorePage from './stores/';
 
-import AccountPage from './users/';
+
 
 
 import store from '../redux/store';
@@ -29,10 +32,11 @@ import store from '../redux/store';
 
 class shop extends Component {
 
-    constructor(){
-      super();
+    constructor(props){
+      super(props);
 
       this.state = state = {
+        navigation:props.navigation,
         tabs:[
           { tab:'feed',icon:'paper',name:'Feeds' },
           { tab:'mission',icon:'aperture',name:'Missions' },
@@ -51,35 +55,7 @@ class shop extends Component {
         userInfo:store.getState().user.userInfo
       }
 
-      this._setup();
-
     }
-
-
-    _setup(){
-
-      this._listenStore();
-    }
-
-    _listenStore(){
-
-      this.unsubscribe = store.subscribe(()=>{
-
-
-          this.setState({
-            userInfo: store.getState().user.userInfo
-          })
-
-      })
-
-    }
-
-    componentWillUnmount(){
-
-        this.unsubscribe();
-    }
-
-
 
     _onChangeTab(data){
       this.setState({
@@ -117,26 +93,23 @@ class shop extends Component {
 
               <BenStatusBar/>
 
-              <FeedPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
-              <FeedViewPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  {...this.state} />
+              <FeedTab { ...this.state } />
+              <MissionTab { ...this.state } />
+              <OrderTab { ...this.state } />
+              <StoreTab { ...this.state } />
+              <AccountTab { ...this.state } />
 
-              <OrderPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
-              <MenuPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
+
+              {/*<MenuTab onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
+
+
               <ProductItemPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state }  />
               <CartPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state }  />
               <DeliveryPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  { ...this.state }  />
-
-              <CheckOutPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  { ...this.state } />
-
+              <CheckOutPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  { ...this.state } />*/}
 
 
 
-
-
-
-              <MissionPage { ...this.state } />
-              <StorePage { ...this.state } />
-              <AccountPage { ...this.state } />
 
 
 

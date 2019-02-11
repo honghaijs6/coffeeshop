@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import { Icon } from 'native-base';
-import {  COFFEE_COLOR } from '../../config/const'
+import {  COFFEE_COLOR } from '../../../config/const'
 
 export default class Box extends Component {
   render() {

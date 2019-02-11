@@ -51,7 +51,7 @@ export default class StorePage extends Component{
   };
 
   componentDidMount() {
-    this._getLocationAsync();
+    //this._getLocationAsync();
   }
 
   _getLocationAsync = async () => {
@@ -63,7 +63,7 @@ export default class StorePage extends Component{
    } else {
      this.setState({ hasLocationPermissions: true });
 
-     
+
    }
 
    let location = await Location.getCurrentPositionAsync({});
@@ -74,7 +74,7 @@ export default class StorePage extends Component{
   };
 
   _handleMapRegionChange = mapRegion => {
-    console.log(mapRegion);
+    //console.log(mapRegion);
     this.setState({ mapRegion });
   };
 

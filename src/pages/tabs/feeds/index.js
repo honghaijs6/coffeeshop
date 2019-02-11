@@ -3,12 +3,12 @@ import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Container, Icon,  Text, Content } from 'native-base';
 
 // LIB Component
-import BenHeader from '../../components/BenHeader'
-import BenAvatar from '../../components/BenAvatar';
-import MyAvatar from '../../components/MyAvatar';
-import BenNoti from '../../components/BenNoti';
+import BenHeader from '../../../components/BenHeader'
+import BenAvatar from '../../../components/BenAvatar';
+import MyAvatar from '../../../components/MyAvatar';
+import BenNoti from '../../../components/BenNoti';
 
-import { GREY_COLOR, COFFEE_COLOR } from '../../config/const'
+import { GREY_COLOR, COFFEE_COLOR } from '../../../config/const'
 
 import MyCard from './MyCard';
 import CardHeader from './CardHeader';
@@ -18,8 +18,8 @@ import CardImage from './CardImage';
 
 import Box from './Box';
 
-import store from '../../redux/store';
-import { benAuth } from '../../model/authen';
+import store from '../../../redux/store';
+import { benAuth } from '../../../model/authen';
 
 export default class FeedPage extends Component{
 
