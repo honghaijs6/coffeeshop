@@ -63,7 +63,6 @@ class shop extends Component {
        switch (newState.onAction) {
          case 'change_tab' :
 
-
             let combineState = Object.assign(this.state,newState);
             combineState.onTab = newState.toTab
 

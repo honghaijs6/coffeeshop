@@ -11,12 +11,14 @@ import {
 import { Container,  Content, Icon } from 'native-base';
 import { GREY_COLOR, COFFEE_COLOR, RED_COLOR } from '../../config/const' ;
 
+
+/* OBJECT */
+import Model from '../../model/model';
+
 import BenHeader from '../../components/BenHeader';
 import BenStatusBar  from "../../components/BenStatusBar";
-
 import BackButton from '../../components/BackButton';
 import LikeButton from '../../components/LikeButton';
-
 import BodyItem from './body';
 
 
@@ -37,10 +39,19 @@ export default class ProductItem extends Component {
 
     }
 
+    this._setup();
+
     this._onBackBtnPress = this._onBackBtnPress.bind(this);
     this._onInCrease = this._onInCrease.bind(this);
     this._onDeCrease = this._onDeCrease.bind(this);
     this._onBtnOrder = this._onBtnOrder.bind(this);
+
+  }
+
+  _setup(){
+
+    
+    this.moOrder = new Model('orders');
 
   }
 
@@ -81,10 +92,10 @@ export default class ProductItem extends Component {
       const cart = this.state.info;
       cart.amount = this.state.amount;
 
-      this.state.shopingCart.push(cart);
-  
-
       this.goBack();
+      setTimeout(()=>{
+        this.moOrder.addDataStore(cart);
+      },1000)
 
 
 
