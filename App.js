@@ -8,15 +8,30 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 
 import store from './src/redux/store';
 
-
+/* main pages*/
 import Login from './src/pages/login';
 import Register from './src/pages/register';
 import Shop from './src/pages/shop';
 
-import FeedView from './src/pages/feedview';
-import MenuPage from './src/pages/menu';
+/* sub pages */
 
-import ProItem from './src/pages/productItem';
+/* FeedTab Link */
+import FeedView from './src/pages/feedview';
+
+
+/*MissionTab Link*/
+
+/* storeTab Link*/
+
+/*  OrderTabs linkin */
+import MenuPage from './src/pages/menu';
+import ProItemPage from './src/pages/productItem';
+import CartPage from './src/pages/cart' ;
+import CheckOutPage from './src/pages/checkout';
+
+/*AccountTab Link*/
+
+
 
 
 
@@ -29,9 +44,8 @@ const RootStack = createStackNavigator(
     Home: Shop,
     FeedView:FeedView,
     MenuPage:MenuPage,
-    ProItem:ProItem
-
-
+    ProItem:ProItemPage,
+    CartPage:CartPage
 
   },
   {
@@ -79,6 +93,10 @@ export default class App extends React.Component {
   _listenStore(){
 
     this.unsubscribe = store.subscribe(()=>{
+
+        console.log('ON REUDX DATA CHANEG');
+        const list = store.getState();
+        console.log(list);
 
         this.setState({
           login: store.getState().user.isLoggedIn || false
