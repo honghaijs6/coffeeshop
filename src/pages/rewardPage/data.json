@@ -1,0 +1,18 @@
+[
+  {
+    "id":"0",
+    "code":"new",
+    "content":" Content for New Member"
+  },
+  {
+    "id":"1",
+    "code":"gold",
+    "content":" Content for Gold Member"
+  },
+  {
+    "id":"2",
+    "code":"diamond",
+    "content":" Content for Diamond Member"
+  },
+
+]

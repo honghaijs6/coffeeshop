@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-import { Container, Icon, Header, Tab, Tabs, ScrollableTab, Content, Button } from 'native-base';
+import { Container, Icon,  Content, Button } from 'native-base';
 
 
 import BenHeader from '../../components/BenHeader' ;
@@ -10,7 +10,6 @@ import BenAvatar from '../../components/BenAvatar';
 import { GREY_COLOR, COFFEE_COLOR } from '../../config/const';
 
 
-import store from '../../redux/store';
 import { benAuth } from '../../model/authen';
 
 
@@ -25,7 +24,8 @@ export default class AccountPage extends Component{
       onAction:'',
       tab:'account',
 
-      userInfo: store.getState().user.userInfo
+      userInfo: props.userInfo
+
 
     }
 
@@ -57,47 +57,51 @@ export default class AccountPage extends Component{
            }}
           />
         </BenHeader>
-        <View style={s.holder }>
-          <TouchableOpacity style={ s.btnItem }>
-            <Icon style={s.icon} name="star" />
-            <Text style={s.txt}>
-               King Kong Milk Tea Rewards
-            </Text>
-          </TouchableOpacity>
 
-          <TouchableOpacity style={ s.btnItem }>
+        <Content>
+          <View style={s.holder }>
+            <TouchableOpacity style={ s.btnItem }>
+              <Icon style={s.icon} name="star" />
+              <Text style={s.txt}>
+                 King Kong Milk Tea Rewards
+              </Text>
+            </TouchableOpacity>
 
-            <Icon style={s.icon} name="time" />
-            <Text style={s.txt}>
-              History
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={ s.btnItem }>
 
-          <TouchableOpacity style={ s.btnItem }>
-            <Icon name="help-buoy" style={s.icon} ></Icon>
-            <Text style={s.txt}>
-              Help
-            </Text>
-          </TouchableOpacity>
+              <Icon style={s.icon} name="time" />
+              <Text style={s.txt}>
+                History
+              </Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity style={ s.btnItem }>
+            <TouchableOpacity style={ s.btnItem }>
+              <Icon name="help-buoy" style={s.icon} ></Icon>
+              <Text style={s.txt}>
+                Help
+              </Text>
+            </TouchableOpacity>
 
-            <Icon name="settings" style={s.icon} ></Icon>
-            <Text style={s.txt}>
-              Setting
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={ s.btnItem }>
 
-          <TouchableOpacity onPress={ this._onSignOut } style={ s.btnItem }>
+              <Icon name="settings" style={s.icon} ></Icon>
+              <Text style={s.txt}>
+                Setting
+              </Text>
+            </TouchableOpacity>
 
-            <Icon name="log-out" style={s.icon} ></Icon>
-            <Text style={s.txt}>
-              Log out
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity onPress={ this._onSignOut } style={ [s.btnItem,s.lastBtnItem] }>
+
+              <Icon name="log-out" style={s.icon} ></Icon>
+              <Text style={s.txt}>
+                Log out
+              </Text>
+            </TouchableOpacity>
 
 
-        </View>
+          </View>
+        </Content>
+
       </Container>
 
     )
@@ -120,6 +124,9 @@ const s = StyleSheet.create({
     fontFamily: 'Roboto',
     marginLeft: 10,
     color:COFFEE_COLOR
+  },
+  lastBtnItem:{
+    borderBottomWidth:0
   },
   btnItem:{
     width: '90%',

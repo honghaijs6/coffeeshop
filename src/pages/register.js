@@ -7,9 +7,6 @@ import { Container,Content,Item,Label,Icon ,Text,Input, Button  } from 'native-b
 import Toast, {DURATION} from 'react-native-easy-toast';
 
 
-
-import store from '../redux/store';
-
 /* MODEL */
 import { benAuth } from '../model/authen';
 
@@ -90,7 +87,8 @@ class Register extends Component {
             msg = 'Your password  unmatch';
           }else{
             benAuth.register(this.data,(data)=>{
-                this._onSuccess();
+                //this._onSuccess();
+
             },(err)=>{
 
               this.refs.toast.show(err.message,3000);

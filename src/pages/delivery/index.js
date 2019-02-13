@@ -10,6 +10,9 @@ import {
   Image
 } from 'react-native';
 
+
+import store from '../../redux/store';
+
 import { Container,  Content, Icon } from 'native-base';
 import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR, GOOGLE_MAP_KEY } from '../../config/const' ;
 
@@ -17,6 +20,7 @@ import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR, GOOGLE_MAP_KEY } from '../../con
 import { truncate2 } from '../../hook/ultil/ultil' ;
 import MyHeader from './header';
 
+import BenStatusBar from '../../components/BenStatusBar';
 import {benAuth} from '../../model/authen';
 
 
@@ -53,7 +57,7 @@ export default class DeliveryPage extends Component {
       tab:'delivery',
 
       mode:'none',
-      userInfo: props.userInfo ,
+      userInfo: store.getState().user.userInfo ,
 
       personalItems:[
         {
@@ -78,7 +82,7 @@ export default class DeliveryPage extends Component {
           code:'recent',
           icon:'time',
           label:'Recent search',
-          name:props.userInfo.recent_address
+          name:store.getState().user.userInfo.recent_address
         },
 
       ]
@@ -152,16 +156,19 @@ export default class DeliveryPage extends Component {
       this.state.userInfo.recent_address = data.name;
       benAuth.updateInfo(this.state.userInfo,(data)=>{
         this._whereStateChange({
-          onAction:'change_tab',
-          toTab:'order'
-        })
+          onAction:'goBack',
+        });
       })
 
     }
   }
 
   _whereStateChange(newState){
-    this.props.onStateChange(newState)
+    switch(newState.onAction){
+      case 'goBack':
+        this.props.navigation.goBack();
+      break;
+    }
   }
   _onTextChange(text){
 
@@ -176,12 +183,11 @@ export default class DeliveryPage extends Component {
 
 
     return (
-      <Container style={{
-        backgroundColor:GREY_COLOR,
-        display:  this.props.onTab === this.state.tab ? 'block':'none'
-      }}>
+      <Container>
 
-        <MyHeader onBackBtnPress={()=>{  this.props.onStateChange({onAction:'change_tab',toTab:'order'})  }}  onAction={ this.state.onAction } onCloseSearch={ ()=>{  this._onCloseSearch() } } onChangeText={(text)=>{ this._onTextChange(text)  }} />
+        <BenStatusBar/>
+
+        <MyHeader onBackBtnPress={()=>{  this.props.navigation.goBack()  }}  onAction={ this.state.onAction } onCloseSearch={ ()=>{  this._onCloseSearch() } } onChangeText={(text)=>{ this._onTextChange(text)  }} />
 
         <Content>
 

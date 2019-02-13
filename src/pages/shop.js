@@ -43,13 +43,30 @@ class shop extends Component {
           { tab:'store',icon:'pin',name:'Stores' },
           { tab:'account',icon:'person',name:'Account' },
         ],
-        onTab:'feed',
+        onTab:'account',
         tab:{},
         shopingCart:[],
         userInfo:store.getState().user.userInfo
       }
 
+      this._listenUserInfo()
+
     }
+
+    _listenUserInfo(){
+      this.unsubscribe = store.subscribe(()=>{
+        const userInfo = store.getState().user.userInfo;
+        this.setState({
+          userInfo:userInfo
+        });
+
+      })
+    }
+
+    componentWillUnmount(){
+      this.unsubscribe();
+    }
+
 
     _onChangeTab(data){
       this.setState({

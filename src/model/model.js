@@ -11,11 +11,7 @@ class Model {
 
     this.state = {}
 
-    this._setup()
 
-  }
-
-  _setup(){
 
   }
 
@@ -24,6 +20,7 @@ class Model {
   /* HOW */
   /* add localdata befor post server */
   _setStoreData(list){
+
     this.data = list ;
     /*try{
       await AsyncStorage.setItem(this.model, JSON.stringify(list));
@@ -50,6 +47,9 @@ class Model {
   }
 
   addDataStore(json){
+
+    const baseData = store.getState()[this.strModel]['list'];
+    this.data = baseData;
     this.data.push(json);
     this._setStoreData(this.data);
   }

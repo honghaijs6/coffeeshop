@@ -39,7 +39,7 @@ export default class OrderPage extends Component{
       toTab:'menu',
       data:item
     });*/
-    
+
 
 
     this.props.navigation.navigate('MenuPage', {
@@ -59,7 +59,8 @@ export default class OrderPage extends Component{
         display:  this.props.onTab === this.state.tab ? 'block':'none'
       }}>
 
-        <OrderHeader onPress={()=>{  this.props.onStateChange({onAction:'change_tab',toTab:'delivery'})  }} userInfo={ this.props.userInfo } />
+        <OrderHeader onPress={()=>{ this.props.navigation.navigate('DeliveryPage')  }} userInfo={ this.props.userInfo }  />
+
 
         <Content>
 

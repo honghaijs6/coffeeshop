@@ -13,13 +13,14 @@ import {
 import { Container,  Content, Icon,  } from 'native-base';
 import { GREY_COLOR, COFFEE_COLOR, RED_COLOR, BLACK_COLOR } from '../../config/const' ;
 
-
+import BenStatusBar  from "../../components/BenStatusBar";
 import BenHeader from '../../components/BenHeader';
 import BackButton from '../../components/BackButton';
 
-
 import CartBody from './CartBody';
 
+
+import store from '../../redux/store';
 
 
 
@@ -33,11 +34,8 @@ export default class Cart extends Component {
       typeAction:'',
       onAction:'',
       tab:'cart',
-
-
-      data: this.props.shopingCart ,
-
-      userInfo:props.userInfo
+      data: store.getState().shoppingcart.list,
+      userInfo: store.getState().user.userInfo
     }
 
     this._onOrderNow = this._onOrderNow.bind(this);
@@ -58,73 +56,60 @@ export default class Cart extends Component {
       msg = 'Please enter your delivery address '
     }else{
 
-      this.props.onStateChange({
-        onAction:'change_tab',
-        toTab:'checkout'
-      })
+      this.props.navigation.navigate('CheckOutPage');
+
     }
 
     msg !== '' ? alert(msg) : null
 
   }
   _onBackBtnPress(){
-    this.props.onStateChange({
-      onAction:'change_tab',
-      toTab:'order'
-    })
+
+    this.props.navigation.goBack();
+
   }
   render() {
 
-    if(this.props.onTab === this.state.tab){
+    return (
+      <Container>
 
-      return (
-        <Container style={{
-          backgroundColor:GREY_COLOR,
-          display:  this.props.onTab === this.state.tab ? 'block':'none'
-        }}>
-          <BenHeader>
-            <BackButton onPress={()=>{ this._onBackBtnPress() }} />
-            <View>
-              <Text style={{
-                fontSize: 16, fontFamily: 'Roboto'
-              }}> Your Orders Cart </Text>
-            </View>
-
-            <Text>  </Text>
-          </BenHeader>
-
-          <View style={{
-            flex: 1,
-            justifyContent: 'space-between'
-          }}>
-
-              <Content>
-                <CartBody onChangeText={ (data)=>{ this._onChangeText(data) } } data={this.state.data} userInfo={ this.props.userInfo } />
-              </Content>
-
-              {/* FOOTER BUTTON */}
-              <TouchableOpacity onPress={ this._onOrderNow } style={{
-                height: 50,
-                backgroundColor: COFFEE_COLOR,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}>
-                <Text style={[s.txt, {color: '#fff', fontFamily: 'Roboto', fontSize: 16}]}> Order Now </Text>
-
-
-              </TouchableOpacity>
-
+        <BenStatusBar/>
+        <BenHeader>
+          <BackButton onPress={()=>{ this._onBackBtnPress() }} />
+          <View>
+            <Text style={{
+              fontSize: 16, fontFamily: 'Roboto'
+            }}> Your Orders Cart </Text>
           </View>
 
-        </Container>
-      );
+          <Text>  </Text>
+        </BenHeader>
 
-    }
+        <View style={{
+          flex: 1,
+          justifyContent: 'space-between'
+        }}>
 
-    return(
-      <View></View>
-    )
+            <Content>
+              <CartBody onChangeText={ (data)=>{ this._onChangeText(data) } } data={this.state.data} userInfo={ this.state.userInfo } />
+            </Content>
 
+            {/* FOOTER BUTTON */}
+            <TouchableOpacity onPress={ this._onOrderNow } style={{
+              height: 50,
+              backgroundColor: COFFEE_COLOR,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <Text style={[s.txt, {color: '#fff', fontFamily: 'Roboto', fontSize: 16}]}> Order Now </Text>
+
+
+            </TouchableOpacity>
+
+        </View>
+
+      </Container>
+    );
 
   }
 }

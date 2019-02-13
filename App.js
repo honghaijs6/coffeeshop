@@ -23,14 +23,15 @@ import FeedView from './src/pages/feedview';
 
 /* storeTab Link*/
 
-/*  OrderTabs linkin */
+/*  OrderTabs linkin */ 
+import DeliveryPage from './src/pages/delivery';
 import MenuPage from './src/pages/menu';
 import ProItemPage from './src/pages/productItem';
 import CartPage from './src/pages/cart' ;
 import CheckOutPage from './src/pages/checkout';
 
 /*AccountTab Link*/
-
+import RewardPage from './src/pages/rewardPage';
 
 
 
@@ -45,11 +46,14 @@ const RootStack = createStackNavigator(
     FeedView:FeedView,
     MenuPage:MenuPage,
     ProItem:ProItemPage,
-    CartPage:CartPage
+    CartPage:CartPage,
+    CheckOutPage:CheckOutPage,
+    DeliveryPage:DeliveryPage,
+    RewardPage:RewardPage
 
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "RewardPage",
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,
@@ -94,15 +98,12 @@ export default class App extends React.Component {
 
     this.unsubscribe = store.subscribe(()=>{
 
-        console.log('ON REUDX DATA CHANEG');
-        const list = store.getState();
-        console.log(list);
-
-        this.setState({
-          login: store.getState().user.isLoggedIn || false
-        });
-
-
+        const userInfo = store.getState().user;
+        if(userInfo.isLoggedIn !== this.state.login){
+          this.setState({
+            login: userInfo.isLoggedIn
+          });
+        }
 
     })
 
@@ -111,8 +112,6 @@ export default class App extends React.Component {
   componentWillUnmount(){
     this.unsubscribe();
   }
-
-
 
   componentWillMount(){
     this.loadFonts();

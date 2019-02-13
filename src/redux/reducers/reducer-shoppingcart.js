@@ -17,16 +17,12 @@ const iniState = {
   name:NAME,
   state:{},
   list:[],
-  isLoggedIn:false
 }
 
 export default function(state = iniState ,action = {}){
   switch(action.type){
 
     case 'reset-'+MODE:
-
-     console.log('reducer order start-----');
-     console.log(action.list);
 
      return {
        ...state,

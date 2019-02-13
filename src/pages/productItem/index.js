@@ -32,10 +32,8 @@ export default class ProductItem extends Component {
       typeAction:'',
       onAction:'',
       tab:'productitem',
-
-      amount:1,
-
-      info:{ "id":2,"code":"jasmin","name":"Jasmin Milk Tea","photo":"https://sc01.alicdn.com/kf/HTB18OpVFVXXXXbSXXXXq6xXFXXXY/200250275/HTB18OpVFVXXXXbSXXXXq6xXFXXXY.jpg","price":"14" },
+      amount:1, // cureent amount
+      info:{}, // current product info
 
     }
 
@@ -50,8 +48,7 @@ export default class ProductItem extends Component {
 
   _setup(){
 
-    
-    this.moOrder = new Model('orders');
+    this.moOrder = new Model('shoppingcart');
 
   }
 
@@ -92,11 +89,8 @@ export default class ProductItem extends Component {
       const cart = this.state.info;
       cart.amount = this.state.amount;
 
+      this.moOrder.addDataStore(cart);
       this.goBack();
-      setTimeout(()=>{
-        this.moOrder.addDataStore(cart);
-      },1000)
-
 
 
     }
@@ -104,7 +98,6 @@ export default class ProductItem extends Component {
   render() {
 
       this.state.info = this.props.navigation.getParam('proInfo',{});
-      this.state.shopingCart = this.props.navigation.getParam('shopingCart',[]);
 
 
 

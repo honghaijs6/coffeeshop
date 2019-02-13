@@ -5,3 +5,9 @@ export const RED_COLOR = '#FA4040';
 
 export const AVATAR_URL = 'https://firebasestorage.googleapis.com/v0/b/coffee-shop-229518.appspot.com/o/images%2Favatar.jpg?alt=media&token=1194edcd-f16c-4f4f-ba47-fb35298903b6';
 export const GOOGLE_MAP_KEY = 'AIzaSyCwCEcwu645-_48YwWE90Sn4Ngr2-QMVlo';
+
+export const USERS_LEVEL = [
+  'New',
+  'Gold',
+  'Diamond'
+];

@@ -26,9 +26,6 @@ class LoginPage extends Component {
       password:''
     }
 
-
-
-
     this._onSubmitLogin = this._onSubmitLogin.bind(this);
     this._onSubmitLoginWithFacebook = this._onSubmitLoginWithFacebook.bind(this);
 
@@ -45,9 +42,7 @@ class LoginPage extends Component {
      if(detectForm(['email','password'],this.state)===''){
 
        benAuth.doLogin(this.state,(data)=>{
-
-
-
+        
 
        },(err)=>{
          this.refs.toast.show(err.message,3000)

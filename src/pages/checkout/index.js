@@ -16,12 +16,14 @@ import Toast, {DURATION} from 'react-native-easy-toast';
 
 
 /* MODEL */
+import store from '../../redux/store';
 import { benAuth } from '../../model/authen';
 
 
 /* hook */
 import {detectForm} from '../../hook/before/';
 
+import BenStatusBar from '../../components/BenStatusBar';
 import BenHeader from '../../components/BenHeader';
 import BackButton from '../../components/BackButton';
 
@@ -39,7 +41,7 @@ export default class CheckOutPage extends Component{
       onAction:'',
       tab:'checkout',
 
-      userInfo:props.userInfo
+      userInfo: store.getState().user.userInfo
 
     }
 
@@ -79,41 +81,33 @@ export default class CheckOutPage extends Component{
   }
 
   render(){
-    if(this.props.onTab === this.state.tab){
-
-       return(
-         <Container style={{
-           backgroundColor:GREY_COLOR,
-         }}>
-
-           <BenHeader>
-             <BackButton onPress={()=>{ alert('back btn click') }} />
-             <View>
-               <Text style={{
-                 fontSize: 16, fontFamily: 'Roboto'
-               }}> Setup Credit card </Text>
-             </View>
-
-             <Text>  </Text>
-           </BenHeader>
-           <Content>
-              <CheckOutBody onPress={ (data)=>{ this._onCheckOut(data) } }  />
-           </Content>
-
-
-           <Toast position='top'
-           positionValue={200}
-             fadeInDuration={750}
-             fadeOutDuration={1000}
-             opacity={0.8}
-
-            ref="toast"/>
-         </Container>
-       )
-    }
-
     return(
-      <View></View>
+      <Container>
+
+        <BenStatusBar/>
+        <BenHeader>
+          <BackButton onPress={()=>{ this.props.navigation.goBack() }} />
+          <View>
+            <Text style={{
+              fontSize: 16, fontFamily: 'Roboto'
+            }}> Setup Credit card </Text>
+          </View>
+
+          <Text>  </Text>
+        </BenHeader>
+        <Content>
+           <CheckOutBody onPress={ (data)=>{ this._onCheckOut(data) } }  />
+        </Content>
+
+
+        <Toast position='top'
+        positionValue={200}
+          fadeInDuration={750}
+          fadeOutDuration={1000}
+          opacity={0.8}
+
+         ref="toast"/>
+      </Container>
     )
   }
 }
