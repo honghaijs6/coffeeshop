@@ -60,7 +60,7 @@ export default class AccountPage extends Component{
 
         <Content>
           <View style={s.holder }>
-            <TouchableOpacity style={ s.btnItem }>
+            <TouchableOpacity onPress={ ()=>{ this.props.navigation.navigate('RewardPage') } } style={ s.btnItem }>
               <Icon style={s.icon} name="star" />
               <Text style={s.txt}>
                  King Kong Milk Tea Rewards

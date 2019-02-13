@@ -23,7 +23,7 @@ import FeedView from './src/pages/feedview';
 
 /* storeTab Link*/
 
-/*  OrderTabs linkin */ 
+/*  OrderTabs linkin */
 import DeliveryPage from './src/pages/delivery';
 import MenuPage from './src/pages/menu';
 import ProItemPage from './src/pages/productItem';
@@ -53,7 +53,7 @@ const RootStack = createStackNavigator(
 
   },
   {
-    initialRouteName: "RewardPage",
+    initialRouteName: "Home",
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,
