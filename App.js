@@ -32,7 +32,9 @@ import CheckOutPage from './src/pages/checkout';
 
 /*AccountTab Link*/
 import RewardPage from './src/pages/rewardPage';
-
+import HistoryPage from './src/pages/historyPage';
+import HelpPage from './src/pages/helpPage';
+import SettingDeliveryPage from './src/pages/settingDeliveryPage'
 
 
 
@@ -49,11 +51,15 @@ const RootStack = createStackNavigator(
     CartPage:CartPage,
     CheckOutPage:CheckOutPage,
     DeliveryPage:DeliveryPage,
-    RewardPage:RewardPage
+    /* ACCOUNT TAB */
+    RewardPage:RewardPage,
+    HistoryPage:HistoryPage,
+    HelpPage:HelpPage,
+    SettingDeliveryPage:SettingDeliveryPage
 
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "SettingDeliveryPage",
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

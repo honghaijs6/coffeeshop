@@ -67,7 +67,7 @@ export default class AccountPage extends Component{
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={ s.btnItem }>
+            <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('HistoryPage') }}  style={ s.btnItem }>
 
               <Icon style={s.icon} name="time" />
               <Text style={s.txt}>
@@ -75,7 +75,7 @@ export default class AccountPage extends Component{
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={ s.btnItem }>
+            <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('HelpPage') }} style={ s.btnItem }>
               <Icon name="help-buoy" style={s.icon} ></Icon>
               <Text style={s.txt}>
                 Help
