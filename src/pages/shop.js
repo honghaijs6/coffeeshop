@@ -32,7 +32,7 @@ class shop extends Component {
           { tab:'store',icon:'pin',name:'Stores' },
           { tab:'account',icon:'person',name:'Account' },
         ],
-        onTab:'account',
+        onTab:'feed',
         tab:{},
         shopingCart:[],
         userInfo:store.getState().user.userInfo
@@ -49,7 +49,7 @@ class shop extends Component {
         this.setState({
           userInfo:userInfo
         });
-        
+
       })
     }
 

@@ -22,7 +22,6 @@
     "assetBundlePatterns": [
       "assets/images/*"
     ],
-    
     "ios": {
       "supportsTablet": true
     },
