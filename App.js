@@ -39,9 +39,6 @@ import MapPage from './src/pages/mapPage';
 
 
 
-
-
-
 import { benAuth } from './src/model/authen';
 
 const RootStack = createStackNavigator(
