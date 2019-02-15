@@ -15,7 +15,7 @@ const BenBody = (props) => (
   }}>
 
       <View style={{
-          width: '95%'
+          width: props.width || '95%'
         }}>
 
           { props.children }

@@ -133,6 +133,7 @@ export const benAuth = {
             type:'LOGIN',
             isLoggedIn:false
           })
+
           onSuccess(true)
         } )
         .catch((error) => onError(error));

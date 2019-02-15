@@ -82,11 +82,13 @@ export default class AccountPage extends Component{
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={ s.btnItem }>
+            <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('SettingDeliveryPage',{
+                userInfo:this.props.userInfo
+              }) }} style={ s.btnItem }>
 
               <Icon name="settings" style={s.icon} ></Icon>
               <Text style={s.txt}>
-                Setting
+                Setting Delivery Location
               </Text>
             </TouchableOpacity>
 

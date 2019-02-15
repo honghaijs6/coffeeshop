@@ -17,17 +17,6 @@ import StoreTab from './storeTab/';
 import AccountTab from './userTab/';
 
 
-/*import MenuTab from './menu';
-
-import ProductItemPage from './productItem';
-import CartPage from './cart';
-
-import DeliveryPage from './delivery';
-import CheckOutPage from './checkout';*/
-
-
-
-
 
 class shop extends Component {
 
@@ -56,15 +45,18 @@ class shop extends Component {
     _listenUserInfo(){
       this.unsubscribe = store.subscribe(()=>{
         const userInfo = store.getState().user.userInfo;
+
         this.setState({
           userInfo:userInfo
         });
-
+        
       })
     }
 
     componentWillUnmount(){
+
       this.unsubscribe();
+
     }
 
 

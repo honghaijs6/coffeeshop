@@ -34,7 +34,9 @@ import CheckOutPage from './src/pages/checkout';
 import RewardPage from './src/pages/rewardPage';
 import HistoryPage from './src/pages/historyPage';
 import HelpPage from './src/pages/helpPage';
-import SettingDeliveryPage from './src/pages/settingDeliveryPage'
+import SettingDeliveryPage from './src/pages/settingDeliveryPage';
+import MapPage from './src/pages/mapPage';
+
 
 
 
@@ -55,11 +57,12 @@ const RootStack = createStackNavigator(
     RewardPage:RewardPage,
     HistoryPage:HistoryPage,
     HelpPage:HelpPage,
-    SettingDeliveryPage:SettingDeliveryPage
+    SettingDeliveryPage:SettingDeliveryPage,
+    MapPage:MapPage
 
   },
   {
-    initialRouteName: "SettingDeliveryPage",
+    initialRouteName: "Home",
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,
@@ -96,6 +99,8 @@ export default class App extends React.Component {
         onAction:''
     }
 
+    this._listenStore();
+
 
   }
 
@@ -116,6 +121,7 @@ export default class App extends React.Component {
   }
 
   componentWillUnmount(){
+
     this.unsubscribe();
   }
 
@@ -137,7 +143,7 @@ export default class App extends React.Component {
 
   componentDidMount(){
 
-    this._listenStore();
+
 
     benAuth.checkLoginStatus((exists,isLoggedIn)=>{
 

@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 
 import MapView, { Marker, PROVIDER_GOOGLE, AnimatedRegion, Animated, Callout } from 'react-native-maps';
+
 import { Constants, Location, Permissions } from 'expo';
 
 
-import { Container, Icon, Header, Tab, Tabs, ScrollableTab, Content, Button } from 'native-base';
+
+import { Container, Icon, Content, Button } from 'native-base';
 
 import BenHeader from '../../components/BenHeader' ;
 

@@ -17,8 +17,6 @@ import CardFooter from './CardFooter';
 import CardImage from './CardImage';
 
 import Box from './Box';
-
-import store from '../../redux/store';
 import { benAuth } from '../../model/authen';
 
 export default class FeedPage extends Component{
@@ -32,21 +30,15 @@ export default class FeedPage extends Component{
       onAction:'',
       tab:'feed',
 
-      userInfo: store.getState().user.userInfo
+      userInfo: props.userInfo
     }
 
 
-    this._setup();
 
     this._onPressAvarar  = this._onPressAvarar.bind(this);
     this._onPressNoti = this._onPressNoti.bind(this) ;
   }
 
-  _setup(){
-    //alert('hello')
-    //console.log(this.state.userInfo);
-    //this._listenStore();
-  }
 
   /* WHEN*/
 

@@ -105,13 +105,12 @@ export default class Menu extends Component {
 
   _listenStore(){
     this.unsubscribe = store.subscribe(()=>{
-
         let cart = store.getState().shoppingcart.list;
 
         this.setState({
           shoppingcart:cart
         });
-
+        
     })
   }
 

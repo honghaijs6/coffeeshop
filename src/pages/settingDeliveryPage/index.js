@@ -20,6 +20,10 @@ import { COFFEE_COLOR, GREY_COLOR } from '../../config/const';
 
 export default class SettingDeliveryPage extends Component {
   render() {
+
+    const userInfo = this.props.navigation.getParam('userInfo');
+
+
     return (
       <Container>
         <BenStatusBar/>
@@ -40,30 +44,32 @@ export default class SettingDeliveryPage extends Component {
 
               }}>
 
-                <TouchableOpacity onPress={ ()=>{ this.props.navigation.navigate('RewardPage') } } style={ s.btnItem }>
+                <TouchableOpacity onPress={ ()=>{ this.props.navigation.navigate('MapPage',{for:'home_address'}) } } style={ s.btnItem }>
                   <Icon style={s.icon} name="home" />
                   <View style={{
-                    paddingLeft:10
+                    paddingLeft:10,
+                    paddingRight: 10,
                     }}>
                     <Text style={s.label}>
                       Your Home Address
                     </Text>
-                    <Text style={s.txt}>...</Text>
+                    <Text style={s.txt}> { userInfo.home_address || '...' } </Text>
 
                   </View>
 
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={ ()=>{ this.props.navigation.navigate('RewardPage') } } style={ [s.btnItem,s.lastBtnItem] }>
+                <TouchableOpacity onPress={ ()=>{ this.props.navigation.navigate('MapPage',{for:'work_address'}) } } style={ [s.btnItem,s.lastBtnItem] }>
                   <Icon style={s.icon} name="planet" />
                   <View style={{
-                    paddingLeft:10
+                    paddingLeft:10,
+                    paddingRight: 10,
                     }}>
                     <Text style={s.label}>
                       Office place Address
                     </Text>
                     <Text style={s.txt}>
-                    ...
+                    { userInfo.work_address || '...' }
                     </Text>
 
                   </View>
