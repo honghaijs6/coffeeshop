@@ -102,19 +102,6 @@ class shop extends Component {
               <AccountTab { ...this.state } />
 
 
-              {/*<MenuTab onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state } />
-
-
-              <ProductItemPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state }  />
-              <CartPage onStateChange={ (newState)=>{ this.onStateChange(newState) } } { ...this.state }  />
-              <DeliveryPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  { ...this.state }  />
-              <CheckOutPage onStateChange={ (newState)=>{ this.onStateChange(newState) } }  { ...this.state } />*/}
-
-
-
-
-
-
 
             </BenTabs>
         );
