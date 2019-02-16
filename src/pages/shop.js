@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 
-
-import store from '../redux/store';
-
-
 // Lib
 import BenTabs  from "../components/BenTabs";
 import BenStatusBar  from "../components/BenStatusBar";
@@ -23,6 +19,8 @@ class shop extends Component {
     constructor(props){
       super(props);
 
+      this.store = props.screenProps;
+
       this.state = state = {
         navigation:props.navigation,
         tabs:[
@@ -32,19 +30,19 @@ class shop extends Component {
           { tab:'store',icon:'pin',name:'Stores' },
           { tab:'account',icon:'person',name:'Account' },
         ],
-        onTab:'feed',
+        onTab:'order',
         tab:{},
-        shopingCart:[],
-        userInfo:store.getState().user.userInfo
+        userInfo:props.screenProps.getState().user.userInfo
       }
 
       this._listenUserInfo()
 
+
     }
 
     _listenUserInfo(){
-      this.unsubscribe = store.subscribe(()=>{
-        const userInfo = store.getState().user.userInfo;
+      this.unsubscribe = this.store.subscribe(()=>{
+        const userInfo = this.store.getState().user.userInfo;
 
         this.setState({
           userInfo:userInfo
@@ -61,6 +59,9 @@ class shop extends Component {
 
 
     _onChangeTab(data){
+
+      this.unsubscribe();
+
       this.setState({
         onTab:data.tab,
         tab:data

@@ -45,12 +45,15 @@ const RootStack = createStackNavigator(
   {
     Home: Shop,
     FeedView:FeedView,
+
+    /* TAB ORDERS CHILD */
     MenuPage:MenuPage,
     ProItem:ProItemPage,
     CartPage:CartPage,
     CheckOutPage:CheckOutPage,
     DeliveryPage:DeliveryPage,
-    /* ACCOUNT TAB */
+
+    /* TAB ACCOUNT CHILD */
     RewardPage:RewardPage,
     HistoryPage:HistoryPage,
     HelpPage:HelpPage,
@@ -59,7 +62,7 @@ const RootStack = createStackNavigator(
 
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "RewardPage",
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,
@@ -160,7 +163,7 @@ export default class App extends React.Component {
     }
     return (
 
-      <AppContainer />
+      <AppContainer screenProps={ store } />
 
     );
   }

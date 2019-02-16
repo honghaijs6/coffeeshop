@@ -9,7 +9,6 @@ import {
   Image
 } from 'react-native';
 
-import store from '../../redux/store';
 
 import { Container,  Content } from 'native-base';
 import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
@@ -82,6 +81,8 @@ export default class Menu extends Component {
   constructor(props){
     super(props)
 
+    this.store = props.screenProps ;
+
     this.state = {
 
       typeAction:'',
@@ -91,7 +92,7 @@ export default class Menu extends Component {
       category:'milktea',
       data:products, // all list products from server
 
-      shoppingcart:  store.getState().shoppingcart.list
+      shoppingcart:  props.screenProps.getState().shoppingcart.list
 
     }
 
@@ -104,13 +105,13 @@ export default class Menu extends Component {
   }
 
   _listenStore(){
-    this.unsubscribe = store.subscribe(()=>{
-        let cart = store.getState().shoppingcart.list;
+    this.unsubscribe = this.store.subscribe(()=>{
+        let cart = this.store.getState().shoppingcart.list;
 
         this.setState({
           shoppingcart:cart
         });
-        
+
     })
   }
 
@@ -152,6 +153,9 @@ export default class Menu extends Component {
     const { navigation } = this.props;
     const cateInfo = navigation.getParam('cateInfo', null);
     const data = this.state.data[cateInfo.code];
+
+
+    console.log(this.props);
 
 
 

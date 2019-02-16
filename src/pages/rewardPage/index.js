@@ -11,11 +11,10 @@ import {
 
 import { Container, Content, Icon } from 'native-base';
 
-import store from '../../redux/store';
-
 import { COFFEE_COLOR, USERS_LEVEL, GREY_COLOR } from '../../config/const';
 
 import BenStatusBar from '../../components/BenStatusBar';
+import BackButton from '../../components/BackButton';
 import BenBody from '../../components/BenBody';
 import BenHeader from '../../components/BenHeader';
 
@@ -25,67 +24,40 @@ import LevelBoard from './levelBoard' ;
 export default class RewardPage extends Component {
 
 
-  state = {
-    onAction:'',
-    status:'',
+  constructor(props){
+    super(props);
 
-    level:0,
-    userInfo:store.getState().user.userInfo
+    this.store = props.screenProps ;
+    this.state = {
+      onAction:'',
+      status:'',
 
+      level:0,
+      userInfo:this.store.getState().user.userInfo
+
+    }
   }
 
-  _onPressBack(){
-    //this.props.navigation.goBack();
-  }
+
   render() {
     return (
       <Container>
         <BenStatusBar/>
         <BenHeader>
+           <BackButton onPress={ ()=>{ this.props.navigation.goBack() } } ></BackButton>
 
-           <View style={{
-             flexDirection: 'row',
-             alignItems: 'center'
-           }}>
-               <TouchableOpacity onPress={()=>{ this.props.navigation.goBack() }} style={{
-                 width: 40,
-                 justifyContent: 'center',
-                 alignItems: 'center',
-               }}>
-                  <Icon style={s.icon} name="arrow-back" />
+           <View>
+             <Text style={s.title}> King Kong Milk Tea Rewards </Text>
 
-               </TouchableOpacity>
-               <Text style={s.txt}> King Kong Milk Tea Rewards </Text>
            </View>
-
-
+           <View></View>
         </BenHeader>
 
         <Content style={{ backgroundColor: GREY_COLOR}}>
           <BenBody>
 
             {/* profile board */}
-            <ImageBackground resizeMode="repeat" source={require('../../../assets/images/profileBg.png')} style={{
-              backgroundColor:COFFEE_COLOR,
-              height: 180,
-              justifyContent: 'flex-end',
-              padding: 20,
-              borderRadius: 6,
-              marginTop: 20
-            }}>
-
-              <View>
-                <Text style={{
-                  fontSize: 24,
-                  fontWeight: 'bold',
-                  fontFamily: 'Roboto',
-                  color: '#fff'
-                }}> { this.state.userInfo.name } </Text>
-                <Text style={s.txtWhite}> { USERS_LEVEL[this.state.level]+' member' } </Text>
-              </View>
-
-            </ImageBackground>
-
+            <ProfileName userInfo={ this.state.userInfo } />
             {/* END PROFILE BOARD*/}
 
             {/* PROFILE ACTIVITY */}
@@ -131,6 +103,10 @@ const s = StyleSheet.create({
   icon:{
     fontSize: 24,
     color: COFFEE_COLOR
+  },
+  title:{
+    fontSize: 18,
+    fontFamily: 'Roboto'
   },
   txt:{
     fontSize: 16,

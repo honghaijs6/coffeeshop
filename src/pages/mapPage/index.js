@@ -21,6 +21,8 @@ import { GREY_COLOR, COFFEE_COLOR, GOOGLE_MAP_KEY } from '../../config/const';
 
 import RetroMapStyle from '../../data/retroStyle.json';
 import NightMapStyle from '../../data/nightStyle.json';
+import STORE_LOCATIONS from '../../data/stores.json';
+
 
 import BoxSearch from './boxSearch';
 
@@ -111,9 +113,6 @@ export default class MapPage extends Component{
     }
     this.state.countMapChange +=1 ;
 
-    //alert(JSON.stringify(mapRegion)+'============='+JSON.stringify(this.state.mapRegion));
-
-
 
   };
 
@@ -131,6 +130,22 @@ export default class MapPage extends Component{
 
 
     })
+  }
+
+  _addressToLatLng(address,onSuccess){
+     const uri = 'https://maps.googleapis.com/maps/api/geocode/json?address= '+address+'&key='+GOOGLE_MAP_KEY ;
+     fetch(uri)
+     .then((response) => response.json())
+     .then((responseJson) => {
+
+       const location = responseJson.results[0]['geometry']['location'];
+       onSuccess(location);
+
+     })
+     .catch((error) => {
+       console.error(error);
+     });
+
   }
 
   _geoCodeAddress(address){
@@ -164,8 +179,6 @@ export default class MapPage extends Component{
 
   _geoCode(mapRegion){
     const latLng = mapRegion.latitude+','+mapRegion.longitude;
-
-
     const uri = 'https://maps.googleapis.com/maps/api/geocode/json?latlng= '+latLng+'&key='+GOOGLE_MAP_KEY ;
 
     fetch(uri)
@@ -233,10 +246,25 @@ export default class MapPage extends Component{
 
   componentDidMount(){
 
-    this.setState({
-      keyFind:this.state.userInfo[this.state.settingFor],
-      currentAdress:this.state.userInfo[this.state.settingFor]
+    const defAddress = this.state.userInfo[this.state.settingFor] || STORE_LOCATIONS[0]['address'];
+    this._addressToLatLng(defAddress,(latLng)=>{
+
+      this.setState({
+        keyFind:this.state.userInfo[this.state.settingFor],
+        currentAdress:this.state.userInfo[this.state.settingFor],
+        mapRegion:{
+          latitude:latLng.lat,
+          longitude:latLng.lng,
+          latitudeDelta: 0.0025,
+          longitudeDelta: 0.0025,
+        }
+      });
+
     });
+
+
+
+
 
 
   }

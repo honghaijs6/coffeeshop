@@ -57,7 +57,7 @@ export const benAuth = {
             data.point = 0 ;
             data.type = 0 ; /* 0 :  customer - staff - admin*/
             data.status = 1 ; /*  0 : 1 =? available */
-            data.level = 1 ; /* silver - gold - diamond */
+            data.level = 0 ; /* new - gold - diamond */
             data.gender = 1 ;
             data.is_admin = 0 ;
             data.salary_set = 0 ;

@@ -19,9 +19,40 @@ import { COFFEE_COLOR, GREY_COLOR } from '../../config/const';
 
 
 export default class SettingDeliveryPage extends Component {
+
+  constructor(props){
+    super(props);
+
+    this.store = props.screenProps ;
+    this.state = {
+      userInfo:this.store.getState().user.userInfo
+    }
+
+  }
+
+
+  _listenStore(){
+    this.unsubscribe = this.store.subscribe(()=>{
+      const userInfo = this.store.getState().user.userInfo;
+
+      this.setState({
+        userInfo:userInfo
+      });
+
+    })
+  }
+
+  componentDidMount(){
+    this._listenStore();
+  }
+  componentWillUnmount(){
+
+    this.unsubscribe();
+
+  }
   render() {
 
-    const userInfo = this.props.navigation.getParam('userInfo');
+    const userInfo = this.state.userInfo;
 
 
     return (
@@ -105,7 +136,7 @@ const s = StyleSheet.create({
     borderBottomWidth:0
   },
   btnItem:{
-
+    padding: 10,
     borderBottomWidth: 0.5,
     borderBottomColor: 'rgba(0,0,0,0.2)',
     alignItems: 'center',
