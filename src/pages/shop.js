@@ -69,14 +69,14 @@ class shop extends Component {
     }
 
     onStateChange(newState){
-
+  
        switch (newState.onAction) {
          case 'change_tab' :
 
             let combineState = Object.assign(this.state,newState);
             combineState.onTab = newState.toTab
 
-            this.setState( combineState );
+            this.setState( combineState );s
 
          break;
          default:

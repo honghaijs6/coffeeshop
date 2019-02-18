@@ -46,7 +46,8 @@ export const benAuth = {
   toTimestamp(strDate){
     const datum = Date.parse(strDate);
     return datum/1000;
-  }
+  },
+  
   register(data,onSuccess,onError) {
 
 

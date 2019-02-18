@@ -62,7 +62,7 @@ const RootStack = createStackNavigator(
 
   },
   {
-    initialRouteName: "RewardPage",
+    initialRouteName: "Home",
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,
