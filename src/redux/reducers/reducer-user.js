@@ -1,10 +1,8 @@
 
 /*
-action = {
-  type:'ACTION_TYPE',
-  model:Model,
-  data:{}
-  id:0
+
+model = {
+
 }
 */
 

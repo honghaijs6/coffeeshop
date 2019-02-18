@@ -42,6 +42,11 @@ export const benAuth = {
         .catch((error) => { onError(error); });
   },
 
+
+  toTimestamp(strDate){
+    const datum = Date.parse(strDate);
+    return datum/1000;
+  }
   register(data,onSuccess,onError) {
 
 
@@ -51,7 +56,7 @@ export const benAuth = {
 
             data.uid = resp.user.uid;
 
-            data.createdAt = new Date().getTime();
+            data.createdAt = this.toTimestamp(new Date().getTime());
             data.updatedAt = data.createdAt;
             data.photoURL = AVATAR_URL;
             data.point = 0 ;

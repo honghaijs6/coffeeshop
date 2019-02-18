@@ -11,8 +11,6 @@ class Model {
 
     this.state = {}
 
-
-
   }
 
 

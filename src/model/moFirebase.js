@@ -50,7 +50,7 @@ class moFire {
             this._onSuccess(json)
         })
         .catch((error) => this._onError(error) );
-    
+
   }
 
   update(uid,json){
