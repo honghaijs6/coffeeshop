@@ -2,17 +2,29 @@
   {
     "id":"0",
     "code":"new",
-    "content":"Buy 01 get 01 free when you reached first 25 point"
+    "content":[
+      "Get 01 free when you reached first 25 point"
+    ]
   },
   {
     "id":"1",
     "code":"gold",
-    "content":" Content for Gold Member"
+    "content":[
+      "Get 01 drinks free when you reach rank up",
+      "Get 01 cake free on your birthday",
+      "For each 50 point you get 01 drinks free"
+    ]
   },
   {
     "id":"2",
     "code":"diamond",
-    "content":" Content for Diamond Member"
+    "content":[
+      "Get 01 drinks free when you reach rank up",
+      "Get 01 cake free on your birthday",
+      "For each 50 point you get 01 drinks free",
+      "For each 100 point you get 01 cake free",
+
+    ]
   },
 
 ]

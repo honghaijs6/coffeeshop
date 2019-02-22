@@ -34,6 +34,11 @@ import CheckOutPage from './src/pages/checkout';
 import RewardPage from './src/pages/rewardPage';
 import HistoryPage from './src/pages/historyPage';
 import HelpPage from './src/pages/helpPage';
+import GuidePage from './src/pages/guidePage';
+import EditProfilePage from './src/pages/editProfilePage';
+import ChangePassPage from './src/pages/changePassPage';
+
+
 import SettingDeliveryPage from './src/pages/settingDeliveryPage';
 import MapPage from './src/pages/mapPage';
 
@@ -57,8 +62,11 @@ const RootStack = createStackNavigator(
     RewardPage:RewardPage,
     HistoryPage:HistoryPage,
     HelpPage:HelpPage,
+    GuidePage:GuidePage,
     SettingDeliveryPage:SettingDeliveryPage,
-    MapPage:MapPage
+    MapPage:MapPage,
+    EditProfilePage:EditProfilePage,
+    ChangePassPage:ChangePassPage
 
   },
   {

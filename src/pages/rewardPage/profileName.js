@@ -52,7 +52,7 @@ const ProfileName = (props)=>{
              <Icon name="gift" style={{fontSize: 16, color: '#fff', marginHorizontal: 5}} />
              <Text style={ s.txt}> { userInfo.point } </Text>
           </View>
-          
+
 
       </View>
 

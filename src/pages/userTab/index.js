@@ -12,6 +12,8 @@ import { GREY_COLOR, COFFEE_COLOR } from '../../config/const';
 
 import { benAuth } from '../../model/authen';
 
+import ProfileName from './profileName';
+
 
 export default class AccountPage extends Component{
 
@@ -59,6 +61,8 @@ export default class AccountPage extends Component{
         </BenHeader>
 
         <Content>
+
+          <ProfileName userInfo={ this.state.userInfo   } />
           <View style={s.holder }>
             <TouchableOpacity onPress={ ()=>{ this.props.navigation.navigate('RewardPage') } } style={ s.btnItem }>
               <Icon style={s.icon} name="star" />
@@ -72,7 +76,7 @@ export default class AccountPage extends Component{
               <Icon style={s.icon} name="time" />
               <Text style={s.txt}>
                 History
-              </Text>
+              </Text>  
             </TouchableOpacity>
 
             <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('HelpPage') }} style={ s.btnItem }>
@@ -89,6 +93,26 @@ export default class AccountPage extends Component{
               <Icon name="settings" style={s.icon} ></Icon>
               <Text style={s.txt}>
                 Setting Delivery Location
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('EditProfilePage',{
+                userInfo:this.props.userInfo
+              }) }} style={ s.btnItem }>
+
+              <Icon name="person" style={s.icon} ></Icon>
+              <Text style={s.txt}>
+                Edit Profile
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('ChangePassPage',{
+                userInfo:this.props.userInfo
+              }) }} style={ s.btnItem }>
+
+              <Icon name="key" style={s.icon} ></Icon>
+              <Text style={s.txt}>
+                Change Password
               </Text>
             </TouchableOpacity>
 
@@ -111,8 +135,14 @@ export default class AccountPage extends Component{
 }
 
 const s = StyleSheet.create({
+
+  holderProfile:{
+    marginTop: 10,
+    backgroundColor: COFFEE_COLOR,
+    alignItems: 'center',
+  },
   holder:{
-    height: '100%',
+
     marginTop: 10,
     backgroundColor: '#fff',
     alignItems: 'center',

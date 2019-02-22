@@ -63,14 +63,14 @@ export default class RewardPage extends Component {
             {/* PROFILE ACTIVITY */}
             <View style={ s.boxHolder }>
 
-                <TouchableOpacity style={ s.btnItem }>
+                <TouchableOpacity style={ s.btnItem } onPress={()=>{ this.props.navigation.navigate('HistoryPage') }} >
                   <Icon style={s.icon} name="time" />
                   <Text style={s.txt}>
                      History earn star
                   </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={ this._onSignOut } style={ [s.btnItem,s.lastBtnItem] }>
+                <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('GuidePage') }} style={ [s.btnItem,s.lastBtnItem] }>
 
                   <Icon name="star" style={s.icon} ></Icon>
                   <Text style={s.txt}>

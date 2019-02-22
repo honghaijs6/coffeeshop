@@ -30,7 +30,7 @@ class shop extends Component {
           { tab:'store',icon:'pin',name:'Stores' },
           { tab:'account',icon:'person',name:'Account' },
         ],
-        onTab:'order',
+        onTab:'account',
         tab:{},
         userInfo:props.screenProps.getState().user.userInfo
       }
@@ -69,7 +69,7 @@ class shop extends Component {
     }
 
     onStateChange(newState){
-  
+
        switch (newState.onAction) {
          case 'change_tab' :
 

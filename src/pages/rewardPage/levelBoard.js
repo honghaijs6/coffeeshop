@@ -11,6 +11,8 @@ import {
 import USERS_LEVEL_CONTENT  from './data.json';
 import { USERS_LEVEL, COFFEE_COLOR, BLACK_COLOR } from '../../config/const';
 
+import { Icon } from 'native-base'
+
 export default class LevelBoard extends Component {
 
   state={
@@ -65,11 +67,23 @@ export default class LevelBoard extends Component {
 
                   return(
                     <View key={index} style={{
-                      display: this.state.onTab === index ? 'block' : 'none'
+                      display: this.state.onTab === index ? 'block' : 'none',
                     }}>
-                      <Text>
-                        { item.content }
-                      </Text>
+
+                    {
+                      item.content.map((item2)=>{
+                        return(
+                          <View style={{
+                              flexDirection: 'row',
+                              alignItems: 'center'
+                            }}>
+                            <Icon style={{color: COFFEE_COLOR, fontSize: 16}} name="star" />
+                            <Text style={[s.txt,{ paddingVertical: 5}]}> { item2 } </Text>
+                          </View>
+                        )
+                      })
+                    }
+
                     </View>
                   )
 
