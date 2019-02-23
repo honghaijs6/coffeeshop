@@ -4,10 +4,15 @@ import { View, StyleSheet, ImageBackground, TextInput, TouchableOpacity  } from 
 import { Container,Content,Item,Label,Icon ,Text,Input, Button  } from 'native-base';
 import Toast, {DURATION} from 'react-native-easy-toast';
 
+import DatePicker from 'react-native-datepicker'
+
+
+
 
 import { COFFEE_COLOR } from '../../config/const';
 
 /* MODEL */
+import store from '../../redux/store';
 import { benAuth } from '../../model/authen';
 
 import BenHeader from '../../components/BenHeader';
@@ -33,15 +38,9 @@ class EditProfilePage extends Component {
       onAction:'',
       status:'',
 
-
     }
 
-    this.data = {
-      name:'',
-      email:'',
-      password:'',
-      repassword:''
-    }
+    this.data = store.getState().user.userInfo
 
 
     this._onSubmit = this._onSubmit.bind(this);
@@ -68,37 +67,27 @@ class EditProfilePage extends Component {
   _onSubmit(){
 
 
+
     this._onProsess();
-    if(detectForm(['name','email','password','repassword'], this.data )===''){
+    if(detectForm(['name','email','phone'], this.data )===''){
 
           let msg = '' ;
 
           if(!validateEmail(this.data.email)){
             msg = 'Please enter your correct email format';
-          }else if(!validatePassword(this.data.password)){
-            msg = 'please enter your at least 6 digit for your password';
-          }else if(!confirmPassword(this.data.password,this.data.repassword)){
-            msg = 'Your password  unmatch';
           }else{
-            benAuth.register(this.data,(data)=>{
-                //this._onSuccess();
 
-            },(err)=>{
+             benAuth.updateInfo(this.data,(data)=>{
+               this.refs.toast.show('Profile update successful',3000);
+             },(err)=>{
 
-              this.refs.toast.show(err.message,3000);
-              this._onFree();
-
-            });
+             })
           }
 
           if(msg!==''){
             this.refs.toast.show(msg,3000);
             this._onFree();
           }
-
-
-
-
 
 
     }else{
@@ -119,6 +108,9 @@ class EditProfilePage extends Component {
 
 
         const disabledBtn = this.state.typeAction === '' ? false : true;
+
+        let userInfo = this.data ;
+        userInfo.birthday = userInfo.birthday || '2019-02-23';
 
         return (
 
@@ -147,29 +139,65 @@ class EditProfilePage extends Component {
                         justifyContent:'space-between',
                     }}>
 
-                        <Item style={ s.item}>
-                            <Icon style={s.text} name='person' />
+                        <Item stackedLabel style={ s.item}>
+
+
+                            <Label style={s.label}>  Full name</Label>
                             <Input
-                                defaultValue={ this.data.name }
+                                defaultValue={ userInfo.name }
                                 onChangeText={(text)=>{ this._onChangeText({name:text}) }}
                                 placeholderTextColor="rgba(0,0,0,0.6)" style={s.text}  placeholder='Full name'/>
                         </Item>
 
-                        <Item style={ s.item}>
-                            <Icon style={s.text} name='mail' />
-                            <Input autoCapitalize='none' value={this.data.email} placeholderTextColor="rgba(0,0,0,0.6)" onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={s.text} placeholder='E-mail'/>
+                        <Item stackedLabel style={ s.item}>
+                            <Label style={s.label}> E-mail  </Label>
+                            <Input
+                              disabled
+                              defaultValue={ userInfo.email }
+                              placeholderTextColor="rgba(0,0,0,0.6)"
+                              onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={s.text} placeholder='E-mail'/>
+
+                        </Item>
+
+                        <Item stackedLabel style={ s.item}>
+                            <Label style={s.label}>  Phone number </Label>
+                            <Input
+                              defaultValue={ userInfo.phone }
+                              placeholderTextColor="rgba(0,0,0,0.6)"
+                              onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={s.text} placeholder='Phone number'/>
 
                         </Item>
 
                         <Item style={ s.item}>
-                            <Icon style={s.text} name='call' />
-                            <Input value={this.data.email} placeholderTextColor="rgba(0,0,0,0.6)" onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={s.text} placeholder='Phone number'/>
 
-                        </Item>
+                            <Text style={s.label} > Your Birthday :  </Text>
 
-                        <Item style={ s.item}>
-                            <Icon style={s.text} name='calendar' />
-                            <Input value={this.data.email} placeholderTextColor="rgba(0,0,0,0.6)" onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={s.text} placeholder='You Birday'/>
+                            <DatePicker
+                              style={{width:100, paddingVertical: 5}}
+                              date={ userInfo.birthday }
+                              mode="date"
+                              placeholder="select date"
+                              format="YYYY-MM-DD"
+
+                              confirmBtnText="Confirm"
+                              cancelBtnText="Cancel"
+                              showIcon={false}
+                              hideText={false}
+                              allowFontScaling={true}
+                              customStyles={{
+
+                                dateInput: {
+                                  marginLeft: 0,
+                                  borderWidth:0,
+
+
+                                }
+                                // ... You can check the source to find the other keys.
+
+                              }}
+                              onDateChange={ (date)=>{  this._onChangeText({birthday:date}) } }
+                            />
+
                         </Item>
 
 
@@ -215,7 +243,16 @@ const s = StyleSheet.create({
     title:{
       fontSize: 18
     },
-    text:{ fontFamily:'Roboto',color:COFFEE_COLOR},
+    icon:{
+      fontSize: 14,
+      color:COFFEE_COLOR
+    },
+    label:{
+      marginLeft: -7,
+      fontFamily: 'Roboto',
+      color: COFFEE_COLOR,
+    },
+    text:{ fontFamily:'Roboto', marginLeft: -5},
     button:{
         backgroundColor:COFFEE_COLOR,
         borderRadius:30,

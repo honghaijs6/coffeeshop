@@ -8,6 +8,7 @@ import Toast, {DURATION} from 'react-native-easy-toast';
 import { COFFEE_COLOR } from '../../config/const';
 
 /* MODEL */
+import store from '../../redux/store';
 import { benAuth } from '../../model/authen';
 
 import BenHeader from '../../components/BenHeader';
@@ -33,12 +34,10 @@ class ChangePassPage extends Component {
       onAction:'',
       status:'',
 
-
+      userInfo:store.getState().user.userInfo
     }
 
     this.data = {
-      name:'',
-      email:'',
       password:'',
       repassword:''
     }
@@ -66,46 +65,17 @@ class ChangePassPage extends Component {
   }
 
   _onSubmit(){
+    const ret = benAuth.resetPassword({
+      email:this.state.userInfo.email,
+      password:this.data.password
+    });
 
+    if(ret){
+      this.refs.toast.show("please check your email for processing reset your password",2000);
 
-    this._onProsess();
-    if(detectForm(['name','email','password','repassword'], this.data )===''){
-
-          let msg = '' ;
-
-          if(!validateEmail(this.data.email)){
-            msg = 'Please enter your correct email format';
-          }else if(!validatePassword(this.data.password)){
-            msg = 'please enter your at least 6 digit for your password';
-          }else if(!confirmPassword(this.data.password,this.data.repassword)){
-            msg = 'Your password  unmatch';
-          }else{
-            benAuth.register(this.data,(data)=>{
-                //this._onSuccess();
-
-            },(err)=>{
-
-              this.refs.toast.show(err.message,3000);
-              this._onFree();
-
-            });
-          }
-
-          if(msg!==''){
-            this.refs.toast.show(msg,3000);
-            this._onFree();
-          }
-
-
-
-
-
-
-    }else{
-
-      this.refs.toast.show("Please type your correct info!",1000);
-      this._onFree();
-
+      setTimeout(()=>{
+        this.props.navigation.goBack()  
+      },2000)
     }
   }
 
@@ -138,33 +108,11 @@ class ChangePassPage extends Component {
 
                 <View style={{
                     width:'80%',
-                    marginTop:'5%',
+                    marginTop:'15%',
                     alignSelf:'center',
                     justifyContent:'space-between'
                 }}>
 
-                    <View style={{
-                        justifyContent:'space-between',
-                    }}>
-
-                        <Item style={ s.item}>
-                            <Icon style={s.text} name='person' />
-                            <Input
-                                defaultValue={ this.data.name }
-                                onChangeText={(text)=>{ this._onChangeText({name:text}) }}
-                                placeholderTextColor="rgba(0,0,0,0.6)" style={s.text}  placeholder='Type your new password'/>
-                        </Item>
-
-                        <Item style={ s.item}>
-                            <Icon style={s.text} name='mail' />
-                            <Input autoCapitalize='none' value={this.data.email} placeholderTextColor="rgba(0,0,0,0.6)" onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={s.text} placeholder='Re-type new password'/>
-
-                        </Item>
-                        
-
-
-
-                    </View>
 
                     <View style={{
                         marginTop:'15%',
@@ -172,7 +120,7 @@ class ChangePassPage extends Component {
                         height:120
                     }}>
                         <Button disabled={ disabledBtn } onPress={ this._onSubmit } full style={s.button}>
-                            <Text style={{color:'#fff'}} > Update </Text>
+                            <Text style={{color:'#fff'}} > Confirm reset password </Text>
                         </Button>
 
                     </View>

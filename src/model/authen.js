@@ -25,6 +25,21 @@ export const benAuth = {
     store.dispatch(newState);
   },
 
+
+
+  toTimestamp(strDate){
+    const datum = Date.parse(strDate);
+    return datum/1000;
+  },
+
+  resetPassword(data){
+    return new Promise((resolve, reject) => {
+        const {email} = data;
+        auth.sendPasswordResetEmail(email)
+            .then(() => resolve())
+            .catch((error) => reject(error));
+    });
+  },
   updateInfo(data,onSuccess,onError){
     const userRef = database.ref().child('users');
 
@@ -42,12 +57,6 @@ export const benAuth = {
         .catch((error) => { onError(error); });
   },
 
-
-  toTimestamp(strDate){
-    const datum = Date.parse(strDate);
-    return datum/1000;
-  },
-  
   register(data,onSuccess,onError) {
 
 

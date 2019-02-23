@@ -135,7 +135,7 @@ export function doSignOut(onSuccess,onError){
         store.dispatch({
           type:'LOGIN',
           isLoggedIn:false,
-          
+
         });
 
         onSuccess(true)
