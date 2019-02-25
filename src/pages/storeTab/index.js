@@ -11,76 +11,124 @@ import { Container, Icon, Content, Button } from 'native-base';
 
 import BenHeader from '../../components/BenHeader' ;
 
-import { GREY_COLOR, COFFEE_COLOR } from '../../config/const';
+import { GREY_COLOR, COFFEE_COLOR, GOOGLE_MAP_KEY } from '../../config/const';
 
-import RetroMapStyle from './retroStyle.json';
-import NightMapStyle from './nightStyle.json';
+import RetroMapStyle from '../../data/retroStyle.json';
+import NightMapStyle from '../../data/nightStyle.json';
+import STORE_LOCATIONS from '../../data/stores.json';
+
+import BoxSearch from './boxSearch';
 
 
 export default class StorePage extends Component{
 
 
-  state = {
 
-    typeAction:'',
-    onAction:'',
-    tab:'store',
+  constructor(props){
 
-    region:{
-      latitude: 37.78825,
-      longitude: -122.4324,
-      latitudeDelta: 0.025,
-      longitudeDelta: 0.025,
-    },
+    super(props);
 
-    mapRegion: {
-      latitude: 37.78825,
-      longitude: -122.4324,
-      latitudeDelta: 0.0025,
-      longitudeDelta: 0.0025,
-    },
-    hasLocationPermissions: false,
-    locationResult: null,
+    this.state  = {
 
-    markers:[
-      {
-        "id":377,"stationName":"6 Ave & Canal St","availableDocks":22,"totalDocks":45,"latitude":40.72243797,"longitude":-74.00566443,"statusValue":"In Service","statusKey":1,"availableBikes":19,"stAddress1":"6 Ave & Canal St","stAddress2":"","city":"","postalCode":"","location":"","altitude":"","testStation":false,"lastCommunicationTime":"2019-01-23 11:43:33 AM","landMark":""
+      typeAction:'',
+      onAction:'',
+      tab:'store',
+
+      currentAdress:'',
+      region:{
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.025,
+        longitudeDelta: 0.025,
       },
 
-    ]
+      mapRegion: {
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0025,
+        longitudeDelta: 0.0025,
+      },
+      hasLocationPermissions: false,
+      locationResult: null,
+
+      markers:[
+        {
+          "id":377,"stationName":"6 Ave & Canal St","availableDocks":22,"totalDocks":45,"latitude":40.72243797,"longitude":-74.00566443,"statusValue":"In Service","statusKey":1,"availableBikes":19,"stAddress1":"6 Ave & Canal St","stAddress2":"","city":"","postalCode":"","location":"","altitude":"","testStation":false,"lastCommunicationTime":"2019-01-23 11:43:33 AM","landMark":""
+        },
 
 
-  };
+      ]
 
-  componentDidMount() {
-    //this._getLocationAsync();
+
+    };
   }
 
-  _getLocationAsync = async () => {
-   let { status } = await Permissions.askAsync(Permissions.LOCATION);
-   if (status !== 'granted') {
-     this.setState({
-       locationResult: 'Permission to access location was denied',
+
+  _addressToLatLng(address,onSuccess){
+     const uri = 'https://maps.googleapis.com/maps/api/geocode/json?address= '+address+'&key='+GOOGLE_MAP_KEY ;
+     fetch(uri)
+     .then((response) => response.json())
+     .then((responseJson) => {
+
+       const location = responseJson.results[0]['geometry']['location'];
+       onSuccess(location);
+
+     })
+     .catch((error) => {
+       console.error(error);
      });
-   } else {
-     this.setState({ hasLocationPermissions: true });
+
+  }
 
 
-   }
+  componentDidMount(){
 
-   let location = await Location.getCurrentPositionAsync({});
-   this.setState({ locationResult: JSON.stringify(location) });
+    const defAddress =  STORE_LOCATIONS[0]['address'];
 
-   // Center the map on the location we just fetched.
-    this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0025, longitudeDelta: 0.0025 }});
-  };
+    this.setState({
+      currentAdress:defAddress
+    })
 
-  _handleMapRegionChange = mapRegion => {
-    //console.log(mapRegion);
-    this.setState({ mapRegion });
-  };
+    /*this._addressToLatLng(defAddress,(latLng)=>{
 
 
+
+    });*/
+
+
+  }
+
+  _onItemAddressPress(address){
+    this._geoCodeAddress(address);
+  }
+
+  _geoCodeAddress(address){
+     const uri = 'https://maps.googleapis.com/maps/api/geocode/json?address= '+address+'&key='+GOOGLE_MAP_KEY ;
+
+     fetch(uri)
+     .then((response) => response.json())
+     .then((responseJson) => {
+
+       const location = responseJson.results[0]['geometry']['location'];
+
+       this.setState({
+
+         currentAdress:address,
+         mapRegion:{
+           latitude:location.lat,
+           longitude:location.lng,
+           latitudeDelta: 0.0025,
+           longitudeDelta: 0.0025,
+         }
+       });
+
+       
+
+     })
+     .catch((error) => {
+       console.error(error);
+     });
+  }
 
   render(){
 
@@ -101,6 +149,7 @@ export default class StorePage extends Component{
             </View>
         </BenHeader>
 
+
         <MapView
           style={{ flex: 1 }}
 
@@ -112,36 +161,31 @@ export default class StorePage extends Component{
 
           region={mapRegion}
 
-          onRegionChangeComplete={this._handleMapRegionChange}
         >
-              <Marker draggable
+            <Marker draggable
+               coordinate={{
+                 latitude:mapRegion.latitude,
+                 longitude: mapRegion.longitude,
+               }}
 
-                 coordinate={ {
-                   latitude:mapRegion.latitude,
-                   longitude: mapRegion.longitude,
-                 } }
+               pinColor={ COFFEE_COLOR }
+               title={'King Kong Milk Tea'}
 
-                 pinColor={ COFFEE_COLOR }
-                 title={'Coffee Shop here '}
 
-              >
-              </Marker>
+
+            >
+            </Marker>
+
         </MapView>
 
+        <BoxSearch
+            onItemAddressPress={ (address)=>{ this._onItemAddressPress(address) } }
+            keyFind={ this.state.currentAdress } data={ this.state.data }
+            onCloseSearch={ ()=>{ this._onCloseSearch() } }
 
-        <SafeAreaView style={{
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          bottom: 0,
-          position: 'absolute',
-          width: '100%',
-          display:'none'
-        }}>
-          <Text style={{
-            color: '#fff',
-            lineHeight: 20,
-            margin: 20
-          }}>{JSON.stringify(mapRegion, null, 2)}</Text>
-        </SafeAreaView>
+        />
+
+
 
       </Container>
 

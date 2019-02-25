@@ -71,9 +71,9 @@ export default class LevelBoard extends Component {
                     }}>
 
                     {
-                      item.content.map((item2)=>{
+                      item.content.map((item2,index2)=>{
                         return(
-                          <View style={{
+                          <View key={index2} style={{
                               flexDirection: 'row',
                               alignItems: 'center'
                             }}>

@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 
 
+import moFire from '../../model/moFirebase';
+
 import { Container,  Content } from 'native-base';
 import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
 
@@ -90,8 +92,8 @@ export default class Menu extends Component {
       tab:'menu',
 
       category:'milktea',
-      data:products, // all list products from server
-
+      data:[], // all list products from server
+      cateInfo : props.navigation.getParam('cateInfo', null),
       shoppingcart:  props.screenProps.getState().shoppingcart.list
 
     }
@@ -100,6 +102,8 @@ export default class Menu extends Component {
   }
 
   _setup(){
+
+    this.model = new moFire('products');
 
     this._listenStore();
   }
@@ -119,6 +123,16 @@ export default class Menu extends Component {
     this.unsubscribe();
   }
 
+  componentDidMount(){
+
+    this.model.fetch("categories",this.state.cateInfo.uid,(data)=>{
+
+      this.setState({
+          data:data
+      })
+    });
+
+  }
 
   _onBackBtnPress(){
 
@@ -151,13 +165,8 @@ export default class Menu extends Component {
 
 
     const { navigation } = this.props;
-    const cateInfo = navigation.getParam('cateInfo', null);
-    const data = this.state.data[cateInfo.code];
 
-
-    console.log(this.props);
-
-
+    const data = this.state.data ;
 
     return(
       <Container>

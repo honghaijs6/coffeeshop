@@ -77,8 +77,8 @@ export default class BodyDrinks extends Component{
                           <Text style={[s.txt,s.h4]}> { item.name }  </Text>
                        </TouchableOpacity>
 
-                       <Text style={s.txt}> Size 240 ml  </Text>
-                       <Text style={s.txt,s.price }> { item.price } $ </Text>
+                       <Text style={s.txt}> Size 355 ml  </Text>
+                       <Text style={s.txt,s.price }> { item.price_s } $ </Text>
 
                     </View>
 

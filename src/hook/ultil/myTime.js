@@ -4,6 +4,10 @@ export const myTime = {
 
 
 
+        getUnixTime(){
+          return this.timestamp(this.full());
+
+        },
         timestamp:function(strDate){
             strDate = strDate.replace(/-/g,'/');
 

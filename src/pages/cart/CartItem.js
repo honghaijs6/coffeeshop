@@ -5,9 +5,10 @@ import {
   View,
   Text,
   StyleSheet,
+  TouchableOpacity
 } from 'react-native';
 
-import {BLACK_COLOR}  from '../../config/const';
+import {BLACK_COLOR, COFFEE_COLOR}  from '../../config/const';
 
 
 const CartItem = (props) => (
@@ -29,9 +30,9 @@ const CartItem = (props) => (
               <Text> {  props.data.amount } </Text>
             </View>
 
-            <View style={{marginLeft: 10}}>
-              <Text> { props.data.name } </Text>
-            </View>
+            <TouchableOpacity onPress={()=>{ props.onItemSelect(props.data) }} style={{marginLeft: 10}}>
+              <Text style={{color:COFFEE_COLOR}}> { props.data.name } </Text>
+            </TouchableOpacity>
         </View>
 
         <View style={{alignItems: 'center', height: 30}}>

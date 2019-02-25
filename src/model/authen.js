@@ -4,6 +4,8 @@ import { AVATAR_URL } from '../config/const';
 
 import store from '../redux/store';
 
+import myTime from '../hook/ultil/myTime';
+
 
 export const benAuth = {
 
@@ -66,7 +68,7 @@ export const benAuth = {
 
             data.uid = resp.user.uid;
 
-            data.createdAt = this.toTimestamp(new Date().getTime());
+            data.createdAt = myTime.getUnixTime();
             data.updatedAt = data.createdAt;
             data.photoURL = AVATAR_URL;
             data.point = 0 ;
@@ -161,6 +163,7 @@ export const benAuth = {
     auth.onAuthStateChanged((user) => {
         let isLoggedIn = (user !== null);
 
+
         if (isLoggedIn) {
 
             //Get the user object from the realtime database
@@ -172,6 +175,14 @@ export const benAuth = {
                     //if the user exist in the DB, replace the user variable with the returned snapshot
                     if (exists) user = snapshot.val();
                     //if (exists) dispatch({type: t.LOGGED_IN, user});
+
+                    if(snapshot.val()===null){
+                      this.doSignOut((data)=>{
+                        
+                      },(err)=>{
+                        console.log(err);
+                      })
+                    }
 
                     this._whereStateChange({
                       type:'LOGIN',

@@ -16,8 +16,12 @@ import Toast, {DURATION} from 'react-native-easy-toast';
 
 
 /* MODEL */
-import store from '../../redux/store';
+import { myTime } from '../../hook/ultil/myTime';
+
 import { benAuth } from '../../model/authen';
+import moFire from '../../model/moFirebase' ;
+import Model from '../../model/model'; // shoppingcart only
+
 
 
 /* hook */
@@ -35,28 +39,67 @@ export default class CheckOutPage extends Component{
   constructor(props){
     super(props)
 
+    this.store = props.screenProps ;
+
     this.state = {
 
       typeAction:'',
       onAction:'',
       tab:'checkout',
-
-      userInfo: store.getState().user.userInfo
+      shoppingcart: this.store.getState().shoppingcart.list,
+      userInfo: this.store.getState().user.userInfo
 
     }
 
+    this.model = new moFire('orders');
+    this.moShoppingcart = new Model('shoppingcart');
 
   }
 
   _onSuccess(){
 
-    this.refs.toast.show('Your order on processing delivery, thank you for your orders',3000);
-    setTimeout(()=>{
-      this.props.onStateChange({
-        onAction:'change_tab',
-        toTab:'feed'
-      })
-    },3000)
+
+
+    const data = {
+      code:'ABC',
+      status:0,
+      creator_id:this.state.userInfo.uid,
+      promo_code:'',
+      isMobile:true,
+      createdAt: myTime.getUnixTime() ,
+
+      cart:this.state.shoppingcart,
+      user:{
+        uid:this.state.userInfo.uid,
+        name:this.state.userInfo.name,
+        email:this.state.userInfo.email,
+        phone:this.state.userInfo.phone,
+        photoURL:this.state.userInfo.photoURL
+      },
+      delivery:this.state.userInfo.recent_address,
+      payment:"creditcard",
+      creditcard:this.state.userInfo.creditcard
+    };
+
+    this.model.create(data,(data)=>{
+      //alert('success');
+
+      // clear shoppingcart
+      this.moShoppingcart.removeStoreData()
+      // go back
+      this.refs.toast.show('Your order on processing delivery, thank you for your orders',3000);
+      setTimeout(()=>{
+        this.props.navigation.goBack();
+      },3000)
+
+
+
+
+
+    })
+
+
+
 
   }
   _onCheckOut(data){

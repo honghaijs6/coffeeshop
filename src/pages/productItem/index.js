@@ -15,6 +15,7 @@ import { GREY_COLOR, COFFEE_COLOR, RED_COLOR } from '../../config/const' ;
 /* OBJECT */
 import Model from '../../model/model';
 
+
 import BenHeader from '../../components/BenHeader';
 import BenStatusBar  from "../../components/BenStatusBar";
 import BackButton from '../../components/BackButton';
@@ -27,6 +28,7 @@ export default class ProductItem extends Component {
   constructor(props){
     super(props)
 
+    this.store = props.screenProps ;
     this.state = {
 
       typeAction:'',
@@ -34,15 +36,21 @@ export default class ProductItem extends Component {
       tab:'productitem',
       amount:1, // cureent amount
       info:{}, // current product info
+      shoppingcart:  props.screenProps.getState().shoppingcart.list
 
     }
 
-    this._setup();
+
 
     this._onBackBtnPress = this._onBackBtnPress.bind(this);
     this._onInCrease = this._onInCrease.bind(this);
     this._onDeCrease = this._onDeCrease.bind(this);
     this._onBtnOrder = this._onBtnOrder.bind(this);
+
+    this._onSelectPrice = this._onSelectPrice.bind(this);
+
+    this._setup();
+
 
   }
 
@@ -52,6 +60,18 @@ export default class ProductItem extends Component {
 
   }
 
+
+  _onSelectPrice(json){
+
+
+    Object.assign(this.state.info,json);
+
+    this.setState({
+        onAction:'_onSelectPrice'
+    });
+
+
+  }
   _onInCrease(){
 
 
@@ -78,12 +98,9 @@ export default class ProductItem extends Component {
     this.goBack();
   }
 
-  goBack(){
-    this.props.navigation.goBack();
-
-  }
 
   _onBtnOrder(){
+
     if(this.state.amount>0){
 
       const cart = this.state.info;
@@ -92,16 +109,55 @@ export default class ProductItem extends Component {
       this.moOrder.addDataStore(cart);
       this.goBack();
 
+    }else{
+      // remove item on shoppingcart ;
+      this.moOrder.removeItemDataStore(this.state.info.uid);
+      this.goBack();
+
 
     }
+
+
   }
+
+  componentDidMount(){
+
+    let info =  this.props.navigation.getParam('proInfo',{});
+    info['price'] = info['price'] || info['price_s'];
+
+    const cartInfo = this._getInfoOnShoppingCart(info.uid);
+
+
+    this.setState({
+      amount:info.amount || this.state.amount ,
+      info:Object.assign(info,cartInfo)
+    })
+
+
+
+  }
+
+  goBack(){
+    this.props.navigation.goBack();
+
+  }
+  _getInfoOnShoppingCart(uid){
+    let json = {};
+    this.state.shoppingcart.map((item)=>{
+        if(uid===item.uid){
+          json = item;
+        }
+    });
+
+    return json;
+  }
+
   render() {
 
-      this.state.info = this.props.navigation.getParam('proInfo',{});
 
+      const price = this.state.info.price || 0 ;
+      const total = this.state.amount * price ;
 
-
-      const total = this.state.amount * this.state.info.price ;
       return (
         <Container>
 
@@ -118,8 +174,10 @@ export default class ProductItem extends Component {
             justifyContent: 'space-between'
           }}>
 
-              <Content>
-                  <BodyItem info={this.state.info} />
+              <Content style={{
+                backgroundColor:GREY_COLOR
+                }}>
+                  <BodyItem onSelectPrice={ this._onSelectPrice } info={this.state.info} />
 
               </Content>
 

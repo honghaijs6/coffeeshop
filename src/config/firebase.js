@@ -4,13 +4,20 @@ import * as firebase from 'firebase';
 
 //const settings = {timestampsInSnapshots: true};
 
-const config = {
+export const config = {
       apiKey: "AIzaSyCgvfQsFJN2Qgr8Fk2WdsGm_SUKeZxvRmw",
       authDomain: "coffee-shop-229518.firebaseapp.com",
       databaseURL: "https://coffee-shop-229518.firebaseio.com",
       projectId: "coffee-shop-229518",
       storageBucket: "coffee-shop-229518.appspot.com",
-      messagingSenderId: "659278371514"
+      messagingSenderId: "659278371514",
+      paginate:{
+        p:0,
+        offset:0,
+        max:100,
+        is_deleted:0,
+        key:''
+      },
     };
 firebase.initializeApp(config);
 

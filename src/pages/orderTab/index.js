@@ -4,12 +4,16 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Container, Icon, Content, } from 'native-base';
 
 
+
+
 import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
 
 import OrderHeader from './Header';
 import OrderBody from './Body';
 
 import DrinkCates from  '../../data/categories.json';
+
+
 
 
 export default class OrderPage extends Component{
@@ -26,8 +30,9 @@ export default class OrderPage extends Component{
       categories:DrinkCates
 
     }
-  }
 
+
+  }
 
   /*WHEN*/
 
@@ -52,6 +57,7 @@ export default class OrderPage extends Component{
 
   render(){
 
+    const categories = this.props.data['categories'];
 
     return(
       <Container style={{
@@ -75,35 +81,36 @@ export default class OrderPage extends Component{
                   }}>
 
                   {
-                    this.state.categories.map((item)=>{
+                    categories.map((item,index)=>{
 
                        return(
-                         <TouchableOpacity onPress={()=>{ this._onCateItemPress(item) }} key={item.id} style={{
+                         <TouchableOpacity  onPress={()=>{ this._onCateItemPress(item) }} key={item.uid} style={{
                              width: '48%',
                              borderRadius: 6,
                              marginBottom: 14
 
                            }}>
-                           <Image source={{uri:item.uri}}
+                           <Image source={{uri:item.photo}}
                            style={{height: 140, width: '100%', flex: 1, borderRadius: 6, borderWidth: 0.5, borderColor: 'rgba(0,0,0,0.2)'}}
                            />
-                         <View style={{
-                             width: '100%',
-                             height: 140,
-                             position: 'absolute',
-                             top:0,
-                             alignItems: 'center',
-                             justifyContent: 'center',
-                             borderRadius: 6,
-                             backgroundColor:'rgba(0,0,0,0.4)'
-                           }}>
-                           <Text style={{
-                               fontFamily: 'Roboto',
-                               color:'#fff',
-                               fontSize: 20
 
-                             }}> { item.name } </Text>
-                         </View>
+                           <View style={{
+                               width: '100%',
+                               height: 140,
+                               position: 'absolute',
+                               top:0,
+                               alignItems: 'center',
+                               justifyContent: 'center',
+                               borderRadius: 6,
+                               backgroundColor:'rgba(0,0,0,0.4)'
+                             }}>
+                             <Text style={{
+                                 fontFamily: 'Roboto',
+                                 color:'#fff',
+                                 fontSize: 20
+
+                               }}> { item.name } </Text>
+                           </View>
 
 
                          </TouchableOpacity>

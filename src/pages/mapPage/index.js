@@ -24,6 +24,7 @@ import NightMapStyle from '../../data/nightStyle.json';
 import STORE_LOCATIONS from '../../data/stores.json';
 
 
+
 import BoxSearch from './boxSearch';
 
 
@@ -76,10 +77,6 @@ export default class MapPage extends Component{
 
   }
 
-
-  componentDidMount() {
-    //this._getLocationAsync();
-  }
 
 
   _getLocationAsync = async () => {

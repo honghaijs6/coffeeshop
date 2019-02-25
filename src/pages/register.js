@@ -88,6 +88,7 @@ class Register extends Component {
           }else{
             benAuth.register(this.data,(data)=>{
                 //this._onSuccess();
+                alert('register ok')
 
             },(err)=>{
 

@@ -32,9 +32,6 @@ export default class  CartBody extends Component{
     let total = 0
     data.map((item)=>{
        total += item.amount * item.price
-
-       console.log(total);
-
     });
 
     return total;
@@ -90,7 +87,7 @@ export default class  CartBody extends Component{
               {
                 this.props.data.map((item,index)=>{
                   return(
-                    <CartItem key={index} data={{name:item.name, amount:item.amount, price: item.amount * item.price  }} />
+                    <CartItem key={index} onItemSelect={(data)=>{ this.props.onItemSelect(data) }} data={item} />
                   )
                 })
               }

@@ -65,25 +65,27 @@ export default class DeliveryPage extends Component {
           code:'home',
           icon:'home',
           label:'Home',
-          name:'Enter your home address for delivering'
+          name: store.getState().user.userInfo['home_address'] || 'Chose your home location for delivery',
+          isEmpty: store.getState().user.userInfo['home_address'] || ''
         },
         {
           code:'office',
           icon:'briefcase',
           label:'Work place',
-          name:'Enter your office address for delivering'
+          name:store.getState().user.userInfo['work_address'] || 'Chose your work place for delivery',
+          isEmpty:store.getState().user.userInfo['work_address'] || ''
         },
-        {
+        /*{
           code:'current',
           icon:'navigate',
           label:'Current location',
           name:'..'
-        },
+        },*/
         {
           code:'recent',
           icon:'time',
           label:'Recent search',
-          name:store.getState().user.userInfo.recent_address
+          name:store.getState().user.userInfo.recent_address || '...'
         },
 
       ]
@@ -152,16 +154,16 @@ export default class DeliveryPage extends Component {
   //
   _onItemPress(data){
 
-    if(data.code==='search'){
-
+    if(data.isEmpty!=='' || data.name !=='...'){
       this.state.userInfo.recent_address = data.name;
       benAuth.updateInfo(this.state.userInfo,(data)=>{
         this._whereStateChange({
           onAction:'goBack',
         });
       })
-
     }
+
+
   }
 
   _whereStateChange(newState){
@@ -181,6 +183,7 @@ export default class DeliveryPage extends Component {
   render() {
 
 
+    //console.log(this.state.userInfo);
 
 
     return (
@@ -193,6 +196,8 @@ export default class DeliveryPage extends Component {
         <Content>
 
           <View style={[s.block]}>
+
+
               {
                 this.data.map((item,index)=>{
                   return(
@@ -214,7 +219,7 @@ export default class DeliveryPage extends Component {
 
 
 
-          {/* chon vi tri trên ban do */}
+          {/* chon vi tri trên ban do
           <View style={s.block}>
               <TouchableOpacity style={s.items}>
                   <View style={{
@@ -230,6 +235,7 @@ export default class DeliveryPage extends Component {
                   </View>
               </TouchableOpacity>
           </View>
+          */}
 
         </Content>
 

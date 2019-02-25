@@ -40,24 +40,45 @@ class Model {
       // Error retrieving data
     }*/
   }
-  _removeStoreData(){
+  removeStoreData(){
     this.data = [];
+    this._setStoreData(this.data);
   }
 
+  _isDup(data,uid){
+    let ret = false;
+
+    data.forEach((item)=>{
+      if(item.uid===uid){
+        ret = true
+      }
+    });
+
+    return ret ;
+  }
   addDataStore(json){
 
     const baseData = store.getState()[this.strModel]['list'];
     this.data = baseData;
-    this.data.push(json);
+
+    if(!this._isDup(this.data,json.uid)){
+      this.data.push(json);
+    }
+
     this._setStoreData(this.data);
+
+
   }
-  removeItemDataStore(id){
-    let list = this._getStoreData();
-    list = list.filter((item) => {
-        return parseInt(item.id) !== parseInt(id)
+  removeItemDataStore(uid){
+
+    const baseData = store.getState()[this.strModel]['list'];
+    this.data = baseData;
+
+    this.data = this.data.filter((item) => {
+        return item.uid !== uid
     });
 
-    this._setStoreData(list);
+    this._setStoreData(this.data);
 
 
   }

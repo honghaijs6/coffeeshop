@@ -20,8 +20,6 @@ import BackButton from '../../components/BackButton';
 import CartBody from './CartBody';
 
 
-import store from '../../redux/store';
-
 
 
 export default class Cart extends Component {
@@ -29,17 +27,47 @@ export default class Cart extends Component {
   constructor(props){
     super(props)
 
+    this.store = props.screenProps ;
+
     this.state = {
 
       typeAction:'',
       onAction:'',
       tab:'cart',
-      data: store.getState().shoppingcart.list,
-      userInfo: store.getState().user.userInfo
+      data: this.store.getState().shoppingcart.list,
+      userInfo: this.store.getState().user.userInfo
     }
 
+
     this._onOrderNow = this._onOrderNow.bind(this);
+    this._onItemSelect = this._onItemSelect.bind(this);
+
+    this._listenStore();
   }
+
+  componentWillUnmount(){
+    this.unsubscribe();
+  }
+
+  _listenStore(){
+    this.unsubscribe = this.store.subscribe(()=>{
+
+        let cart = this.store.getState().shoppingcart.list;
+
+        if(cart.length>0){
+          this.setState({
+            data:cart
+          });
+        }else{
+          this.props.navigation.goBack()
+        }
+
+
+
+
+    })
+  }
+
 
   _onChangeText(json){
 
@@ -68,7 +96,18 @@ export default class Cart extends Component {
     this.props.navigation.goBack();
 
   }
+
+  // Go back to product Item page
+  _onItemSelect(data){
+
+
+    this.props.navigation.navigate('ProItem',{
+      proInfo:data
+    });
+
+  }
   render() {
+
 
     return (
       <Container>
@@ -91,7 +130,7 @@ export default class Cart extends Component {
         }}>
 
             <Content>
-              <CartBody onChangeText={ (data)=>{ this._onChangeText(data) } } data={this.state.data} userInfo={ this.state.userInfo } />
+              <CartBody onItemSelect={ this._onItemSelect } onChangeText={ (data)=>{ this._onChangeText(data) } } data={this.state.data} userInfo={ this.state.userInfo } />
             </Content>
 
             {/* FOOTER BUTTON */}
