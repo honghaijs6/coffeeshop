@@ -7,6 +7,8 @@ import { Container,Content,Item,Label,Icon ,Text,Input, Button  } from 'native-b
 import Toast, {DURATION} from 'react-native-easy-toast';
 
 
+import BenLoader from '../components/BenLoader';
+
 /* MODEL */
 import { benAuth } from '../model/authen';
 
@@ -25,7 +27,7 @@ class Register extends Component {
     super(props);
 
     this.state = {
-
+      loader:false,
       typeAction:'',
       onAction:'',
       status:'',
@@ -56,6 +58,7 @@ class Register extends Component {
   }
 
   _onProsess(){
+
     this._whereStateChange({typeAction:'post'});
   }
   _onFree(){
@@ -88,7 +91,6 @@ class Register extends Component {
           }else{
             benAuth.register(this.data,(data)=>{
                 //this._onSuccess();
-                alert('register ok')
 
             },(err)=>{
 
@@ -119,7 +121,12 @@ class Register extends Component {
   /* WHERE */
 
   _whereStateChange(newState){
-    this.setState(Object.assign(this.state,newState))
+    if(newState.typeAction==='post'){
+        this.setState({loader:true})
+    }else{
+      this.setState({loader:false})
+    }
+
   }
 
   render() {
@@ -139,6 +146,8 @@ class Register extends Component {
 
 
                 }}>
+
+                <BenLoader visible={ this.state.loader } />
 
                 <View style={{paddingTop:14}}></View>
                 <View style={s.header} >

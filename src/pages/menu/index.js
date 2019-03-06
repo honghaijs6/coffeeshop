@@ -17,8 +17,10 @@ import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
 
 import products from '../../data/products.json';
 
+
 import MenuHeader from './header';
 import BenStatusBar  from "../../components/BenStatusBar";
+import BenLoader  from "../../components/BenLoader";
 
 
 import MenuBody from './body'
@@ -86,7 +88,7 @@ export default class Menu extends Component {
     this.store = props.screenProps ;
 
     this.state = {
-
+      loader:false,
       typeAction:'',
       onAction:'',
       tab:'menu',
@@ -125,9 +127,11 @@ export default class Menu extends Component {
 
   componentDidMount(){
 
+    this.setState({loader:true})
     this.model.fetch("categories",this.state.cateInfo.uid,(data)=>{
 
       this.setState({
+          loader:false,
           data:data
       })
     });
@@ -170,12 +174,12 @@ export default class Menu extends Component {
 
     return(
       <Container>
-
+        <BenLoader visible={this.state.loader} />
         <BenStatusBar/>
 
         <MenuHeader onBackBtnPress={()=>{ this._onBackBtnPress() }} />
 
-        <MenuBody onPressItem={(item)=>{ this._onPressItem(item) }}   data={ data } />
+        <MenuBody onPressItem={(item)=>{ this._onPressItem(item) }} loader={this.state.loader}  data={ data } />
 
         { this.state.shoppingcart.length > 0 ? <ButtonOrder data={this.state.shoppingcart} onPress={()=>{  this._onPressOrder() }} /> : null }
 

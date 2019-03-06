@@ -4,7 +4,7 @@ import { AVATAR_URL } from '../config/const';
 
 import store from '../redux/store';
 
-import myTime from '../hook/ultil/myTime';
+import {myTime} from '../hook/ultil/myTime';
 
 
 export const benAuth = {
@@ -176,13 +176,14 @@ export const benAuth = {
                     if (exists) user = snapshot.val();
                     //if (exists) dispatch({type: t.LOGGED_IN, user});
 
-                    if(snapshot.val()===null){
+                    /*if(snapshot.val()===null){
+
                       this.doSignOut((data)=>{
-                        
+
                       },(err)=>{
                         console.log(err);
                       })
-                    }
+                    }*/
 
                     this._whereStateChange({
                       type:'LOGIN',

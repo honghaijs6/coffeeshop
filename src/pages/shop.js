@@ -8,6 +8,7 @@ import BenStatusBar  from "../components/BenStatusBar";
 import moFire from '../model/moFirebase';
 
 
+import BenLoader from '../components/BenLoader';
 
 /* TABS : 5 tab items */
 import FeedTab from './feedTab/';
@@ -28,6 +29,7 @@ class shop extends Component {
       this.store = props.screenProps;
 
       this.state = state = {
+        loader:false,
         onAction:'',
         navigation:props.navigation,
         tabs:[
@@ -80,13 +82,14 @@ class shop extends Component {
 
       this._isMounted = true;
 
-
+      this.setState({loader:true})
       this.moCate.read((data)=>{
 
         this.data.categories = data;
 
         if(this._isMounted){
           this.setState({
+            loader:false,
             onAction:'fetch_categories'
           })
         }
@@ -107,9 +110,9 @@ class shop extends Component {
 
       if(data.tab==='order'){
 
+        
         this.moCate.read((data)=>{
 
-          this.data.categories = data;
 
           this.setState({
             onAction:'fetch_categories'
@@ -147,7 +150,7 @@ class shop extends Component {
               onTab={ this.state.onTab }
               data={ this.state.tabs }
             >
-
+              <BenLoader visible={this.state.loader} />
               <BenStatusBar/>
 
               <FeedTab { ...this.state } />

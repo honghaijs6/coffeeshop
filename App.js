@@ -118,10 +118,14 @@ export default class App extends React.Component {
     this.unsubscribe = store.subscribe(()=>{
 
         const userInfo = store.getState().user;
+
         if(userInfo.isLoggedIn !== this.state.login){
-          this.setState({
-            login: userInfo.isLoggedIn
-          });
+          if(userInfo.userInfo !==null){
+            this.setState({
+              login: userInfo.isLoggedIn
+            });
+          }
+
         }
 
     })
@@ -155,7 +159,10 @@ export default class App extends React.Component {
 
     benAuth.checkLoginStatus((exists,isLoggedIn)=>{
 
-      isLoggedIn ? this.setState({login:true}) : null ;
+      const userInfo = store.getState().user;
+      if(userInfo.userInfo!==null){
+        isLoggedIn ? this.setState({login:true}) : null ;
+      }
 
 
     })

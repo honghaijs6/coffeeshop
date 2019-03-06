@@ -6,7 +6,8 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from 'react-native';
 
 import {RED_COLOR, COFFEE_COLOR, BLACK_COLOR, GREY_COLOR } from '../../config/const';
@@ -19,6 +20,7 @@ import NoData from '../../components/NoData';
 
 
 
+const w = Dimensions.get('window');
 
 export default class BodyDrinks extends Component{
 
@@ -61,8 +63,10 @@ export default class BodyDrinks extends Component{
                     paddingBottom: 15
                   }}>
 
-                    <TouchableOpacity onPress={()=>{ this._onPressItem(item) }} >
-                      <Image style={{width:120,height: 120}}  source={{uri: item.photo }}  />
+                    <TouchableOpacity style={{
+                      backgroundColor:'rgba(0,0,0,0.1)'
+                      }} onPress={()=>{ this._onPressItem(item) }} >
+                      <Image resizeMode="cover" style={{width:120,height: 120}}  source={{uri: item.photo+`&w=200&h=200` }}  />
                     </TouchableOpacity>
 
                     <View style={{
@@ -86,7 +90,8 @@ export default class BodyDrinks extends Component{
                 )
               })
             }
-            { data.length == 0 ? <NoData icon="cafe" message=" On update data .. " /> : null }
+            { data.length == 0 ? <NoData visible={ !this.props.loader } icon="cafe" message=" On update data .. " /> : null }
+
 
         </BenBody>
 

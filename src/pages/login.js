@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ImageBackground, ScrollView,Text,InputText,KeyboardAvoidingView,TouchableOpacity  } from 'react-native';
+import {
+  View, StyleSheet, ImageBackground, ScrollView,Text,InputText,KeyboardAvoidingView,TouchableOpacity,
+  ActivityIndicator
+  } from 'react-native';
 
 import {  Link } from "react-router-native";
 
@@ -10,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 import { benAuth } from '../model/authen';
-
+import BenLoader from '../components/BenLoader';
 
 
 /* hook */
@@ -22,6 +25,7 @@ class LoginPage extends Component {
     super();
 
     this.state = {
+      loader:false,
       email:'',
       password:''
     }
@@ -39,17 +43,31 @@ class LoginPage extends Component {
    _onSubmitLogin(){
 
 
+
      if(detectForm(['email','password'],this.state)===''){
 
+       this.setState({
+         loader:true
+       });
+
        benAuth.doLogin(this.state,(data)=>{
-        
+
 
        },(err)=>{
+
+         this.setState({
+           loader:false
+         });
+
          this.refs.toast.show(err.message,3000)
 
        })
 
      }else{
+       this.setState({
+         loader:false
+       });
+
        this.refs.toast.show("Please enter your correct infomation",1000)
      }
 
@@ -85,6 +103,9 @@ class LoginPage extends Component {
 
 
                 }}>
+
+                <BenLoader visible={ this.state.loader } />
+
 
                 <Content>
 
