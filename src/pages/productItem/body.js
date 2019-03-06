@@ -25,6 +25,7 @@ const BodyItem  = (props) =>{
     const stylePrice_s = info['price_s'].toString() === info['price'].toString() ? {color:COFFEE_COLOR} : { color:'#333' };
     const stylePrice_m = info['price_m'].toString() === info['price'].toString() ? {color:COFFEE_COLOR} : { color:'#333' };
 
+    const photo = props.info.photo.replace(/ /g,'%20');
     return(
 
       <View>
@@ -33,7 +34,8 @@ const BodyItem  = (props) =>{
             borderBottomWidth: 0.5,
             borderBottomColor: 'rgba(0,0,0,0.2)'
           }}>
-             <Image style={{height: 300,width: null}} source={{uri: props.info.photo }} />
+
+             <Image resizeMode="contain" style={{height: 320,width: null}} source={{uri: photo+`&w=320&h=320&buster=${Math.random()}` }} />
 
              <View style={{
                backgroundColor: '#fff',

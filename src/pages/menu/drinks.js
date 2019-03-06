@@ -54,6 +54,7 @@ export default class BodyDrinks extends Component{
             {
               data.map((item, index)=>{
 
+                const photo = item.photo.replace(/ /g,'%20');
                 return (
                   <View key={index} style={{
                     marginTop: 15,
@@ -66,7 +67,7 @@ export default class BodyDrinks extends Component{
                     <TouchableOpacity style={{
                       backgroundColor:'rgba(0,0,0,0.1)'
                       }} onPress={()=>{ this._onPressItem(item) }} >
-                      <Image resizeMode="cover" style={{width:120,height: 120}}  source={{uri: item.photo+`&w=200&h=200` }}  />
+                      <Image resizeMode="cover" style={{width:120,height: 120}}  source={{uri: photo+`&w=120&buster=${Math.random()}` }}  />
                     </TouchableOpacity>
 
                     <View style={{
