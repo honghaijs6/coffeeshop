@@ -14,8 +14,7 @@ export function register(data,onSuccess,onError) {
   auth.createUserWithEmailAndPassword(data.email, data.password)
       .then((resp) => {
 
-          console.log(resp);
-
+          
           data.uid = resp.user.uid;
 
           data.createdAt = new Date().getTime();
