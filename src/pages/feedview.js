@@ -3,10 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { Container, Icon, Content } from 'native-base';
 
+import HTMLView from 'react-native-htmlview';
+
 import { GREY_COLOR, COFFEE_COLOR } from '../config/const' ;
 
 import BenHeader from '../components/BenHeader';
 import BenStatusBar  from "../components/BenStatusBar";
+
 
 
 
@@ -19,7 +22,9 @@ export default class FeedViewPage extends Component{
 
       typeAction:'',
       onAction:'',
-      tab:'feedview'
+      tab:'feedview',
+
+      content:''
     }
   }
 
@@ -29,6 +34,11 @@ export default class FeedViewPage extends Component{
   }
 
   render(){
+
+    const data = this.props.navigation.getParam('data');
+
+
+
     return(
       <Container>
 
@@ -47,17 +57,23 @@ export default class FeedViewPage extends Component{
                   <Icon style={s.icon} name="arrow-back" />
 
                </TouchableOpacity>
-               <Text style={s.txt}> Article view </Text>
+               <Text style={s.txt}> { data.title } </Text>
            </View>
 
 
         </BenHeader>
 
         <Content>
-          <View >
-              <Text >
-                Feed View here
-              </Text>
+          <View style={{
+            padding: 10
+          }} >
+
+              <HTMLView
+                value={ data.short_content }
+                stylesheet={s}
+              />
+
+
           </View>
 
         </Content>
@@ -68,8 +84,28 @@ export default class FeedViewPage extends Component{
 }
 
 const s = StyleSheet.create({
+  img:{
+    marginBottom:'10px'
+  },
+  i:{
+    fontSize: 11,
+    fontStyle: 'italic',
+    marginTop: 5,
+    marginBottom: 5
+  },
+  table:{
+    marginTop: 10,
+    marginBottom:10
+  },
+  p:{
+    color: '#333',
+    fontSize: 17,
+    fontFamily: 'Roboto',
+    lineHeight: 24
+  },
   txt:{
-    fontSize: 16,
+    fontSize: 20,
+    color: COFFEE_COLOR,
     fontFamily: 'Roboto'
   },
   icon:{

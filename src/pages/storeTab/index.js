@@ -122,7 +122,7 @@ export default class StorePage extends Component{
          }
        });
 
-       
+
 
      })
      .catch((error) => {

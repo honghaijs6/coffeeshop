@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Container, Icon,  Text, Content } from 'native-base';
 
+import moment from 'moment';
+import Api from '../../model/api';
+
 // LIB Component
 import BenHeader from '../../components/BenHeader'
 import BenAvatar from '../../components/BenAvatar';
@@ -17,7 +20,10 @@ import CardFooter from './CardFooter';
 import CardImage from './CardImage';
 
 import Box from './Box';
-import { benAuth } from '../../model/authen';
+import { AVATAR_URL } from '../../config/const';
+
+
+
 
 export default class FeedPage extends Component{
 
@@ -30,18 +36,29 @@ export default class FeedPage extends Component{
       onAction:'',
       tab:'feed',
 
-      userInfo: props.userInfo
+      userInfo: props.userInfo,
+
     }
 
+    this.data = [];
 
+
+    this._setup();
 
     this._onPressAvarar  = this._onPressAvarar.bind(this);
     this._onPressNoti = this._onPressNoti.bind(this) ;
+
   }
 
 
   /* WHEN*/
-
+  _setup(){
+    this.Api = new Api('feeds');
+    this.Api.set('method',{
+      name:'listAll',
+      params:'all'
+    })
+  }
 
   _onPressAvarar(){
     alert('Click avatar ')
@@ -53,11 +70,34 @@ export default class FeedPage extends Component{
 
   _onCardPress(data){
 
-      this.props.navigation.navigate('FeedView');
-
+      this.props.navigation.navigate('FeedView',{
+        data:data
+      });
 
 
   }
+
+  _fetchData(){
+    this.Api.fetch((res)=>{
+      this.data = res.data.rows;
+
+      this.setState({
+        onAction:'_fetchData'
+      })
+
+
+    })
+  }
+
+  componentWillReceiveProps(newProps){
+    if(this.state.tab===newProps.onTab){
+
+      this._fetchData()
+    }
+
+  }
+
+
   render(){
 
 
@@ -110,77 +150,63 @@ export default class FeedPage extends Component{
 
             </View>
 
-            <MyCard>
-                <CardHeader>
-                    <MyAvatar
-                        data={{
-                         uri:'https://scontent.fsgn5-6.fna.fbcdn.net/v/t1.0-1/p160x160/41795526_2082548408445932_7771390061051904000_n.jpg?_nc_cat=109&_nc_oc=AQnW3o2N69YmcjDnxCqPK-AYEGDWGy58AdAu6F6mG8LqDBuhXpyRoKX2l_I27tW92Fek7R-R893bbrzdjUPf59qk&_nc_ht=scontent.fsgn5-6.fna&oh=927a69754880b732e2c3ce267d1a0af9&oe=5CFA7E33',
-                         name:'Benjamin',
-                         info:'5 minuts ago'
-                       }}
-                    />
+                {
+                  this.data.map((item)=>{
 
-                </CardHeader>
+                    const creatorAvatar = item.creator_avatar === null ? AVATAR_URL : item.creator_avatar ;
+                    timeAgo = moment()
+                    return(
+                      <MyCard key={ item.id }>
+                        <CardHeader>
+                            <MyAvatar
+                                data={{
+                                 uri:creatorAvatar,
+                                 name:item.creator,
+                                 info:moment(item.date_created).fromNow()
+                               }}
+                            />
 
-                <CardImage
-                  onPress={()=>{ this._onCardPress() }}
-                  uri="https://i-cdn.embed.ly/1/display?key=fd92ebbc52fc43fb98f69e50e7893c13&url=https%3A%2F%2Fi.redd.it%2F6oezmf7cw7f11.jpg"
-                />
+                        </CardHeader>
 
-                <CardContent>
-                    I have Got a cat, her name is matinda. She is a quite old for a cat
-                    She is eleven years olds. matilda is very fluffy, her back is black, and her belly, chest are white
-                </CardContent>
+                        <CardImage
+                          onPress={()=>{ this._onCardPress(item) }}
+                          uri={ item.photo }
+                        />
 
-                <CardFooter>
-                    <TouchableOpacity style={{ flexDirection:'row'}}>
-                         <Icon style={{ fontSize:20}} name="heart" />
-                         <Text> 18 </Text>
-                    </TouchableOpacity>
+                        <View style={{
+                          padding: 10,
+                          fontFamily: 'Roboto'
+                        }}>
+                            <View style={{
+                              marginTop: 5,
+                              marginBottom: 5
+                            }}>
+                                <Text style={{fontSize: 16, fontWeight: '500', color: COFFEE_COLOR}}> { item.title } </Text>
+                            </View>
+                            <View>
+                                <Text> { item.short_content.replace(/&nbsp;/g,' ') } </Text>
+                            </View>
 
-                    <TouchableOpacity style={{ flexDirection:'row'}}>
-                         <Icon style={{ fontSize:20}} name="chatbubbles" />
-                         <Text> 115 </Text>
-                    </TouchableOpacity>
-                </CardFooter>
+                        </View>
 
-            </MyCard>
+                        <CardFooter>
+                            <TouchableOpacity style={{ flexDirection:'row'}}>
+                                 <Icon style={{ fontSize:20}} name="heart" />
+                                 <Text> { item.like } </Text>
+                            </TouchableOpacity>
 
-            <MyCard>
-                <CardHeader>
-                    <MyAvatar
-                        data={{
-                         uri:'https://scontent.fsgn5-3.fna.fbcdn.net/v/t1.0-1/c261.310.378.378a/s160x160/46401462_1931261700314528_572870838248800256_n.jpg?_nc_cat=110&_nc_oc=AQlKpm8eY9ec2dRT5XFa-cLWV0SlMYeck1odmsj_hN31rokE4WlRSsYGwN89kFynaVkMQFIWhdw3p8ea4qFsUZIp&_nc_ht=scontent.fsgn5-3.fna&oh=2076ac91fef92b60634511aa3e3a4108&oe=5CBB2FB2',
-                         name:'Nguyen Van Loc',
-                         info:'15 minuts ago'
-                       }}
-                    />
+                            <TouchableOpacity style={{ flexDirection:'row'}}>
+                                 <Icon style={{ fontSize:20}} name="chatbubbles" />
+                                 <Text> { item.comments === null ? 0 : item.comments.length } </Text>
+                            </TouchableOpacity>
+                        </CardFooter>
+                      </MyCard>
 
-                </CardHeader>
 
-                <CardImage
-                  onPress={()=>{ this._onCardPress() }}
-                  uri="https://scontent.fsgn5-4.fna.fbcdn.net/v/t1.0-9/49128234_331015080960848_5154945226128752640_n.jpg?_nc_cat=102&_nc_oc=AQlShfz3MyrFWXJwNEpfPEzTUXidhO7gd-xk-JqcX_EB08DA73WNb6pvWpYa0N-zeHddynAsPtr3cQ09LySYe4Ut&_nc_ht=scontent.fsgn5-4.fna&oh=35bac5787d8b4a33c2c1fbaa9d0ceac5&oe=5CCCB622"
-                />
 
-                <CardContent>
-                    The new year stands before us, like a chapter in a book, waiting to be written. We can help write that story by setting goals.
-                </CardContent>
-
-                <CardFooter>
-                    <TouchableOpacity style={{ flexDirection:'row'}}>
-                         <Icon style={{ fontSize:20}} name="heart" />
-                         <Text> 18 </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{ flexDirection:'row'}}>
-                         <Icon style={{ fontSize:20}} name="chatbubbles" />
-                         <Text> 115 </Text>
-                    </TouchableOpacity>
-                </CardFooter>
-
-            </MyCard>
-
+                    )
+                  })
+                }
 
           </View>
 

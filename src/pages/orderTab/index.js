@@ -11,7 +11,7 @@ import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
 import OrderHeader from './Header';
 import OrderBody from './Body';
 
-import DrinkCates from  '../../data/categories.json';
+//import DrinkCates from  '../../data/categories.json';
 
 
 
@@ -27,7 +27,7 @@ export default class OrderPage extends Component{
       onAction:'',
       tab:'order',
 
-      categories:DrinkCates
+      categories:[]
 
     }
 
@@ -37,13 +37,6 @@ export default class OrderPage extends Component{
   /*WHEN*/
 
   _onCateItemPress = (item)=>{
-
-    /* send data item to menu page
-    this.props.onStateChange({
-      onAction:'change_tab',
-      toTab:'menu',
-      data:item
-    });*/
 
 
 
@@ -83,6 +76,8 @@ export default class OrderPage extends Component{
                   {
                     categories.map((item,index)=>{
 
+                        const photoURL = item.photo.replace(/ /g,'%20')
+
                        return(
                          <TouchableOpacity  onPress={()=>{ this._onCateItemPress(item) }} key={item.uid} style={{
                              width: '48%',
@@ -90,7 +85,8 @@ export default class OrderPage extends Component{
                              marginBottom: 14
 
                            }}>
-                           <Image source={{uri:item.photo}}
+                           
+                           <Image source={{uri:photoURL}}
                            style={{height: 140, width: '100%', flex: 1, borderRadius: 6, borderWidth: 0.5, borderColor: 'rgba(0,0,0,0.2)'}}
                            />
 

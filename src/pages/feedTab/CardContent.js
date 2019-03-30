@@ -17,8 +17,7 @@ export default class CardContent extends Component {
           fontSize:16,
           color:'#333'
         }}>
-          I have Got a cat, her name is matinda. She is a quite old for a cat
-          She is eleven years olds. matilda is very fluffy, her back is black, and her belly, chest are white
+          { this.props.children }
         </Text>
       </View>
     );

@@ -8,11 +8,15 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^9.0.0",
+    "@feathersjs/feathers": "^3.3.1",
+    "@feathersjs/socketio-client": "^1.2.1",
     "expo": "^32.0.0",
     "firebase": "^5.8.1",
-    "native-base": "^2.11.0",
+    "native-base": "^2.12.1",
     "react": "16.5.0",
+    "react-moment": "^0.8.4",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-axios": "^0.17.1",
     "react-native-datepicker": "^1.7.2",
     "react-native-easy-toast": "^1.1.0",
     "react-native-htmlview": "^0.13.0",
@@ -20,7 +24,8 @@
     "react-navigation": "^3.0.9",
     "react-redux": "^6.0.0",
     "react-router-native": "^4.3.0",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"
