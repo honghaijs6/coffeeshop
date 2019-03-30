@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
 
 import { Container, Icon, Content } from 'native-base';
 
@@ -57,7 +57,13 @@ export default class FeedViewPage extends Component{
                   <Icon style={s.icon} name="arrow-back" />
 
                </TouchableOpacity>
-               <Text style={s.txt}> { data.title } </Text>
+               <TextInput editable={false} selectTextOnFocus={false} style={{
+                 width:'89%',
+                 fontFamily:'Roboto',
+                 fontSize:20,
+                 color:COFFEE_COLOR
+               }} defaultValue={ data.title || '...' } />
+               
            </View>
 
 
@@ -65,11 +71,14 @@ export default class FeedViewPage extends Component{
 
         <Content>
           <View style={{
-            padding: 10
+            padding: 20
           }} >
 
+              <Image source={{uri: data.photo}}
+              style={{height: 200, width: null, flex: 1, marginVertical: 10}}
+              />
               <HTMLView
-                value={ data.short_content }
+                value={ data.content || '' }
                 stylesheet={s}
               />
 

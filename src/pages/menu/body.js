@@ -21,9 +21,9 @@ const MenuBody = (props) => (
         <Tab heading="Drinks">
             <BodyDrinks loader={props.loader} onPressItem={(data)=>{ props.onPressItem(data) }} data={ props.data } />
         </Tab>
-        <Tab heading="Foods">
+        {/*<Tab heading="Foods">
             <BodyFoods/>
-        </Tab>
+        </Tab>*/}
         <Tab heading="Favories">
             <BodyFavories/>
         </Tab>

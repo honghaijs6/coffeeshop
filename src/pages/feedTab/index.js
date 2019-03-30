@@ -11,11 +11,14 @@ import BenAvatar from '../../components/BenAvatar';
 import MyAvatar from '../../components/MyAvatar';
 import BenNoti from '../../components/BenNoti';
 
+
+import BenLoader from '../../components/BenLoader';
+
+
 import { GREY_COLOR, COFFEE_COLOR } from '../../config/const'
 
 import MyCard from './MyCard';
 import CardHeader from './CardHeader';
-import CardContent from './CardContent';
 import CardFooter from './CardFooter';
 import CardImage from './CardImage';
 
@@ -32,6 +35,7 @@ export default class FeedPage extends Component{
 
     this.state = {
 
+      loader:false,
       typeAction:'',
       onAction:'',
       tab:'feed',
@@ -70,18 +74,22 @@ export default class FeedPage extends Component{
 
   _onCardPress(data){
 
+    this.Api.getInfo(data.id,(idata)=>{
       this.props.navigation.navigate('FeedView',{
-        data:data
-      });
+        data:idata
+      })
 
-
+    })
   }
 
   _fetchData(){
+
+    this.setState({loader:true})
     this.Api.fetch((res)=>{
       this.data = res.data.rows;
 
       this.setState({
+        loader:false,
         onAction:'_fetchData'
       })
 
@@ -119,8 +127,12 @@ export default class FeedPage extends Component{
 
         </BenHeader>
 
-
+        <BenLoader visible={this.state.loader} />
+        
         <Content>
+
+          
+
           <View style={{
             alignItems:'center',
             paddingTop:10,
@@ -132,7 +144,7 @@ export default class FeedPage extends Component{
               flexDirection:'row',
               justifyContent:'space-between'
             }}>
-                <Box data={{
+                <Box  data={{
                   code:'star',
                   name:'Collect Start'
                 }} />
@@ -149,7 +161,7 @@ export default class FeedPage extends Component{
 
 
             </View>
-
+                
                 {
                   this.data.map((item)=>{
 

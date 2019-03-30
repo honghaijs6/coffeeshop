@@ -22,7 +22,7 @@ const BodyItem  = (props) =>{
 
   if(JSON.stringify(info)!=='{}'){
 
-    const stylePrice_s = info['price_s'].toString() === info['price'].toString() ? {color:COFFEE_COLOR} : { color:'#333' };
+    //const stylePrice_s = info['price_s'].toString() === info['price'].toString() ? {color:COFFEE_COLOR} : { color:'#333' };
     const stylePrice_m = info['price_m'].toString() === info['price'].toString() ? {color:COFFEE_COLOR} : { color:'#333' };
 
     const photo = props.info.photo.replace(/ /g,'%20');
@@ -51,7 +51,7 @@ const BodyItem  = (props) =>{
           <View>
             <Text style={{paddingHorizontal: 10, marginTop: 15,marginBottom:5, fontSize: 18, fontFamily: 'Roboto'}}> Select Size  </Text>
 
-            <TouchableOpacity onPress={()=>{ props.onSelectPrice({price:props.info.price_s,option:'size S'}) }} style={s.btnSelect}>
+            {/*<TouchableOpacity onPress={()=>{ props.onSelectPrice({price:props.info.price_s,option:'size S'}) }} style={s.btnSelect}>
                 <View style={s.rowItem}>
                    <View style={{ flexDirection:'row', alignItems:'center'}}>
                      <Icon style={[s.icon,stylePrice_s]} name="checkmark-circle" />
@@ -62,13 +62,13 @@ const BodyItem  = (props) =>{
                     <Text style={[s.txt,{ fontSize:16, color:'red', textAlign:'right'}]}> { props.info.price_s} $</Text>
                    </View>
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity>*/}
 
             <TouchableOpacity onPress={()=>{ props.onSelectPrice({price:props.info.price_m,option:'size M'}) }} style={s.btnSelect}>
                 <View style={s.rowItem}>
                    <View style={{ flexDirection:'row', alignItems:'center'}}>
                      <Icon style={[s.icon,stylePrice_m]} name="checkmark-circle" />
-                     <Text style={[s.txt,stylePrice_m]}> Size 475 ml </Text>
+                     <Text style={[s.txt,stylePrice_m]}> Size L </Text>
                    </View>
 
                    <View style={{ textAlign:'right'}}>

@@ -102,11 +102,50 @@ class moFire {
     })
   }
 
+  countAllWithField(field,value,onSuccess){
+
+    const query = this.db
+                    .orderByChild(field)
+                    .equalTo(value)
+
+    query.once("value",(snapshot)=>{
+      onSuccess(snapshot.numChildren());
+    })
+  }
+
+
+
+  _sortOrder(key,order='asc'){
+    return function(a, b) {
+       if(!a.hasOwnProperty(key) ||
+          !b.hasOwnProperty(key)) {
+         return 0;
+       }
+
+       const varA = (typeof a[key] === 'string') ?
+         a[key].toUpperCase() : a[key];
+       const varB = (typeof b[key] === 'string') ?
+         b[key].toUpperCase() : b[key];
+
+       let comparison = 0;
+       if (varA > varB) {
+         comparison = 1;
+       } else if (varA < varB) {
+         comparison = -1;
+       }
+       return (
+         (order == 'desc') ?
+         (comparison * -1) : comparison
+       );
+    };
+  }
+
+
   fetch(field,value,onSuccess){
 
     this.data = [] ;
 
-    this.countAll((total)=>{
+    this.countAllWithField(field,value,(total)=>{
 
         this.localData.db.total = total;
         const query = this.db
@@ -123,7 +162,8 @@ class moFire {
 
           });
 
-          this.data = this.data.reverse();
+          this.data.sort(this._sortOrder('sort'));
+
           onSuccess(this.data);
           this._onSuccess('value',this.data);
 
@@ -144,7 +184,6 @@ class moFire {
         this.localData.db.total = total;
         const query = this.db
                         .orderByChild("createdAt")
-                        /*.equalTo(0)*/
                         .limitToLast(config.paginate.max);
 
         query.once("value",(snapshot)=>{
@@ -156,9 +195,9 @@ class moFire {
 
           });
 
-          //this.data = this.data.reverse();
 
-
+          this.data.sort(this._sortOrder('sort'));
+          
           onSuccess(this.data);
           this._onSuccess('value',this.data);
 

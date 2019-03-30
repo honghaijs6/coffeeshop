@@ -1,11 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { View, Button } from 'react-native';
 import { Font, AppLoading } from 'expo';
 
 
 import { createStackNavigator, createAppContainer } from "react-navigation";
-
-
 import store from './src/redux/store';
 
 /* main pages*/
@@ -14,15 +12,10 @@ import Register from './src/pages/register';
 import Shop from './src/pages/shop';
 
 /* sub pages */
-
 /* FeedTab Link */
 import FeedView from './src/pages/feedview';
-
-
 /*MissionTab Link*/
-
 /* storeTab Link*/
-
 /*  OrderTabs linkin */
 import DeliveryPage from './src/pages/delivery';
 import MenuPage from './src/pages/menu';
@@ -155,8 +148,6 @@ export default class App extends React.Component {
 
   componentDidMount(){
 
-
-
     benAuth.checkLoginStatus((exists,isLoggedIn)=>{
 
       const userInfo = store.getState().user;
@@ -183,10 +174,3 @@ export default class App extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});

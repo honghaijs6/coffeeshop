@@ -23,7 +23,7 @@ class shop extends Component {
 
     _isMounted = false;
 
-    constructor(props){
+    constructor(props){   
       super(props);
 
       this.store = props.screenProps;

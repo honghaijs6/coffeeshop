@@ -116,7 +116,7 @@ class LoginPage extends Component {
                         alignSelf:'center',
                         justifyContent:'space-between'
                     }}>
-                        <ImageBackground source={require('../../assets/images/mylogo.png')} style={{width: 80, height: 106, alignSelf: 'center', marginBottom: 20}} />
+                        <ImageBackground source={require('../../assets/icon.png')} style={{width: 106, height: 106, alignSelf: 'center', marginBottom: 20}} />
 
 
                         <View style={{

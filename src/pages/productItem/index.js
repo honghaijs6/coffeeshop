@@ -123,7 +123,7 @@ export default class ProductItem extends Component {
   componentDidMount(){
 
     let info =  this.props.navigation.getParam('proInfo',{});
-    info['price'] = info['price'] || info['price_s'];
+    info['price'] = info['price'] || info['price_m'];
 
     const cartInfo = this._getInfoOnShoppingCart(info.uid);
 

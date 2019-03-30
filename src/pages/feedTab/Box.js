@@ -16,7 +16,7 @@ export default class Box extends Component {
 
     const { code, name} = this.props.data;
     return (
-      <TouchableOpacity style={{
+      <TouchableOpacity onPress={ this.props.onPress } style={{
         height:90,
         width:'32%',
         backgroundColor:'#fff',

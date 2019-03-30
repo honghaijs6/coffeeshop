@@ -14,7 +14,7 @@ export default class CardImage extends Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={ this.props.onPress }>
+      <TouchableOpacity style={{backgroundColor: '#ddd'}} onPress={ this.props.onPress }>
         <Image source={{uri: this.props.uri}}
         style={{height: 200, width: null, flex: 1}}
         />

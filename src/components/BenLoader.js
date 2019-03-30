@@ -9,6 +9,9 @@ import {
 
 } from 'react-native';
 
+import { Icon } from 'native-base';
+
+
 const BenLoader = function(props){
 
   let isDisplay = props.visible ? 'block':'none';
@@ -33,9 +36,14 @@ const BenLoader = function(props){
         borderRadius: 6,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(255,255,255,0.6)',
+        backgroundColor: 'rgba(63,9,17,0.79)',
       }}>
-          <ActivityIndicator color="#000" size="large" />
+          <ActivityIndicator color="#fff" size="large" />
+          <Text style={{
+            color:'#fff',
+            fontFamily:'Roboto',
+            fontSize:11
+          }}><Icon style={{color:'#fff', fontSize:12, marginRight: 10,}} name="cafe" /> King Kong </Text>
       </View>
 
     </View>

@@ -3,9 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 import { Container, Icon, Content, } from 'native-base';
 
-
-
-
 import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
 
 import OrderHeader from './Header';
@@ -64,7 +61,7 @@ export default class OrderPage extends Component{
         <Content>
 
             <OrderBody>
-                <Text style={s.h4}> King Kong Menu list </Text>
+                <Text style={s.h4}> King Kong Menu </Text>
 
                 <View style={{
                      justifyContent: 'space-between',
@@ -85,7 +82,7 @@ export default class OrderPage extends Component{
                              marginBottom: 14
 
                            }}>
-                           
+
                            <Image source={{uri:photoURL}}
                            style={{height: 140, width: '100%', flex: 1, borderRadius: 6, borderWidth: 0.5, borderColor: 'rgba(0,0,0,0.2)'}}
                            />
@@ -109,7 +106,7 @@ export default class OrderPage extends Component{
                            </View>
 
 
-                         </TouchableOpacity>
+                         </TouchableOpacity> 
                        )
 
                     })

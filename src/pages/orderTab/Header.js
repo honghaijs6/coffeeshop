@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity,TextInput } from 'react-native';
 
 import {  Icon,  Content,  } from 'native-base';
 
@@ -25,7 +25,7 @@ export default class OrderHeader extends Component{
   render(){
 
     let address = this.props.userInfo.recent_address ;
-    address = this.truncate(address);
+    //address = this.truncate(address);
 
     return(
       <View>
@@ -34,11 +34,23 @@ export default class OrderHeader extends Component{
                   <Icon style={{ fontSize: 32, color: COFFEE_COLOR}} name="bicycle"></Icon>
                   <View style={{ paddingHorizontal: 10, width: '90%'}}>
                       <Text style={{ fontSize: 10, color: BLACK_COLOR}}><Icon style={{fontSize: 12, color: BLACK_COLOR}} name="pin" /> Delivery to </Text>
+                      
+                      <View style={{
+                        flexDirection:'row'
+                      }}>
+                        <TextInput editable={false} selectTextOnFocus={false} style={{
+                          width:'86%',
+                          fontFamily:'Roboto',
+                          fontSize:16,
+                          color:BLACK_COLOR
+                        }} defaultValue={ address } />
 
+                        <Text style={{color:COFFEE_COLOR}}> CHANGE </Text>
+                      </View>
+                      
+                      
 
-                      <Text style={{ fontSize: 18, color:BLACK_COLOR}}>
-                           { address }
-                      </Text>
+                      
                   </View>
               </TouchableOpacity>
           </BenHeader>
