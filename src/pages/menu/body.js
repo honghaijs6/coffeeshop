@@ -7,7 +7,10 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import {  Icon, Tab, Tabs,TabHeading, Content } from 'native-base';
+import {  Tab, Tabs, TabHeading } from 'native-base';
+
+import { COFFEE_COLOR } from '../../config/const';
+
 
 import BodyDrinks from './drinks';
 import BodyFoods from './foods';
@@ -15,16 +18,24 @@ import BodyFavories from './favories';
 
 
 const MenuBody = (props) => (
+  
 
-
-    <Tabs>
-        <Tab heading="Drinks">
+    <Tabs textStyle={{color:'#000'}} tabBarUnderlineStyle={{ backgroundColor: COFFEE_COLOR,height:2, }}>
+        <Tab heading={
+          <TabHeading>
+            <Text style={{color:'#555'}}>Drinks</Text>
+        </TabHeading>
+        }>
             <BodyDrinks loader={props.loader} onPressItem={(data)=>{ props.onPressItem(data) }} data={ props.data } />
         </Tab>
         {/*<Tab heading="Foods">
             <BodyFoods/>
         </Tab>*/}
-        <Tab heading="Favories">
+        <Tab heading={
+          <TabHeading>
+              <Text style={{color:'#555'}}>Favories</Text>
+          </TabHeading>
+        }>
             <BodyFavories/>
         </Tab>
     </Tabs>

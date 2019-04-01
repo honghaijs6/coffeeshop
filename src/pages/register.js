@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ImageBackground, TextInput, TouchableOpacity  } from 'react-native';
+import { View, StyleSheet, ImageBackground, TouchableOpacity  } from 'react-native';
 
-import {  Link, Redirect } from "react-router-native";
 
 import { Container,Content,Item,Label,Icon ,Text,Input, Button  } from 'native-base';
-import Toast, {DURATION} from 'react-native-easy-toast';
+import Toast from 'react-native-easy-toast';
 
 
 import BenLoader from '../components/BenLoader';
 
 /* MODEL */
-import { benAuth } from '../model/authen';
+import { benAuth } from '../model/authen';  
 
 
 /* hook */

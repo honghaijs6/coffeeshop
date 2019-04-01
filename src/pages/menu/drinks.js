@@ -60,8 +60,8 @@ export default class BodyDrinks extends Component{
                     marginTop: 15,
                     flexDirection: 'row',
                     borderBottomColor: 'rgba(0,0,0,0.1)',
-                    borderBottomWidth: 0.5,
-                    paddingBottom: 15
+                    borderBottomWidth: 0,
+                    
                   }}>
 
                     <TouchableOpacity style={{
@@ -74,7 +74,8 @@ export default class BodyDrinks extends Component{
                       paddingLeft: 10,
                       justifyContent: 'center',
 
-                      width: '75%',
+                      width: '66%',
+                      backgroundColor:'#fff'
 
 
                     }}>
@@ -104,14 +105,14 @@ export default class BodyDrinks extends Component{
 const s =  StyleSheet.create({
   h4:{
     color: COFFEE_COLOR,
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: '500',
 
   },
   price:{
     color:RED_COLOR,
-    fontSize: 20,
-    fontWeight: 'bold'
+    fontSize: 16,
+    fontWeight: '500'
   },
   txt:{
     fontSize: 16,

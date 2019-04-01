@@ -1,6 +1,4 @@
-
 /* MODEL NÀY CÓ THỂ KẾT NỐI VỚI REDUX - MOBX để luu cache database dùng lại*/
-
 /*
 MODEL : MAKE RESFUL API
 
@@ -19,11 +17,13 @@ MODEL : MAKE RESFUL API
 import {AsyncStorage} from 'react-native';
 
 
+
 import store from '../redux/store';
 
 // DATABASE
 import server from '../config/server';
 import axios from 'react-native-axios';
+
 
 
 

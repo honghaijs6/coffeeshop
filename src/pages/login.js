@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
 import {
-  View, StyleSheet, ImageBackground, ScrollView,Text,InputText,KeyboardAvoidingView,TouchableOpacity,
-  ActivityIndicator
-  } from 'react-native';
+  View, StyleSheet, ImageBackground, Text,TouchableOpacity
 
-import {  Link } from "react-router-native";
+} from 'react-native';
 
-import { Container, Content,Item,Icon , Input,  Button } from 'native-base';
-import Toast, {DURATION} from 'react-native-easy-toast';
+import { Content,Item,Icon , Input,  Button } from 'native-base';
+import Toast from 'react-native-easy-toast';
 
 import { Ionicons } from '@expo/vector-icons';
 
 
 import { benAuth } from '../model/authen';
-import BenLoader from '../components/BenLoader';
+import BenLoader from '../components/BenLoader'; 
 
+import SocketIOClient from 'socket.io-client';
+const socket = SocketIOClient('https://backendsql.herokuapp.com');
 
+  
 /* hook */
 import {detectForm} from '../hook/before/';
+
+
 
 class LoginPage extends Component {
 
@@ -50,7 +53,31 @@ class LoginPage extends Component {
          loader:true
        });
 
-       benAuth.doLogin(this.state,(data)=>{
+
+       try{
+
+        socket.emit('authenticate', {
+
+         "strategy":"local",
+         "email":"test1@gmail.com",
+         "password":"admin@333"
+
+         }, (message, data)=> {
+           alert('ok socket');
+
+        });
+
+       }catch(error){ 
+         console.log(error)
+       }
+
+       
+
+
+
+
+
+       /*benAuth.doLogin(this.state,(data)=>{
 
 
        },(err)=>{
@@ -61,7 +88,7 @@ class LoginPage extends Component {
 
          this.refs.toast.show(err.message,3000)
 
-       })
+       })*/
 
      }else{
        this.setState({
@@ -86,8 +113,9 @@ class LoginPage extends Component {
   _whereStateChange(newState){
     this.setState(Object.assign(this.state,newState));
 
-
   }
+
+  
   render() {
 
 
@@ -116,7 +144,7 @@ class LoginPage extends Component {
                         alignSelf:'center',
                         justifyContent:'space-between'
                     }}>
-                        <ImageBackground source={require('../../assets/icon.png')} style={{width: 106, height: 106, alignSelf: 'center', marginBottom: 20}} />
+                        <ImageBackground source={require('../../assets/mylogo.png')} style={{width: 106, height: 106, alignSelf: 'center', marginBottom: 20}} />
 
 
                         <View style={{
