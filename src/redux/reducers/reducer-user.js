@@ -6,6 +6,7 @@ model = {
 }
 */
 
+import { AVATAR_URL } from '../../config/const';
 
 const MODE = 'users';
 const NAME = 'Member';
@@ -22,9 +23,15 @@ export default function(state = iniState ,action = {}){
   switch(action.type){
 
      case 'LOGIN':
-       return {
+      
+      let userInfo = action.userInfo; 
+      userInfo.photoURL = userInfo.photoURL || AVATAR_URL;
+      userInfo.phone = userInfo.phone || '';
+      
+
+      return {
          ...state,
-         userInfo:action.userInfo,
+         userInfo:userInfo,
          isLoggedIn:action.isLoggedIn
        }
      break;

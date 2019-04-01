@@ -10,15 +10,15 @@ import Toast from 'react-native-easy-toast';
 import { Ionicons } from '@expo/vector-icons';
 
 
-import { benAuth } from '../model/authen';
+
+import USER from '../config/user';
+
 import BenLoader from '../components/BenLoader'; 
 
-import SocketIOClient from 'socket.io-client';
-const socket = SocketIOClient('https://backendsql.herokuapp.com');
 
   
 /* hook */
-import {detectForm} from '../hook/before/';
+import {detectForm} from '../hook/before/';   
 
 
 
@@ -43,52 +43,26 @@ class LoginPage extends Component {
 
 
 
-   _onSubmitLogin(){
+   async _onSubmitLogin(){
 
 
 
      if(detectForm(['email','password'],this.state)===''){
 
-       this.setState({
-         loader:true
-       });
-
-
-       try{
-
-        socket.emit('authenticate', {
-
-         "strategy":"local",
-         "email":"test1@gmail.com",
-         "password":"admin@333"
-
-         }, (message, data)=> {
-           alert('ok socket');
-
-        });
-
-       }catch(error){ 
-         console.log(error)
+       
+      
+       this.setState({loader:true});
+       const res = await USER.authenticate(this.state.email,this.state.password);
+       
+       if(res.data===undefined){
+        this.refs.toast.show('There is no user record corresponding to this identifier',4000)
+       }else if(res.userInfo !== undefined){
+          USER.checkLoginStatus();
        }
-
+       this.setState({loader:false});
        
 
 
-
-
-
-       /*benAuth.doLogin(this.state,(data)=>{
-
-
-       },(err)=>{
-
-         this.setState({
-           loader:false
-         });
-
-         this.refs.toast.show(err.message,3000)
-
-       })*/
 
      }else{
        this.setState({

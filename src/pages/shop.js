@@ -116,7 +116,7 @@ class shop extends Component {
 
           this.setState({
             onAction:'fetch_categories'
-          })
+          })  
 
 
 

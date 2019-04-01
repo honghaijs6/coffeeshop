@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-import { Container, Icon,  Content, Button } from 'native-base';
+import { Container, Icon,  Content } from 'native-base';
 
 
 import BenHeader from '../../components/BenHeader' ;
@@ -11,6 +11,8 @@ import { GREY_COLOR, COFFEE_COLOR } from '../../config/const';
 
 
 import { benAuth } from '../../model/authen';
+
+import USER from '../../config/user';
 
 import ProfileName from './profileName';
 
@@ -22,7 +24,7 @@ export default class AccountPage extends Component{
 
     this.state = {
 
-      typeAction:'',
+      typeAction:'', 
       onAction:'',
       tab:'account',
 
@@ -34,11 +36,13 @@ export default class AccountPage extends Component{
     this._onSignOut = this._onSignOut.bind(this);
   }
 
-  _onSignOut(){
+  async _onSignOut(){
 
-    benAuth.doSignOut(()=>{
+    await USER.logout();
+    
+    /*benAuth.doSignOut(()=>{
       //alert('signed out okay')
-    },(err)=>{ console.log(err); });
+    },(err)=>{ console.log(err); });*/
 
   }
 
@@ -63,6 +67,7 @@ export default class AccountPage extends Component{
         <Content>
 
           <ProfileName userInfo={ this.state.userInfo   } />
+          
           <View style={s.holder }>
             <TouchableOpacity onPress={ ()=>{ this.props.navigation.navigate('RewardPage') } } style={ s.btnItem }>
               <Icon style={s.icon} name="star" />

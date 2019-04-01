@@ -1,7 +1,7 @@
 import {AsyncStorage} from 'react-native';
 
 const server = {
-  host:"https://backendsql.herokuapp.com",//"https://backendcoffee.herokuapp.com",
+  host:"https://backendsql.herokuapp.com",
   port:443,
 
   url:'',
@@ -26,8 +26,8 @@ const server = {
       }
     }
   },
-  token:function(){
-    return AsyncStorage.getItem('feathers-jwt');
+  async token(){
+    return await AsyncStorage.getItem('feathers-jwt');
   },
 
 }

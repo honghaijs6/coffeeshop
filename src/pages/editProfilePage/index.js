@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ImageBackground, TextInput, TouchableOpacity  } from 'react-native';
+import { View, StyleSheet  } from 'react-native';
 
-import { Container,Content,Item,Label,Icon ,Text,Input, Button  } from 'native-base';
-import Toast, {DURATION} from 'react-native-easy-toast';
+import { Container,Content,Item,Label ,Text,Input, Button  } from 'native-base';
+import Toast from 'react-native-easy-toast';
 
 import DatePicker from 'react-native-datepicker'
 
@@ -16,11 +16,17 @@ import store from '../../redux/store';
 import { benAuth } from '../../model/authen';
 
 import BenHeader from '../../components/BenHeader';
+
+import USER from '../../config/user';
+
 import BenStatusBar from '../../components/BenStatusBar';
 import BackButton  from '../../components/BackButton';
 
 /* hook */
 import {detectForm} from '../../hook/before/';
+
+import BenLoader from '../../components/BenLoader';
+
 
 import { validateEmail, validatePassword, confirmPassword } from '../../hook/ultil/validate';
 
@@ -33,7 +39,7 @@ class EditProfilePage extends Component {
     super(props);
 
     this.state = {
-
+      loader:false,
       typeAction:'',
       onAction:'',
       status:'',
@@ -64,7 +70,7 @@ class EditProfilePage extends Component {
     this._whereStateChange({typeAction:''})
   }
 
-  _onSubmit(){
+  async _onSubmit(){  
 
 
 
@@ -77,11 +83,12 @@ class EditProfilePage extends Component {
             msg = 'Please enter your correct email format';
           }else{
 
-             benAuth.updateInfo(this.data,(data)=>{
-               this.refs.toast.show('Profile update successful',3000);
-             },(err)=>{
+             this.setState({loader:true});  
+             const resMsg =  await USER.update(this.data.id,this.data);
+             this.refs.toast.show(resMsg,3000);
+             this.setState({loader:false});
 
-             })
+
           }
 
           if(msg!==''){
@@ -126,6 +133,8 @@ class EditProfilePage extends Component {
               <View></View>
             </BenHeader>
 
+            <BenLoader visible={ this.state.loader } />
+
             <Content>
 
                 <View style={{
@@ -162,9 +171,10 @@ class EditProfilePage extends Component {
                         <Item stackedLabel style={ s.item}>
                             <Label style={s.label}>  Phone number </Label>
                             <Input
+                              keyboardType='numeric'
                               defaultValue={ userInfo.phone }
                               placeholderTextColor="rgba(0,0,0,0.6)"
-                              onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={s.text} placeholder='Phone number'/>
+                              onChangeText={(text)=>{ this._onChangeText({phone:text}) }} style={s.text} placeholder='Phone number'/>
 
                         </Item>
 

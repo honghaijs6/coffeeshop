@@ -5,13 +5,12 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  ImageBackground
+  TouchableOpacity
 } from 'react-native';
 
 import { Container, Content, Icon } from 'native-base';
 
-import { COFFEE_COLOR, USERS_LEVEL, GREY_COLOR } from '../../config/const';
+import { COFFEE_COLOR, GREY_COLOR } from '../../config/const';
 
 import BenStatusBar from '../../components/BenStatusBar';
 import BackButton from '../../components/BackButton';

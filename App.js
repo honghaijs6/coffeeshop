@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, Button } from 'react-native';
 import { Font, AppLoading } from 'expo';
 
 
@@ -36,22 +35,23 @@ import SettingDeliveryPage from './src/pages/settingDeliveryPage';
 import MapPage from './src/pages/mapPage';
 
 
-
 import { benAuth } from './src/model/authen';
+import USER from './src/config/user';
+
 
 const RootStack = createStackNavigator(
   {
     Home: Shop,
     FeedView:FeedView,
 
-    /* TAB ORDERS CHILD */
+     
     MenuPage:MenuPage,
     ProItem:ProItemPage,
     CartPage:CartPage,
     CheckOutPage:CheckOutPage,
     DeliveryPage:DeliveryPage,
 
-    /* TAB ACCOUNT CHILD */
+    
     RewardPage:RewardPage,
     HistoryPage:HistoryPage,
     HelpPage:HelpPage,
@@ -113,6 +113,7 @@ export default class App extends React.Component {
         const userInfo = store.getState().user;
 
         if(userInfo.isLoggedIn !== this.state.login){
+
           if(userInfo.userInfo !==null){
             this.setState({
               login: userInfo.isLoggedIn
@@ -146,17 +147,12 @@ export default class App extends React.Component {
     this.setState({ isReady: true });
   }
 
-  componentDidMount(){
-
-    benAuth.checkLoginStatus((exists,isLoggedIn)=>{
-
-      const userInfo = store.getState().user;
-      if(userInfo.userInfo!==null){
-        isLoggedIn ? this.setState({login:true}) : null ;
-      }
+  async componentDidMount(){
 
 
-    })
+    const res =  await  USER.checkLoginStatus() ;
+    
+
   }
 
   render() {
