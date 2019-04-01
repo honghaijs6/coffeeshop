@@ -83,8 +83,14 @@ class EditProfilePage extends Component {
             msg = 'Please enter your correct email format';
           }else{
 
-             this.setState({loader:true});  
-             const resMsg =  await USER.update(this.data.id,this.data);
+             this.setState({loader:true});
+
+             const resMsg =  await USER.update(this.data.id,{
+               name:this.data.name,
+               phone:this.data.phone,
+               birthday:this.data.birthday
+             });
+             
              this.refs.toast.show(resMsg,3000);
              this.setState({loader:false});
 
