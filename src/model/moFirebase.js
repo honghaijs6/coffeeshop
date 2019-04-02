@@ -92,7 +92,7 @@ class moFire {
 
       })
       .catch(function(error) {
-        onSuccess(error);
+        onSuccess(error); 
       });
   }
 
@@ -123,7 +123,7 @@ class moFire {
        }
 
        const varA = (typeof a[key] === 'string') ?
-         a[key].toUpperCase() : a[key];
+         a[key].toUpperCase() : a[key];  
        const varB = (typeof b[key] === 'string') ?
          b[key].toUpperCase() : b[key];
 
@@ -134,7 +134,7 @@ class moFire {
          comparison = -1;
        }
        return (
-         (order == 'desc') ?
+         (order == 'desc') ?  
          (comparison * -1) : comparison
        );
     };
@@ -148,6 +148,9 @@ class moFire {
     this.countAllWithField(field,value,(total)=>{
 
         this.localData.db.total = total;
+
+        this.db.total = total; // USE IT FOR AG-GRID FOOTER
+
         const query = this.db
                         .orderByChild(field)
                         .equalTo(value)
@@ -163,7 +166,7 @@ class moFire {
           });
 
           this.data.sort(this._sortOrder('sort'));
-
+          //this.data = [] ;
           onSuccess(this.data);
           this._onSuccess('value',this.data);
 

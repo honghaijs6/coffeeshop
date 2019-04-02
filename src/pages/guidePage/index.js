@@ -4,23 +4,75 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
+  StyleSheet, 
   WebView
 } from 'react-native';
 
 import { Container, Content } from 'native-base';
 
-import { GREY_COLOR, COFFEE_COLOR } from '../../config/const';
+import { GREY_COLOR } from '../../config/const';
+
+import moFire from '../../model/moFirebase';
+
+import HTMLView from 'react-native-htmlview';
+
 
 import BenStatusBar from '../../components/BenStatusBar';
 import BenHeader from '../../components/BenHeader';
 import BackButton from '../../components/BackButton';
 import BenBody from '../../components/BenBody' ;
-import NoData from '../../components/NoData';
+
+const MODE = 'company';
+
 
 
 export default class HelpPage extends Component {
+
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+      content:''
+    }
+
+    this._setup();
+
+  }
+
+  _setup(){
+
+    this.model = new moFire(MODE);
+
+  }
+
+  componentDidMount(){
+    this.model.fetch("code","howtogetpoint",(res)=>{
+      const content = res[0]['content'];
+      this.setState({content:content});
+
+      
+
+    })
+  }
   render() {
+
+    const htmlContent = `
+      <style>
+        body,*{
+          font-size: 18px;
+          padding:10px;
+          color:red
+        }
+        p{
+          font-size:20px;
+        }
+      </style>
+      <body>
+        ${ this.state.content || '' }
+      </body>
+    ` ;
+
     return (
       <Container>
         <BenStatusBar/>
@@ -31,33 +83,29 @@ export default class HelpPage extends Component {
           </View>
           <View></View>
         </BenHeader>
-        <Content style={{
-          backgroundColor:GREY_COLOR
-          }}>
-            <BenBody>
-                <View style={{
-                  padding: 30
-                }}>
 
-                  <View style={{
-                    alignItems: 'center'
-                  }}>
-                      <Text style={s.h3}> HOW TO EARN STAR  </Text>
 
-                  </View>
-                  
+        <WebView
+          originWhitelist={['*']}
+          source={{html: htmlContent }}
+          automaticallyAdjustContentInsets={true}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          scalesPageToFit={true}
+          decelerationRate="normal"
+          javaScriptEnabledAndroid={true}
+          
 
-                </View>
-            </BenBody>
+        />
 
-        </Content>
+        
       </Container>
     );
   }
 }
 
 const s = StyleSheet.create({
-
+  
   h1:{
     fontSize: 28,
     fontWeight: 'bold',

@@ -5,7 +5,8 @@ import { Container, Icon, Content } from 'native-base';
 
 import HTMLView from 'react-native-htmlview';
 
-import { GREY_COLOR, COFFEE_COLOR } from '../config/const' ;
+
+import {  COFFEE_COLOR } from '../config/const' ;
 
 import BenHeader from '../components/BenHeader';
 import BenStatusBar  from "../components/BenStatusBar";
