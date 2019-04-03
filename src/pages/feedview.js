@@ -69,15 +69,18 @@ export default class FeedViewPage extends Component{
 
 
         </BenHeader>
+        
+        
+        <Content style={{marginTop:-10}}>
+          <Image source={{uri: data.photo}}
+              style={{height: 200, width: null, flex: 1, marginVertical: 10}}
+            />
 
-        <Content>
           <View style={{
             padding: 20
           }} >
 
-              <Image source={{uri: data.photo}}
-              style={{height: 200, width: null, flex: 1, marginVertical: 10}}
-              />
+              
               <HTMLView
                 value={ data.content || '' }
                 stylesheet={s}

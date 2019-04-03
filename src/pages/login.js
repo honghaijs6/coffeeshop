@@ -112,7 +112,7 @@ class LoginPage extends Component {
                 <Content>
 
 
-                    <View style={{
+                    <View style={{  
                         width:'80%',
                         marginTop:'15%',
                         alignSelf:'center',

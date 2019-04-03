@@ -9,6 +9,8 @@ import Toast from 'react-native-easy-toast';
 import BenLoader from '../components/BenLoader';
 
 /* MODEL */
+
+import USER from '../config/user';
 import { benAuth } from '../model/authen';  
 
 
@@ -20,7 +22,7 @@ import { validateEmail, validatePassword, confirmPassword } from '../hook/ultil/
 
 class Register extends Component {
 
-
+  
   constructor(props){
 
     super(props);
@@ -73,7 +75,7 @@ class Register extends Component {
     });
 
   }
-  _onSubmit(){
+  async _onSubmit(){
 
 
     this._onProsess();
@@ -88,15 +90,18 @@ class Register extends Component {
           }else if(!confirmPassword(this.data.password,this.data.repassword)){
             msg = 'Your password  unmatch';
           }else{
-            benAuth.register(this.data,(data)=>{
-                //this._onSuccess();
 
-            },(err)=>{
+            msg = await USER.register(this.data) ;
 
-              this.refs.toast.show(err.message,3000);
+            if(msg==='success'){
+
+              USER.checkLoginStatus();
+
+            }else{  
+              this.refs.toast.show(msg,3000); 
               this._onFree();
-
-            });
+            }
+            
           }
 
           if(msg!==''){

@@ -8,21 +8,19 @@ import {
   WebView
 } from 'react-native';
 
-import { Container, Content } from 'native-base';
-
-import { GREY_COLOR } from '../../config/const';
+import { Container } from 'native-base';
 
 import moFire from '../../model/moFirebase';
-
-import HTMLView from 'react-native-htmlview';
 
 
 import BenStatusBar from '../../components/BenStatusBar';
 import BenHeader from '../../components/BenHeader';
 import BackButton from '../../components/BackButton';
-import BenBody from '../../components/BenBody' ;
+
+
 
 const MODE = 'company';
+
 
 
 
@@ -58,16 +56,16 @@ export default class HelpPage extends Component {
   render() {
 
     const htmlContent = `
-      <style>
-        body,*{
-          font-size: 18px;
-          padding:10px;
-          color:red
-        }
-        p{
-          font-size:20px;
-        }
-      </style>
+    <style>
+    
+      body {
+        padding:30px;
+        font-size: 40px;
+        font-family:'Arial';
+        color:'#666'
+      }
+    
+    </style>
       <body>
         ${ this.state.content || '' }
       </body>
@@ -88,14 +86,7 @@ export default class HelpPage extends Component {
         <WebView
           originWhitelist={['*']}
           source={{html: htmlContent }}
-          automaticallyAdjustContentInsets={true}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          scalesPageToFit={true}
-          decelerationRate="normal"
-          javaScriptEnabledAndroid={true}
-          
-
+         
         />
 
         

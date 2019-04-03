@@ -16,9 +16,27 @@ const USER = {
         store.dispatch(newState);
     },
 
+
     async register(data){
         return new Promise((resole,reject)=>{
+            const url = socket.server.host+'/users';
+            axios.post(url,data).then((res)=>{
+                res = res.data ;
 
+                if(res.name==='success'){
+                    
+                    AsyncStorage.setItem('userInfo',JSON.stringify(res.data)).then(()=>{
+
+                        resole(res.name);
+                        
+                   })
+
+
+                }else{
+                    resole(res.message);
+                }
+
+            })  
         });
     },
 
