@@ -7,11 +7,10 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image
+  Image,
+  Keyboard
 } from 'react-native';
 
-
-import store from '../../redux/store';
 
 import { Container,  Content, Icon } from 'native-base';
 import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR, GOOGLE_MAP_KEY } from '../../config/const' ;
@@ -21,8 +20,11 @@ import { truncate2 } from '../../hook/ultil/ultil' ;
 import MyHeader from './header';
 
 import BenStatusBar from '../../components/BenStatusBar';
-import {benAuth} from '../../model/authen';
+import BenLoader from '../../components/BenLoader';
 
+
+
+import USER  from '../../config/user';
 
 
 function Item(props){
@@ -51,29 +53,32 @@ export default class DeliveryPage extends Component {
   constructor(props){
     super(props)
 
+    this.store = props.screenProps;
+
     this.state = {
 
+      loader:false,
       typeAction:'',
       onAction:'',
       tab:'delivery',
 
       mode:'none',
-      userInfo: store.getState().user.userInfo ,
+      userInfo: this.store.getState().user.userInfo ,
 
       personalItems:[
         {
           code:'home',
           icon:'home',
           label:'Home',
-          name: store.getState().user.userInfo['home_address'] || 'Chose your home location for delivery',
-          isEmpty: store.getState().user.userInfo['home_address'] || ''
+          name: this.store.getState().user.userInfo['home_address'] || '',
+          isEmpty: this.store.getState().user.userInfo['home_address'] || ''
         },
         {
           code:'office',
           icon:'briefcase',
           label:'Work place',
-          name:store.getState().user.userInfo['work_address'] || 'Chose your work place for delivery',
-          isEmpty:store.getState().user.userInfo['work_address'] || ''
+          name:this.store.getState().user.userInfo['work_address'] || '',
+          isEmpty:this.store.getState().user.userInfo['work_address'] || ''
         },
         /*{
           code:'current',
@@ -85,7 +90,7 @@ export default class DeliveryPage extends Component {
           code:'recent',
           icon:'time',
           label:'Recent search',
-          name:store.getState().user.userInfo.recent_address || '...'
+          name:this.store.getState().user.userInfo.recent_address || '...'
         },
 
       ]
@@ -152,15 +157,35 @@ export default class DeliveryPage extends Component {
   }
 
   //
-  _onItemPress(data){
+  async _onItemPress(data){
 
     if(data.isEmpty!=='' || data.name !=='...'){
-      this.state.userInfo.recent_address = data.name;
-      benAuth.updateInfo(this.state.userInfo,(data)=>{
-        this._whereStateChange({
-          onAction:'goBack',
-        });
-      })
+
+
+      const userInfo = this.state.userInfo;
+      this.setState({loader:true})
+      const msg = await USER.update(userInfo.id,{
+          name:userInfo.name,
+          recent_address:data.name
+      });
+
+      this.setState({loader:false})
+      Keyboard.dismiss();
+
+
+      if(msg==='Update success'){
+
+        setTimeout(()=>{
+          this._whereStateChange({
+            onAction:'goBack',
+          });
+
+        },500)
+
+      }else{ alert(msg); }
+
+
+
     }
 
 
@@ -193,6 +218,8 @@ export default class DeliveryPage extends Component {
 
         <MyHeader onBackBtnPress={()=>{  this.props.navigation.goBack()  }}  onAction={ this.state.onAction } onCloseSearch={ ()=>{  this._onCloseSearch() } } onChangeText={(text)=>{ this._onTextChange(text)  }} />
 
+        <BenLoader visible={ this.state.loader } />
+
         <Content>
 
           <View style={[s.block]}>
@@ -201,7 +228,7 @@ export default class DeliveryPage extends Component {
               {
                 this.data.map((item,index)=>{
                   return(
-                    <Item onPress={ (data)=>{ this  ._onItemPress(data) } } key={index}  data={item} />
+                    <Item onPress={ (data)=>{ this._onItemPress(data) } } key={index}  data={item} />
                   )
                 })
               }
@@ -209,9 +236,12 @@ export default class DeliveryPage extends Component {
           <View style={[s.block]}>
             {
               this.state.personalItems.map((item,index)=>{
-                return(
-                  <Item onPress={ (data)=>{ this  ._onItemPress(data) } } key={index}  data={item} />
-                )
+                if(item.name!==''){
+                  return(
+                    <Item onPress={ (data)=>{ this._onItemPress(data) } } key={index}  data={item} />
+                  )
+                }
+
               })
             }
 

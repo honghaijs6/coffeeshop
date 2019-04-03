@@ -17,6 +17,9 @@ const USER = {
     },
 
 
+
+
+
     async register(data){
         return new Promise((resole,reject)=>{
             const url = socket.server.host+'/users';
@@ -24,11 +27,11 @@ const USER = {
                 res = res.data ;
 
                 if(res.name==='success'){
-                    
+
                     AsyncStorage.setItem('userInfo',JSON.stringify(res.data)).then(()=>{
 
                         resole(res.name);
-                        
+
                    })
 
 
@@ -36,45 +39,51 @@ const USER = {
                     resole(res.message);
                 }
 
-            })  
+            })
         });
     },
 
-    async update(id,data){ 
-       
+
+
+    async update(id,data){
+
         return new Promise((resole,reject)=>{
 
-            const url = socket.server.host+'/users?id='+id;  
+            const url = socket.server.host+'/users?id='+id;
             axios.put(url,data).then((res)=>{
-                
-                res = res.data ;
-                
-                if(res.name==='success'){
-                    
 
-                    AsyncStorage.setItem('userInfo',JSON.stringify(data)).then(()=>{
-                        
-                        // REFESH REDUX 
+                res = res.data ;
+
+                if(res.name==='success'){
+
+                    let userInfo = store.getState().user.userInfo;
+
+                    Object.assign(userInfo,data);
+
+
+                    AsyncStorage.setItem('userInfo',JSON.stringify(userInfo)).then(()=>{
+
+                        // REFESH REDUX
                         this._whereStateChange({
                             type:'LOGIN',
                             isLoggedIn:true,
-                            userInfo:data
+                            userInfo:userInfo
                         });
 
                         resole('Update success')
 
-                        
+
 
                     })
-                    
+
                 }else{
                     resole(res.message);
                 }
 
-                
+
             });
 
-            
+
         })
     },
 
@@ -91,7 +100,7 @@ const USER = {
 
                 resole(true);
             })
-            
+
         })
     },
 
@@ -109,26 +118,26 @@ const USER = {
                     isLoggedIn: data === null ? false : true ,
                     userInfo:info
                 })
-                
-                
+
+
 
 
             });
-        
+
         })
     },
     async authenticate(email,password){
 
         return new Promise((resole,reject)=>{
-            
+
             socket.emit('authenticate', {
-  
+
                 "strategy":"local",
-                "email": email,  
+                "email": email,
                 "password": password
-       
+
                 }, (message, data)=> {
-                  
+
                   if(data!==undefined){
 
                     AsyncStorage.setItem('token',data.accessToken);
@@ -136,8 +145,8 @@ const USER = {
 
                     // GET USER INFO ADD SAVE LOCALSTOREAGE
                     const url = socket.server.host+'/users?email='+email;
-                    axios.get(url).then((res)=>{ 
-                            
+                    axios.get(url).then((res)=>{
+
                          const data = res.data;
                          if(data.name==='success'){
                            AsyncStorage.setItem('userInfo',JSON.stringify(data.rows[0])).then(()=>{
@@ -148,13 +157,13 @@ const USER = {
                                     userInfo:data.rows[0]
                                 });
 
-                                
-                                
+
+
                            })
-                           
+
                          }
-                         
-                         
+
+
                     })
 
                   }else{

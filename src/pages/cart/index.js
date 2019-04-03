@@ -7,7 +7,8 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  Alert
 } from 'react-native';
 
 import { Container,  Content, Icon,  } from 'native-base';
@@ -77,18 +78,20 @@ export default class Cart extends Component {
   }
   _onOrderNow(){
 
+
+
     let msg = '';
     if(this.state.userInfo.phone.length < 6 ){
       msg = 'Please enter your phone number ';
-    }else if(this.state.userInfo.recent_address.length < 20){
-      msg = 'Please enter your delivery address '
+    }else if(this.state.userInfo.recent_address === null  ){
+      msg = 'Please add your delivery address '
     }else{
 
       this.props.navigation.navigate('CheckOutPage');
 
     }
 
-    msg !== '' ? alert(msg) : null
+    msg !== '' ? Alert.alert('Message',msg) : null
 
   }
   _onBackBtnPress(){
@@ -130,7 +133,7 @@ export default class Cart extends Component {
         }}>
 
             <Content>
-              <CartBody onItemSelect={ this._onItemSelect } onChangeText={ (data)=>{ this._onChangeText(data) } } data={this.state.data} userInfo={ this.state.userInfo } />
+              <CartBody onPressGotoSettingAdd={()=>{ this.props.navigation.navigate('DeliveryPage') }} onItemSelect={ this._onItemSelect } onChangeText={ (data)=>{ this._onChangeText(data) } } data={this.state.data} userInfo={ this.state.userInfo } />
             </Content>
 
             {/* FOOTER BUTTON */}

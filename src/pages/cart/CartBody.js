@@ -67,10 +67,12 @@ export default class  CartBody extends Component{
             <View style={ s.row }>
 
               <Icon style={s.icon} name="pin" />
-              <TouchableOpacity style={{
+              <TouchableOpacity
+                onPress={()=>{ this.props.onPressGotoSettingAdd() }}
+                style={{
                   width: '90%'
                 }}>
-                <Text> { this.state.userInfo.recent_address } </Text>
+                <Text> { this.state.userInfo.recent_address || 'add your delivery address' } </Text>
               </TouchableOpacity>
 
             </View>

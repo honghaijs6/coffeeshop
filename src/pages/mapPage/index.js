@@ -5,13 +5,13 @@ import MapView, { Marker, PROVIDER_GOOGLE, AnimatedRegion, Animated, Callout } f
 
 import { Constants, Location, Permissions } from 'expo';
 
-import store from '../../redux/store';
-import {benAuth} from '../../model/authen';
+import Toast from 'react-native-easy-toast';
 
 
 
 import { Container, Icon, Content, Button } from 'native-base';
 
+import BenLoader from '../../components/BenLoader';
 import BenStatusBar from '../../components/BenStatusBar';
 import BenHeader from '../../components/BenHeader' ;
 import BackButton from '../../components/BackButton';
@@ -25,6 +25,8 @@ import STORE_LOCATIONS from '../../data/stores.json';
 
 
 
+import USER from '../../config/user';
+
 import BoxSearch from './boxSearch';
 
 
@@ -35,10 +37,13 @@ export default class MapPage extends Component{
 
     super(props);
 
+    this.store = props.screenProps ;
+
     this.state = {
 
+        loader:false,
         settingFor:'',
-        userInfo:store.getState().user.userInfo,
+        userInfo:this.store.getState().user.userInfo,
         countMapChange:0,
         data:[],
         keyFind:'',
@@ -118,15 +123,20 @@ export default class MapPage extends Component{
     this._geoCodeAddress(address);
   }
 
-  _onSelectCurrentAddress(){
+  async _onSelectCurrentAddress(){
     /* UPDATE DATA USER INFO */
     this.state.userInfo[this.state.settingFor] = this.state.currentAdress;
-    benAuth.updateInfo(this.state.userInfo,(data)=>{
 
-       this.props.navigation.goBack();
+    this.setState({loader:true})
+    const resMsg = await USER.update(this.state.userInfo.id,{
+      name:this.state.userInfo.name,
+      [this.state.settingFor]:this.state.currentAdress
+    });
+    this.setState({loader:false})
 
+    this.refs.toast.show(resMsg,3000);
+    
 
-    })
   }
 
   _addressToLatLng(address,onSuccess){
@@ -270,6 +280,10 @@ export default class MapPage extends Component{
     const { mapRegion } = this.state
     this.state.settingFor = this.props.navigation.getParam('for');
 
+    const arr = {
+      home_address:"Add your home address",
+      work_address:"Add your work place address"
+    }
 
 
     return(
@@ -282,10 +296,12 @@ export default class MapPage extends Component{
               <Text style={{
                 fontSize:18,
                 fontFamily:'Roboto'
-              }}>  Add Delivery Locations  </Text>
+              }}>  { arr[this.state.settingFor] }  </Text>
             </View>
             <View></View>
         </BenHeader>
+
+        <BenLoader visible={this.state.loader} />
 
         <MapView
           style={{ flex: 1 }}
@@ -340,6 +356,15 @@ export default class MapPage extends Component{
 
 
           </SafeAreaView>
+
+          <Toast position='top'
+          positionValue={200}
+            fadeInDuration={750}
+            fadeOutDuration={1000}
+            opacity={0.8}
+
+           ref="toast"/>
+
 
       </Container>
 

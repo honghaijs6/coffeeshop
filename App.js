@@ -48,7 +48,7 @@ const RootStack = createStackNavigator(
     Home: Shop,
     FeedView:FeedView,
 
-     
+
     MenuPage:MenuPage,
     ProItem:ProItemPage,
     CartPage:CartPage,
@@ -57,7 +57,7 @@ const RootStack = createStackNavigator(
     CollectStarPage:CollectStarPage,
     CouponPage:CouponPage,
     Scanner:Scanner,
-    
+
     RewardPage:RewardPage,
     HistoryPage:HistoryPage,
     HelpPage:HelpPage,
@@ -157,7 +157,7 @@ export default class App extends React.Component {
 
 
     const res =  await  USER.checkLoginStatus() ;
-    
+
 
   }
 

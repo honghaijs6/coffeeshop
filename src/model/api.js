@@ -92,7 +92,17 @@ class Api {
     }
 
     this.db.url = url;
-    this.db.config = server.setHeader();
+
+    AsyncStorage.getItem('token').then((token)=>{
+      this.db.config = {
+        headers:{
+          "Content-Type": "application/json",
+          "Authorization": token,
+          "cache-control": "no-cache"
+        }
+      }
+
+    });
 
 
   }
@@ -116,7 +126,7 @@ class Api {
 
     //this.showErr(msg);
 
-    console.log(msg);
+    console.log(err);
 
   }
 
@@ -204,15 +214,16 @@ class Api {
 
     const url = server.base()+ '/' + this.model;
 
+
     //preLoad('post');
     axios.post(url,data,this.db.config)
           .then((res)=>{
 
             //preLoad('stop');
 
-            this.listenDataChange(res) // CAP NHAT REDUX STORE
+            //this.listenDataChange(res) // CAP NHAT REDUX STORE
             onSuccess(res.data) // callback for auto notification
-
+            
 
           },(error)=>{
 

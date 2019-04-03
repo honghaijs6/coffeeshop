@@ -42,7 +42,10 @@ class Model {
   }
   removeStoreData(){
     this.data = [];
-    this._setStoreData(this.data);
+    setTimeout(()=>{
+      this._setStoreData(this.data);
+    },3000)
+
   }
 
   _isDup(data,uid){

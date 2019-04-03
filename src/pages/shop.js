@@ -1,6 +1,6 @@
-/* 
-MAIN TAB ON SHOP 
-*/ 
+/*
+MAIN TAB ON SHOP
+*/
 
 import React, { Component } from 'react';
 
@@ -27,7 +27,7 @@ class shop extends Component {
 
     _isMounted = false;
 
-    constructor(props){   
+    constructor(props){
       super(props);
 
       this.store = props.screenProps;
@@ -57,11 +57,11 @@ class shop extends Component {
       this._listenUserInfo();
       this._setup() ;
 
-      
+
 
     }
 
-   
+
     _setup(){
       this.moCate = new moFire('categories');
     }
@@ -121,7 +121,7 @@ class shop extends Component {
 
           this.setState({
             onAction:'fetch_categories'
-          })  
+          })
 
 
 
@@ -146,7 +146,7 @@ class shop extends Component {
        }
 
     }
-    render() { 
+    render() {
 
 
         return (

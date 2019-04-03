@@ -16,12 +16,13 @@ const server = {
     return this.host+':'+this.port
   },
 
-  setHeader(){
+  async setHeader(){
+
 
     return  {
       headers:{
         "Content-Type": "application/json",
-        "Authorization": this.token(),
+        "Authorization": await this.token(),
         "cache-control": "no-cache"
       }
     }

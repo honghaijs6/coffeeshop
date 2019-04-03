@@ -4,6 +4,7 @@ import { View, StyleSheet  } from 'react-native';
 import { Container,Content,Item,Label ,Text,Input, Button  } from 'native-base';
 import Toast from 'react-native-easy-toast';
 
+
 import DatePicker from 'react-native-datepicker'
 
 
@@ -26,6 +27,7 @@ import BackButton  from '../../components/BackButton';
 import {detectForm} from '../../hook/before/';
 
 import BenLoader from '../../components/BenLoader';
+
 
 
 import { validateEmail, validatePassword, confirmPassword } from '../../hook/ultil/validate';
@@ -70,7 +72,7 @@ class EditProfilePage extends Component {
     this._whereStateChange({typeAction:''})
   }
 
-  async _onSubmit(){  
+  async _onSubmit(){
 
 
 
@@ -88,9 +90,10 @@ class EditProfilePage extends Component {
              const resMsg =  await USER.update(this.data.id,{
                name:this.data.name,
                phone:this.data.phone,
-               birthday:this.data.birthday
+               birthday:this.data.birthday,
+               recent_address:"no-address"
              });
-             
+
              this.refs.toast.show(resMsg,3000);
              this.setState({loader:false});
 

@@ -18,9 +18,12 @@ import Toast, {DURATION} from 'react-native-easy-toast';
 /* MODEL */
 import { myTime } from '../../hook/ultil/myTime';
 
-import { benAuth } from '../../model/authen';
 import moFire from '../../model/moFirebase' ;
 import Model from '../../model/model'; // shoppingcart only
+import Api from '../../model/api';
+import USER from '../../config/user';
+
+import BenLoader from '../../components/BenLoader';
 
 
 
@@ -43,6 +46,7 @@ export default class CheckOutPage extends Component{
 
     this.state = {
 
+      loader:false,
       typeAction:'',
       onAction:'',
       tab:'checkout',
@@ -54,19 +58,23 @@ export default class CheckOutPage extends Component{
     this.model = new moFire('orders');
     this.moShoppingcart = new Model('shoppingcart');
 
+    this._settup();
   }
 
+  _settup(){
+    this.moOrder = new Api('orders');
+
+  }
   _onSuccess(){
 
 
 
     const data = {
-      code:'ABC',
+
       status:0,
-      creator_id:this.state.userInfo.uid,
+      creator_id:this.state.userInfo.id,
       promo_code:'',
       isMobile:true,
-      createdAt: myTime.getUnixTime() ,
 
       cart:this.state.shoppingcart,
       user:{
@@ -81,28 +89,24 @@ export default class CheckOutPage extends Component{
       creditcard:this.state.userInfo.creditcard
     };
 
-    this.model.create(data,(data)=>{
-      //alert('success');
+    this.setState({loader:true})
 
-      // clear shoppingcart
-      this.moShoppingcart.removeStoreData()
-      // go back
-      this.refs.toast.show('Your order on processing delivery, thank you for your orders',3000);
-      setTimeout(()=>{
-        this.props.navigation.goBack();
-      },3000)
+    this.moOrder.post(data,(res)=>{
+      if(res.name==='success'){
 
+        this.setState({loader:false})
+        // clear shoppingcart
+        this.moShoppingcart.removeStoreData()
 
+        this.refs.toast.show('Your order on processing delivery, thank you for your orders',3000);
 
 
 
+      }
     })
 
-
-
-
   }
-  _onCheckOut(data){
+  async _onCheckOut(data){
 
     // VALIDATE
     if(detectForm(['cardName','cardNumber','expired','cvv'],data)===''){
@@ -112,9 +116,19 @@ export default class CheckOutPage extends Component{
 
       const _this = this ;
 
-      benAuth.updateInfo(userInfoData,(data)=>{
-        this._onSuccess()
-      })
+      this.setState({loader:true});
+      // SAVE USER INFO creditcard
+      const msg = await USER.update(this.state.userInfo.id,{
+        name:this.state.userInfo.name,
+        creditcard:data
+      });
+
+      this.setState({loader:false});
+
+      if(msg==='Update success'){
+        this._onSuccess();
+      }else{ alert(msg) }
+
 
     }else{
       this.refs.toast.show('Please enter correct infomation',3000);
@@ -138,6 +152,7 @@ export default class CheckOutPage extends Component{
 
           <Text>  </Text>
         </BenHeader>
+        <BenLoader visible={this.state.loader} />
         <Content>
            <CheckOutBody onPress={ (data)=>{ this._onCheckOut(data) } }  />
         </Content>
