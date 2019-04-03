@@ -1,12 +1,8 @@
 /* @flow */
-
 import React, { Component } from 'react';
-
-import { GREY_COLOR } from '../config/const';
 
 import {
   View,
-  Text,
   StyleSheet,
 } from 'react-native';
 
@@ -15,14 +11,18 @@ export default class BenHeader extends Component {
 
     // multi - single
     let type = this.props.type || 'multi' ;
-    type = type === 'multi' ? 'space-between' : 'center';
-
-
+    
+    const arr = {
+      'multi':'space-between',
+      'single':'center',
+      'flex-start':'flex-start'
+    };
+    
 
     return (
       <View style={[
           styles.container,
-          { justifyContent:type },
+          { justifyContent:arr[type] },
         ]}>
 
         { this.props.children }

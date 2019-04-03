@@ -1,3 +1,7 @@
+/* 
+MAIN TAB ON SHOP 
+*/ 
+
 import React, { Component } from 'react';
 
 // Lib
@@ -51,12 +55,13 @@ class shop extends Component {
       };
 
       this._listenUserInfo();
+      this._setup() ;
 
-      this._setup()
-
+      
 
     }
 
+   
     _setup(){
       this.moCate = new moFire('categories');
     }
@@ -133,7 +138,7 @@ class shop extends Component {
             let combineState = Object.assign(this.state,newState);
             combineState.onTab = newState.toTab
 
-            this.setState( combineState );s
+            this.setState( combineState );
 
          break;
          default:
@@ -141,7 +146,7 @@ class shop extends Component {
        }
 
     }
-    render() {
+    render() { 
 
 
         return (
@@ -153,7 +158,7 @@ class shop extends Component {
               <BenLoader visible={this.state.loader} />
               <BenStatusBar/>
 
-              <FeedTab { ...this.state } />
+              <FeedTab onPressChangeTab={ (data)=>{ this._onChangeTab(data) } } { ...this.state } />
               <MissionTab { ...this.state } />
               <OrderTab data={this.data} { ...this.state } />
               <StoreTab { ...this.state } />

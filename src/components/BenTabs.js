@@ -44,7 +44,7 @@ export default class BenTabs extends Component {
                       {
                         data.map((item,index)=>{
 
-                          const activeColor = this.state.onTab === item.tab ? tabColor : BLACK_COLOR;
+                          const activeColor = this.props.onTab === item.tab ? tabColor : BLACK_COLOR;
 
                           if(!item.hidden ){
                             return(

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Container, Icon,  Text, Content } from 'native-base';
 
 import moment from 'moment';
@@ -15,7 +15,7 @@ import BenNoti from '../../components/BenNoti';
 import BenLoader from '../../components/BenLoader';
 
 
-import { GREY_COLOR, COFFEE_COLOR } from '../../config/const'
+import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const'
 
 import MyCard from './MyCard';
 import CardHeader from './CardHeader';
@@ -43,6 +43,13 @@ export default class FeedPage extends Component{
       userInfo: props.userInfo,
 
     }
+
+    this.box = [
+      { code:'star', name:'Collect Star' },
+      { code:'cafe', name:'Orders' },
+      { code:'pizza', name:'Coupon' },
+      
+    ];
 
     this.data = [];
 
@@ -105,6 +112,23 @@ export default class FeedPage extends Component{
 
   }
 
+  _goto(code){
+    switch(code){
+
+      case 'star':
+        this.props.navigation.navigate('CollectStarPage')
+      break ;
+
+      case 'cafe':
+        this.props.onPressChangeTab({tab:'order'});
+      break;
+
+      case 'pizza':
+        this.props.navigation.navigate('CouponPage')
+      break ;
+    }
+  }
+
 
   render(){
 
@@ -131,38 +155,21 @@ export default class FeedPage extends Component{
         
         <Content>
 
-          
+          <View style={ s.wraper }>
 
-          <View style={{
-            alignItems:'center',
-            paddingTop:10,
-            paddingBottom:20
-          }}>
+              <View style={ s.boxs}>
 
-            <View style={{
-              width:'95%',
-              flexDirection:'row',
-              justifyContent:'space-between'
-            }}>
-                <Box  data={{
-                  code:'star',
-                  name:'Collect Start'
-                }} />
+                  {
+                    this.box.map((item)=>{
+                      return(
+                        <Box onPress={()=>{ this._goto(item.code) }} key={ item.code }  data={ item} />
+                      )
+                    })
+                  }
 
-                <Box data={{
-                  code:'cafe',
-                  name:'Orders'
-                }} />
-
-                <Box data={{
-                  code:'pizza',
-                  name:'Coupon'
-                }} />
-
-
-            </View>
+              </View>
                 
-                {
+            {
                   this.data.map((item)=>{
 
                     const creatorAvatar = item.creator_avatar === null ? AVATAR_URL : item.creator_avatar ;
@@ -185,10 +192,7 @@ export default class FeedPage extends Component{
                           uri={ item.photo }
                         />
 
-                        <View style={{
-                          padding: 10,
-                          fontFamily: 'Roboto'
-                        }}>
+                        <View style={ s.cardContent }>
                             <View style={{
                               marginTop: 5,
                               marginBottom: 5
@@ -203,12 +207,12 @@ export default class FeedPage extends Component{
 
                         <CardFooter>
                             <TouchableOpacity style={{ flexDirection:'row'}}>
-                                 <Icon style={{ fontSize:20}} name="heart" />
+                                 <Icon style={s.icon} name="heart" />
                                  <Text> { item.like } </Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={{ flexDirection:'row'}}>
-                                 <Icon style={{ fontSize:20}} name="chatbubbles" />
+                                 <Icon style={s.icon} name="chatbubbles" />
                                  <Text> { item.comments === null ? 0 : item.comments.length } </Text>
                             </TouchableOpacity>
                         </CardFooter>
@@ -229,3 +233,21 @@ export default class FeedPage extends Component{
     )
   }
 }
+
+const s = StyleSheet.create({
+  cardContent:{
+    padding: 10,
+    fontFamily: 'Roboto'
+  },
+  icon:{ fontSize:20,color:BLACK_COLOR},
+  wraper:{
+    alignItems:'center',
+    paddingTop:10,
+    paddingBottom:20
+  },
+  boxs:{
+    width:'95%',
+    flexDirection:'row',
+    justifyContent:'space-between'
+  }
+})

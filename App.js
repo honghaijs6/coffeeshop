@@ -21,6 +21,10 @@ import MenuPage from './src/pages/menu';
 import ProItemPage from './src/pages/productItem';
 import CartPage from './src/pages/cart' ;
 import CheckOutPage from './src/pages/checkout';
+import CollectStarPage from './src/pages/collectStarPage';
+import CouponPage from './src/pages/couponPage';
+import Scanner from './src/pages/scanner';
+
 
 /*AccountTab Link*/
 import RewardPage from './src/pages/rewardPage';
@@ -35,7 +39,7 @@ import SettingDeliveryPage from './src/pages/settingDeliveryPage';
 import MapPage from './src/pages/mapPage';
 
 
-import { benAuth } from './src/model/authen';
+
 import USER from './src/config/user';
 
 
@@ -50,7 +54,9 @@ const RootStack = createStackNavigator(
     CartPage:CartPage,
     CheckOutPage:CheckOutPage,
     DeliveryPage:DeliveryPage,
-
+    CollectStarPage:CollectStarPage,
+    CouponPage:CouponPage,
+    Scanner:Scanner,
     
     RewardPage:RewardPage,
     HistoryPage:HistoryPage,

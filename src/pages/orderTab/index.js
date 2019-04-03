@@ -28,6 +28,7 @@ export default class OrderPage extends Component{
 
     }
 
+    this._onPressNavigate = this._onPressNavigate.bind(this);
 
   }
 
@@ -45,6 +46,11 @@ export default class OrderPage extends Component{
 
   }
 
+  _onPressNavigate(code){
+    //DeliveryPage
+    this.props.navigation.navigate(code)
+  }
+
   render(){
 
     const categories = this.props.data['categories'];
@@ -55,7 +61,7 @@ export default class OrderPage extends Component{
         display:  this.props.onTab === this.state.tab ? 'block':'none'
       }}>
 
-        <OrderHeader onPress={()=>{ this.props.navigation.navigate('DeliveryPage')  }} userInfo={ this.props.userInfo }  />
+        <OrderHeader onPressNavigate={ this._onPressNavigate } userInfo={ this.props.userInfo }  />
 
 
         <Content>
@@ -124,11 +130,14 @@ export default class OrderPage extends Component{
 
 const s = StyleSheet.create({
   h4:{
-    fontWeight: 'bold',
-    fontSize: 18,
+    fontWeight: '700',
+    fontSize: 14,
     fontFamily: 'Roboto',
     marginTop: 10,
-    marginBottom: 10
+    
+    textTransform:'uppercase',
+    marginBottom: 10,
+    color:COFFEE_COLOR
 
   }
 })

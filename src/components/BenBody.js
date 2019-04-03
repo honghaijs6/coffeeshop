@@ -3,8 +3,6 @@
 import React from 'react';
 import {
   View,
-  Text,
-  StyleSheet,
 } from 'react-native';
 
 const BenBody = (props) => (
@@ -14,9 +12,7 @@ const BenBody = (props) => (
     paddingBottom:20
   }}>
 
-      <View style={{
-          width: props.width || '95%'
-        }}>
+      <View style={[{width: props.width || '95%'},props.style]}>
 
           { props.children }
 
