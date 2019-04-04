@@ -15,10 +15,7 @@ const USER = {
     _whereStateChange(newState){
         store.dispatch(newState);
     },
-
-
-
-
+    
 
     async register(data){
         return new Promise((resole,reject)=>{

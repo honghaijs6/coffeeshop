@@ -16,25 +16,12 @@ MODEL : MAKE RESFUL API
 //import Socket from './socket';
 import {AsyncStorage} from 'react-native';
 
-
-
-import store from '../redux/store';
-
 // DATABASE
 import server from '../config/server';
 import axios from 'react-native-axios';
 
-
-
-
-// HOOK
-//import { preLoad } from '../hook/before';
-
-
 class Api {
-
-
-
+  
   constructor(model){
 
 
@@ -65,13 +52,9 @@ class Api {
 
   setup(){
 
-    this.jwt = AsyncStorage.getItem('feathers-jwt');
-    // database
+    // database : config header ajax with token : do POST - PUT ...
     this.configDB();
-    /*socket*/
-    //this.socket = new Socket(this.model);
-
-
+    
   }
 
   configDB(){
@@ -121,10 +104,10 @@ class Api {
 
   /********WHEN *********** */
   onError(err){
-    const data = err.response.data ;
+    
+    /*const data = err.response.data ;
     const msg = data.errors[0];
-
-    //this.showErr(msg);
+    this.showErr(msg);*/
 
     console.log(err);
 
@@ -195,18 +178,18 @@ class Api {
 
     axios.delete(url,this.db.config)
           .then((res)=>{
-
             //preLoad('stop');
-
-            this.listenDataChange(res);
+            //this.listenDataChange(res); // pass RES DATA to redux xử lý
             onSuccess(res.data);
+
           },(error)=>{
             this.onError(error)
 
-      })
+    })
 
   }
 
+  // DO AJAX AND CALLBACK RETURN DATA RESPONESE
   post(data,onSuccess){
 
     this.db.type = 'POST';
@@ -220,7 +203,6 @@ class Api {
           .then((res)=>{
 
             //preLoad('stop');
-
             //this.listenDataChange(res) // CAP NHAT REDUX STORE
             onSuccess(res.data) // callback for auto notification
             
@@ -233,22 +215,19 @@ class Api {
 
   }
 
+  // DO AJAX AND CALLBACK RETURN DATA RESPONESE
   put(id,data,onSuccess){
 
     this.db.type = 'PUT';
     this.status = data ;
 
     const url = server.base() + '/' + this.model + '?id='+id;
-    //const url = server.base() + '/' + this.model + '/'+id;
-
-    //preLoad('put');
-
+    
     axios.put(url,data,this.db.config)
           .then((res)=>{
 
             //preLoad('stop');
-
-            this.listenDataChange(res);
+            //this.listenDataChange(res);
             onSuccess(res.data)
           },(error)=>{
 
@@ -273,7 +252,7 @@ class Api {
 
     this.fetch((res)=>{
 
-      this.listenDataChange(res);
+      //this.listenDataChange(res);
       onSuccess(res);
     },(err)=>{
 
@@ -303,7 +282,7 @@ class Api {
 
 
     this.fetch((res)=>{
-      this.listenDataChange(res);
+      //this.listenDataChange(res);
       onSuccess(res);
     },(err)=>{
 
@@ -333,51 +312,12 @@ class Api {
 
 
     this.fetch((res)=>{
-      this.listenDataChange(res);
+      //this.listenDataChange(res);
       onSuccess(res);
     },(err)=>{
       this.onError(err);
 
     });
-
-
-  }
-
-  // initial data : and start socket
-  async initData(){
-
-    return new Promise((resole,reject)=>{
-      this.fetch((res)=>{
-        this.listenDataChange(res);
-        //this.listenOnSocketTick();
-
-        resole(res);
-
-      });
-    })
-
-
-  }
-
-  // START LOAD DATA ON THE FIRST TIME
-  load(){
-
-    this.fetch((res)=>{
-      this.listenDataChange(res);
-    });
-
-    //this.listenOnSocketTick(); ko active socket :
-
-
-  }
-
-  // auto send to redux store - callback : using on doLoadSubregion Hook
-  get(onSuccess){
-
-      this.fetch((res)=>{
-        this.listenDataChange(res); // auto send data to redux store
-        onSuccess(res.data)
-      })
 
 
   }
@@ -401,27 +341,14 @@ class Api {
           );
   }
 
-  find(key){
-
-    const base  = this.db.base.replace('?','');
-    const url = base+'/listAll/all?p=0&max=all&key='+key;
-
-    this.call(url,(res)=>{
-
-      this.listenDataChange(res);
-
-    })
-
-  }
+  
 
   getInfo(id,onSuccess){
     this.db.type = 'GET';
     const { config} = this.db ;
 
-    //const url = server.base() + '/'+ this.model+'?_id='+id;
     const url = server.base() + '/'+ this.model+'/getInfo/'+id;
-
-
+    
     axios.get(url,config)
             .then((res) => {
 
@@ -463,195 +390,7 @@ class Api {
             );
   }
 
-
-  listenOnSocketTick(){
-
-    const _this = this ;
-    this.socket.clientListenServer((res)=>{
-
-        // CÂP NHẬT REDUX STORE
-
-        let list = store.getState()[this.model].list;
-        let idata = res.data ;
-
-        if(res.name==='success'){
-          switch(res.type){
-
-            case 'create':
-              list.unshift(idata);
-
-            break ;
-
-            case 'update':
-
-              list.forEach((item,index)=>{
-
-                if(parseInt(item.id) === parseInt(idata.id)){
-                   list[index] = idata;
-                }
-              });
-
-            break;
-
-            case 'remove':
-
-              list = list.filter((item) => {
-                return parseInt(item.id) !== parseInt(res.id)
-              });
-
-            break ;
-
-
-          }
-
-          this.socketResp(res,list);
-        }
-
-
-
-    })
-
-
-
-  }
-
-  listenDataChange(res){
-
-    if(res){
-
-      let idata = res.data ; // format data
-      let list = store.getState()[this.model].list;
-      let { total } =  this.db;
-
-      if(idata.name==='success'){
-        switch (this.db.type) {
-
-          case 'CALL':
-
-            this.restResp({
-              list:[]
-            });
-
-
-          break ;
-          case 'GET':
-
-            // ADD TO REDUX STORE
-            res = res.data ;
-
-            this.resetConfigDB("total",res.count);
-
-            this.restResp({
-              list:res.rows
-            });
-
-
-          break;
-
-          case 'POST':
-
-            list.unshift(idata.data);
-            this.restResp({
-              list:list
-            });
-
-
-            total += 1;
-            this.resetConfigDB("total",total);
-
-
-          break ;
-
-          case 'PUT':
-
-            /*UPDATE REDUX STORE*/
-            const id = idata.id;
-
-            list.forEach((item,index)=>{
-              if(parseInt(item.id) === parseInt(id)){
-                 list[index] = idata;
-              }
-            })
-
-            this.restResp({
-              list:list
-            });
-
-
-          break ;
-
-          case 'DELETE':
-
-            // UPDATE DELETE ITEM : REDUX STORE
-
-            list = list.filter((item) => {
-              return parseInt(item.id) !== parseInt(idata.id)  ;
-            });
-
-            total -= 1;
-            this.resetConfigDB("total",total);
-
-
-            this.restResp({
-              list:list
-            });
-          break ;
-
-
-        }
-
-      }else{
-
-        // SHOW ERROR HERE
-        let el = document.querySelector("#form-err");
-        el.innerHTML = idata.message;
-
-
-      }
-
-
-    }
-
-  }
   /* END WHEN*/
-
-  /**** HOW ***/
-  restResp(res){
-
-    // SAU KHI ĐÃ CẬP NHẬT REDUX STORE
-
-    this.whereStateChange({
-      type:this.db.type+'-'+this.model,
-      list:res.list,
-      res:res.res || {}
-    })
-
-  }
-  socketResp(res,list){
-
-    if(this.jwt !== res.token){
-
-      // SAU KHI ĐÃ CẬP NHẬT REDUX STORE
-      this.whereStateChange({
-        type:'reset-'+res.model,
-        list:list,
-        res:res || {}
-      })
-
-    }
-  }
-  /**** END HOW *****/
-
-  /******WHERE*******/
-  whereStateChange(newState){
-
-
-    Object.assign(this.state,newState);
-    store.dispatch(newState);
-
-
-  }
-  /*********END WHERE*************/
 
   set(name,value){
     this.resetConfigDB(name,value);

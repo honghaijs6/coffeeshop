@@ -1,6 +1,4 @@
 import store from '../redux/store';
-import { AsyncStorage } from "react-native"
-
 
 
 class Model {
