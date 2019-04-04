@@ -142,15 +142,15 @@ export default class CheckOutPage extends Component{
       <Container>
 
         <BenStatusBar/>
-        <BenHeader>
+        <BenHeader type="flex-start">
           <BackButton onPress={()=>{ this.props.navigation.goBack() }} />
           <View>
             <Text style={{
               fontSize: 16, fontFamily: 'Roboto'
-            }}> Setup Credit card </Text>
+            }}> Check out </Text>
           </View>
 
-          <Text>  </Text>
+          
         </BenHeader>
         <BenLoader visible={this.state.loader} />
         <Content>

@@ -1,11 +1,16 @@
+import { ImagePicker, Permissions } from 'expo';
+
 import React, { Component } from 'react';
-import { View, StyleSheet  } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, ImageEditor, Alert  } from 'react-native';
 
 import { Container,Content,Item,Label ,Text,Input, Button  } from 'native-base';
 import Toast from 'react-native-easy-toast';
 
 
-import DatePicker from 'react-native-datepicker'
+import DatePicker from 'react-native-datepicker';
+
+import { storage } from '../../config/firebase';
+
 
 
 
@@ -45,6 +50,9 @@ class EditProfilePage extends Component {
       typeAction:'',
       onAction:'',
       status:'',
+
+      image: store.getState().user.userInfo.photoURL ,
+    
 
     }
 
@@ -90,8 +98,8 @@ class EditProfilePage extends Component {
              const resMsg =  await USER.update(this.data.id,{
                name:this.data.name,
                phone:this.data.phone,
-               birthday:this.data.birthday,
-               recent_address:"no-address"
+               birthday:this.data.birthday
+
              });
 
              this.refs.toast.show(resMsg,3000);
@@ -118,6 +126,87 @@ class EditProfilePage extends Component {
 
   _whereStateChange(newState){
     this.setState(Object.assign(this.state,newState))
+  }
+
+  askPermissionsAsync = async () => {
+    await Permissions.askAsync(Permissions.CAMERA);
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    
+  };
+
+
+
+  async _pickImage(){
+
+    const photoName = this.data.id;
+
+    await this.askPermissionsAsync();
+    let result = await ImagePicker.launchImageLibraryAsync({ 
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+    
+    if (result.cancelled) {
+      console.log('got here');
+      return;
+    }
+
+    let resizedUri = await new Promise((resolve, reject) => {
+      ImageEditor.cropImage(result.uri,
+        {
+          offset: { x: 0, y: 0 },
+          size: { width: result.width, height: result.height },
+          displaySize: { width: 200, height: 200 },
+          resizeMode: 'contain',
+        },
+        (uri) => resolve(uri),
+        () => reject(),
+      );
+    });
+    
+    
+    this.setState({loader:true})
+    const resURL = await this._uploadImage(resizedUri, photoName) ;
+
+    await USER.update(this.data.id,{
+      name:this.data.name,
+      photoURL:resURL
+    });
+    
+    this.setState({loader:false})
+    
+    this.setState({ image: resizedUri });
+
+  };
+
+  _uploadImage = async (uri, imageName) => {
+    //const response = await fetch(uri);
+    //const blob = await response.blob();
+
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function(e) {
+        console.log(e);
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', uri, true);
+      xhr.send(null);
+    });
+
+
+    var ref = storage.ref().child("images/" + imageName);
+
+    const snapshot = await ref.put(blob);
+      
+    blob.close();
+    return await snapshot.ref.getDownloadURL();
+
+    
+
   }
 
   render() {
@@ -157,6 +246,35 @@ class EditProfilePage extends Component {
                         justifyContent:'space-between',
                     }}>
 
+                        <View style={{alignItems:'center'}}>
+
+                            <View style={{alignItems:'center',width:100,height:100}}>
+
+                              <Image source={{uri:this.state.image}}
+                              style={{height: 100, width: 100, borderRadius:50, borderWidth: 0.5, borderColor: 'rgba(0,0,0,0.2)'}}
+                              />
+                              <TouchableOpacity
+                                onPress={()=>{this._pickImage()}} 
+                              style={{
+                                backgroundColor:'#333',
+                                width:30, height:30,
+                                borderRadius:15,
+                                borderWidth:1,
+                                borderColor:'#fff',
+                                position:'absolute',
+                                right:0,
+                                bottom:0,
+                                justifyContent:'center',
+                                alignItems:'center'
+                              }}>      
+                                  <Text style={{color:'#fff'}}> + </Text>
+                              </TouchableOpacity>
+      
+                            </View>  
+
+                        </View>
+
+  
                         <Item stackedLabel style={ s.item}>
 
 

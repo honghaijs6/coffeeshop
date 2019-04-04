@@ -1,7 +1,12 @@
+
+import { Asset } from 'expo';
+
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 import { Container, Icon, Content, } from 'native-base';
+
+
 
 import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
 
@@ -10,6 +15,7 @@ import OrderBody from './Body';
 
 //import DrinkCates from  '../../data/categories.json';
 
+import Img from '../../components/html/Img';
 
 
 
@@ -79,8 +85,8 @@ export default class OrderPage extends Component{
                   {
                     categories.map((item,index)=>{
 
-                        const photoURL = item.photo.replace(/ /g,'%20')
-
+                       const photoURL = item.photo.replace(/ /g,'%20')
+                       
                        return(
                          <TouchableOpacity  onPress={()=>{ this._onCateItemPress(item) }} key={item.uid} style={{
                              width: '48%',
@@ -92,7 +98,9 @@ export default class OrderPage extends Component{
                            <Image source={{uri:photoURL}}
                            style={{height: 140, width: '100%', flex: 1, borderRadius: 6, borderWidth: 0.5, borderColor: 'rgba(0,0,0,0.2)'}}
                            />
+                           
 
+                           
                            <View style={{
                                width: '100%',
                                height: 140,
@@ -128,6 +136,17 @@ export default class OrderPage extends Component{
   }
 }
 
+function cacheImages(images) {
+  return images.map(image => {
+    if (typeof image === 'string') {
+      return Image.prefetch(image);
+    } else {
+      return Asset.fromModule(image).downloadAsync();
+    }
+  });
+}
+
+
 const s = StyleSheet.create({
   h4:{
     fontWeight: '700',
@@ -140,4 +159,8 @@ const s = StyleSheet.create({
     color:COFFEE_COLOR
 
   }
-})
+});
+
+
+
+
