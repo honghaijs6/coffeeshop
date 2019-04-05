@@ -14,7 +14,7 @@ import { Icon } from 'native-base';
 
 const BenLoader = function(props){
 
-  let isDisplay = props.visible ? 'block':'none';
+  let isDisplay = props.visible ? 'block':'none';   
 
 
 
@@ -36,7 +36,7 @@ const BenLoader = function(props){
         borderRadius: 6,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(63,9,17,0.79)',
+        backgroundColor: 'rgba(59,133,63,0.81)',
       }}>
           <ActivityIndicator color="#fff" size="large" />
           <Text style={{

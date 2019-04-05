@@ -1,24 +1,26 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ImageBackground, TextInput, TouchableOpacity  } from 'react-native';
+import { View, StyleSheet, Keyboard  } from 'react-native';
 
-import { Container,Content,Item,Label,Icon ,Text,Input, Button  } from 'native-base';
-import Toast, {DURATION} from 'react-native-easy-toast';
-
+import { Container,Content,Item,Icon ,Text,Input, Button  } from 'native-base';
+import Toast from 'react-native-easy-toast';
 
 import { COFFEE_COLOR } from '../../config/const';
 
-/* MODEL */
-import store from '../../redux/store';
-import { benAuth } from '../../model/authen';
 
+import BenLoader from '../../components/BenLoader';
+/* MODEL */
+import USER from '../../config/user';
+
+
+
+/* MODEL */
 import BenHeader from '../../components/BenHeader';
 import BenStatusBar from '../../components/BenStatusBar';
 import BackButton  from '../../components/BackButton';
 
 /* hook */
 import {detectForm} from '../../hook/before/';
-
-import { validateEmail, validatePassword, confirmPassword } from '../../hook/ultil/validate';
+import {  validatePassword, confirmPassword } from '../../hook/ultil/validate';
 
 
 class ChangePassPage extends Component {
@@ -28,16 +30,19 @@ class ChangePassPage extends Component {
 
     super(props);
 
-    this.state = {
+    this.store = props.screenProps ; 
 
+    this.state = {
+      loader:false,
       typeAction:'',
       onAction:'',
       status:'',
 
-      userInfo:store.getState().user.userInfo
+      userInfo:this.store.getState().user.userInfo
     }
 
     this.data = {
+      curent:'',
       password:'',
       repassword:''
     }
@@ -47,7 +52,8 @@ class ChangePassPage extends Component {
 
   }
 
-  _onChangeText(json){
+  _onChangeText(json){  
+    
 
      Object.assign(this.data,json);
 
@@ -64,7 +70,59 @@ class ChangePassPage extends Component {
     this._whereStateChange({typeAction:''})
   }
 
-  _onSubmit(){
+  async _onSubmit(){ 
+
+    Keyboard.dismiss();
+
+    if(detectForm(['curent','password','repassword'], this.data )===''){
+
+       this.setState({loader:true});
+       
+       // PROGRESS AUTHENTICATE 
+       let resMsg = await USER.authentication(this.state.userInfo.email,this.data.curent);
+       this.setState({loader:false});
+       
+       if(resMsg==='success'){
+
+        resMsg = '';
+
+        if(!validatePassword(this.data.password)){
+          resMsg = 'please enter your at least 6 digit for your password';
+        }else if(!confirmPassword(this.data.password,this.data.repassword)){
+          resMsg = 'Your password  unmatch';
+        }else{
+
+          this.setState({loader:true});
+
+          const resetMsg =  await USER.update(this.state.userInfo.id,{
+            name:this.state.userInfo.name,
+            password:this.data.password
+          });
+
+          this.setState({loader:false});
+
+          this.refs.toast.show(resetMsg,1000);
+          
+
+        }
+
+        resMsg === '' ? null : this.refs.toast.show(resMsg,1000)
+
+
+
+       }else{  this.refs.toast.show("your current password incorrect",1000); }
+
+
+    }else{  
+      this.refs.toast.show("Please type your correct info!",1000);
+    }
+
+    
+
+    // PROGRESS UPDATE PASSWORD
+
+
+    /*
     const ret = benAuth.resetPassword({
       email:this.state.userInfo.email,
       password:this.data.password
@@ -76,7 +134,7 @@ class ChangePassPage extends Component {
       setTimeout(()=>{
         this.props.navigation.goBack()  
       },2000)
-    }
+    }*/
   }
 
   /* WHERE */
@@ -96,35 +154,54 @@ class ChangePassPage extends Component {
 
             <BenStatusBar  />
 
-            <BenHeader>
+            <BenHeader type="flex-start">
               <BackButton onPress={()=>{ this.props.navigation.goBack() }} />
-              <View>
-                <Text style={s.title}> Change Password </Text>
-              </View>
-              <View></View>
+              <Text style={s.title}> Change Password </Text>
             </BenHeader>
+
+            <BenLoader visible={ this.state.loader } />
 
             <Content>
 
                 <View style={{
                     width:'80%',
-                    marginTop:'15%',
                     alignSelf:'center',
                     justifyContent:'space-between'
                 }}>
 
 
                     <View style={{
-                        marginTop:'15%',
+                        marginTop:'10%',
                         justifyContent:'space-between',
                         height:120
                     }}>
-                        <Button disabled={ disabledBtn } onPress={ this._onSubmit } full style={s.button}>
-                            <Text style={{color:'#fff'}} > Confirm reset password </Text>
-                        </Button>
 
+                        <Item style={ s.item}>
+                            <Icon style={s.icon} name='lock' />
+                            <Input autoCapitalize='none' secureTextEntry={true} onChangeText={(text)=>{ this._onChangeText({curent:text}) }}  placeholderTextColor="rgba(0,0,0,0.3)"  style={s.text} placeholder='Current'/>
+
+                        </Item>
+
+                        <Item style={ s.item}>
+                            <Icon style={s.icon} name='lock' />
+                            <Input autoCapitalize='none'  secureTextEntry={true} onChangeText={(text)=>{ this._onChangeText({password:text}) }}  placeholderTextColor="rgba(0,0,0,0.3)" style={s.text}  placeholder='New'/>
+                        </Item>
+
+                        <Item style={ s.item}>
+                            <Icon style={s.icon} name='lock' />
+                            <Input autoCapitalize='none' secureTextEntry={true} onChangeText={(text)=>{ this._onChangeText({repassword:text}) }} placeholderTextColor="rgba(0,0,0,0.3)" style={s.text}  placeholder='Re-type new'/>
+                        </Item>
+                       
                     </View>
 
+                    <View style={{marginTop:81}}>
+                      <Button disabled={ disabledBtn } onPress={ this._onSubmit } full style={s.button}>
+                          <Text style={{color:'#fff'}} > Confirm reset password </Text>
+                      </Button>
+                    </View>
+
+                   
+                    
 
                 </View>
 
@@ -148,10 +225,11 @@ class ChangePassPage extends Component {
 
 const s = StyleSheet.create({
 
+    icon:{ fontSize:20,color:COFFEE_COLOR },
     title:{
       fontSize: 18
     },
-    text:{ fontFamily:'Roboto',color:COFFEE_COLOR},
+    text:{ fontFamily:'Roboto',color:COFFEE_COLOR, fontSize:16},
     button:{
         backgroundColor:COFFEE_COLOR,
         borderRadius:30,

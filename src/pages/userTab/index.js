@@ -56,6 +56,12 @@ export default class AccountPage extends Component{
 
         <BenHeader>
           <BenAvatar
+
+          onPress={()=>{ this.props.navigation.navigate('EditProfilePage',{
+                userInfo:this.state.userInfo
+              }) 
+          }}
+          
             data={{
              uri: this.state.userInfo.photoURL ,
              name: this.state.userInfo.name ,

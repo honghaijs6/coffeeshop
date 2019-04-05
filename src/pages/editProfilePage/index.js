@@ -1,7 +1,7 @@
 import { ImagePicker, Permissions } from 'expo';
 
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, ImageEditor, Alert  } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, ImageEditor  } from 'react-native';
 
 import { Container,Content,Item,Label ,Text,Input, Button  } from 'native-base';
 import Toast from 'react-native-easy-toast';
@@ -18,8 +18,6 @@ import { storage } from '../../config/firebase';
 import { COFFEE_COLOR } from '../../config/const';
 
 /* MODEL */
-import store from '../../redux/store';
-import { benAuth } from '../../model/authen';
 
 import BenHeader from '../../components/BenHeader';
 
@@ -45,18 +43,20 @@ class EditProfilePage extends Component {
 
     super(props);
 
+    this.store = props.screenProps
+
     this.state = {
       loader:false,
       typeAction:'',
       onAction:'',
       status:'',
 
-      image: store.getState().user.userInfo.photoURL ,
+      image: this.store.getState().user.userInfo.photoURL ,
     
 
     }
 
-    this.data = store.getState().user.userInfo
+    this.data = this.store.getState().user.userInfo
 
 
     this._onSubmit = this._onSubmit.bind(this);
@@ -223,12 +223,9 @@ class EditProfilePage extends Component {
 
             <BenStatusBar  />
 
-            <BenHeader>
+            <BenHeader type="flex-start">
               <BackButton onPress={()=>{ this.props.navigation.goBack() }} />
-              <View>
-                <Text style={s.title}> Edit Profile </Text>
-              </View>
-              <View></View>
+              <Text style={s.title}> Edit Profile </Text>
             </BenHeader>
 
             <BenLoader visible={ this.state.loader } />

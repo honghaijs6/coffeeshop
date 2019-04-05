@@ -20,6 +20,7 @@
     "react-native-easy-toast": "^1.1.0",
     "react-native-htmlview": "^0.13.0",
     "react-native-maps": "^0.23.0",
+    "react-native-progress-steps": "^1.2.6",
     "react-native-swiper": "^1.5.14",
     "react-navigation": "^3.0.9",
     "react-redux": "^6.0.0",

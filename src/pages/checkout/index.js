@@ -3,22 +3,14 @@ import React, { Component } from 'react';
 
 import {
   View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput
+  Text
 } from 'react-native';
 
-import { Container,  Content, Icon,  } from 'native-base';
-import { GREY_COLOR, COFFEE_COLOR, RED_COLOR, BLACK_COLOR } from '../../config/const' ;
-
-import Toast, {DURATION} from 'react-native-easy-toast';
+import { Container,  Content} from 'native-base';
 
 
-/* MODEL */
-import { myTime } from '../../hook/ultil/myTime';
+import Toast from 'react-native-easy-toast';
 
-import moFire from '../../model/moFirebase' ;
 import Model from '../../model/model'; // shoppingcart only
 import Api from '../../model/api';
 import USER from '../../config/user';
@@ -55,7 +47,7 @@ export default class CheckOutPage extends Component{
 
     }
 
-    this.model = new moFire('orders');
+    
     this.moShoppingcart = new Model('shoppingcart');
 
     this._settup();

@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, Keyboard  } from 'react-native';
+import { View, Text,  SafeAreaView,  TouchableOpacity, Keyboard  } from 'react-native';
 
-import MapView, { Marker, PROVIDER_GOOGLE, AnimatedRegion, Animated, Callout } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE,  } from 'react-native-maps';
 
-import { Constants, Location, Permissions } from 'expo';
+import {  Location, Permissions } from 'expo';
 
 import Toast from 'react-native-easy-toast';
 
 
 
-import { Container, Icon, Content, Button } from 'native-base';
+import { Container,  } from 'native-base';
 
 import BenLoader from '../../components/BenLoader';
 import BenStatusBar from '../../components/BenStatusBar';
@@ -17,7 +17,7 @@ import BenHeader from '../../components/BenHeader' ;
 import BackButton from '../../components/BackButton';
 import BenBody from '../../components/BenBody';
 
-import { GREY_COLOR, COFFEE_COLOR, GOOGLE_MAP_KEY } from '../../config/const';
+import {  COFFEE_COLOR, GOOGLE_MAP_KEY } from '../../config/const';
 
 import RetroMapStyle from '../../data/retroStyle.json';
 import NightMapStyle from '../../data/nightStyle.json';

@@ -123,6 +123,31 @@ const USER = {
 
         })
     },
+
+    async authentication(email,password){
+
+        return new Promise((resole,reject)=>{
+            socket.emit('authenticate', {
+
+                "strategy":"local",
+                "email": email,
+                "password": password
+
+                }, (message, data)=> {
+
+                  if(data!==undefined){  
+
+                    resole('success')
+
+                  }else{
+                    resole('NotAuthenticated')
+
+                  }
+
+            });
+        })
+    },
+
     async authenticate(email,password){
 
         return new Promise((resole,reject)=>{
@@ -135,7 +160,7 @@ const USER = {
 
                 }, (message, data)=> {
 
-                  if(data!==undefined){
+                  if(data!==undefined){  
 
                     AsyncStorage.setItem('token',data.accessToken);
 
