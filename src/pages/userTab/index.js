@@ -10,8 +10,6 @@ import BenAvatar from '../../components/BenAvatar';
 import { GREY_COLOR, COFFEE_COLOR } from '../../config/const';
 
 
-import { benAuth } from '../../model/authen';
-
 import USER from '../../config/user';
 
 import ProfileName from './profileName';

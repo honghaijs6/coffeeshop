@@ -7,18 +7,19 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
+  
   Alert
 } from 'react-native';
 
-import { Container,  Content, Icon,  } from 'native-base';
-import { GREY_COLOR, COFFEE_COLOR, RED_COLOR, BLACK_COLOR } from '../../config/const' ;
+import { Container,  Content  } from 'native-base';
+import {  COFFEE_COLOR,  } from '../../config/const' ;
 
 import BenStatusBar  from "../../components/BenStatusBar";
 import BenHeader from '../../components/BenHeader';
 import BackButton from '../../components/BackButton';
 
 import CartBody from './CartBody';
+  
 
 
 
@@ -134,6 +135,7 @@ export default class Cart extends Component {
 
             <Content>
               <CartBody onPressGotoSettingAdd={()=>{ this.props.navigation.navigate('DeliveryPage') }} onItemSelect={ this._onItemSelect } onChangeText={ (data)=>{ this._onChangeText(data) } } data={this.state.data} userInfo={ this.state.userInfo } />
+
             </Content>
 
             {/* FOOTER BUTTON */}

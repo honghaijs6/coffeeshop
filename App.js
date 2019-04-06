@@ -29,6 +29,8 @@ import Scanner from './src/pages/scanner';
 /*AccountTab Link*/
 import RewardPage from './src/pages/rewardPage';
 import HistoryPage from './src/pages/historyPage';
+import HistoryPageView from './src/pages/historyView';
+
 import HelpPage from './src/pages/helpPage';
 import GuidePage from './src/pages/guidePage';
 import EditProfilePage from './src/pages/editProfilePage';
@@ -60,6 +62,7 @@ const RootStack = createStackNavigator(
 
     RewardPage:RewardPage,
     HistoryPage:HistoryPage,
+    HistoryPageView:HistoryPageView,
     HelpPage:HelpPage,
     GuidePage:GuidePage,
     SettingDeliveryPage:SettingDeliveryPage,
@@ -69,7 +72,7 @@ const RootStack = createStackNavigator(
 
   },
   {
-    initialRouteName: "HistoryPage",
+    initialRouteName: "Home",
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

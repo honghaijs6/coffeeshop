@@ -68,7 +68,9 @@ class Api {
 
       const base  = this.db.base.replace('?','');
 
-      url = base +'/'+ this.db.method.name+'/'+this.db.method.params+'?'+ Object.keys(this.db.paginate).map((key)=>{
+      const dot = this.db.method.params.indexOf('?') >-1 ? '&' : '?' ;
+
+      url = base +'/'+ this.db.method.name+'/'+this.db.method.params+dot+ Object.keys(this.db.paginate).map((key)=>{
           return key +'='+ this.db.paginate[key]
       }).join('&');
 
@@ -372,9 +374,7 @@ class Api {
 
       this.db.type = 'GET';
       const {url, config} = this.db ;
-
-
-
+      
       axios.get(url,config)
             .then((res) => {
               //this.restResp(res); // KHÔNG LUU localStorage

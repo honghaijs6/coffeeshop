@@ -10,6 +10,7 @@ import BenStatusBar  from "../components/BenStatusBar";
 
 
 import moFire from '../model/moFirebase';
+import Api from '../model/api';
 
 
 import BenLoader from '../components/BenLoader';
@@ -51,7 +52,8 @@ class shop extends Component {
       }
 
       this.data = {
-        categories:[]
+        categories:[],
+        orders:[]
       };
 
       this._listenUserInfo();
@@ -64,6 +66,14 @@ class shop extends Component {
 
     _setup(){
       this.moCate = new moFire('categories');
+      this.moOrder = new Api('orders');
+
+      this.moOrder.set('method',{
+        name:'listAll',
+        params:'all?creator_id='+this.state.userInfo.id+'&status=lte2'
+      });
+
+
     }
 
     _listenUserInfo(){
@@ -83,11 +93,21 @@ class shop extends Component {
 
     }
 
+    _readOrders(){
+      this.moOrder.fetch((res)=>{
+        res = res.data ;
+        if(res.name==='success'){
+          this.data.orders = res.rows ;
+          this.setState({onAction:'_readOrders'}) ; 
+        }
+      })
+    }
+
     componentDidMount(){
 
       this._isMounted = true;
+      this.setState({loader:true});
 
-      this.setState({loader:true})
       this.moCate.read((data)=>{
 
         this.data.categories = data;
@@ -99,7 +119,11 @@ class shop extends Component {
           })
         }
 
-      })
+      });
+
+      // READ ORDERS 
+      this._readOrders();
+      
     }
 
 
@@ -156,6 +180,7 @@ class shop extends Component {
               data={ this.state.tabs }
             >
               <BenLoader visible={this.state.loader} />
+
               <BenStatusBar/>
 
               <FeedTab onPressChangeTab={ (data)=>{ this._onChangeTab(data) } } { ...this.state } />
