@@ -69,7 +69,7 @@ const RootStack = createStackNavigator(
 
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "HistoryPage",
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,
