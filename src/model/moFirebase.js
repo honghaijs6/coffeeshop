@@ -1,7 +1,7 @@
 
 
 import store from '../redux/store';
-import {auth, database, provider, config} from "../config/firebase";
+import { database, config} from "../config/firebase";
 
 
 class moFire {
@@ -92,7 +92,7 @@ class moFire {
 
       })
       .catch(function(error) {
-        onSuccess(error); 
+        onSuccess(error);
       });
   }
 
@@ -123,7 +123,7 @@ class moFire {
        }
 
        const varA = (typeof a[key] === 'string') ?
-         a[key].toUpperCase() : a[key];  
+         a[key].toUpperCase() : a[key];
        const varB = (typeof b[key] === 'string') ?
          b[key].toUpperCase() : b[key];
 
@@ -134,7 +134,7 @@ class moFire {
          comparison = -1;
        }
        return (
-         (order == 'desc') ?  
+         (order == 'desc') ?
          (comparison * -1) : comparison
        );
     };
@@ -177,7 +177,7 @@ class moFire {
 
     });
   }
-  
+
   read(onSuccess){
 
     this.data = [] ;
@@ -200,7 +200,7 @@ class moFire {
 
 
           this.data.sort(this._sortOrder('sort'));
-          
+
           onSuccess(this.data);
           this._onSuccess('value',this.data);
 
@@ -216,10 +216,11 @@ class moFire {
 
     switch (type) {
       case 'value':
-        store.dispatch({
+
+        /*store.dispatch({
           type: type +'-'+this.model,
           list:data
-        });
+        });*/
 
       break;
 

@@ -1,17 +1,16 @@
+import {  COFFEE_COLOR } from '../config/const' ;
+
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native';
 
 import { Container, Icon, Content } from 'native-base';
 
+
+
 import HTMLView from 'react-native-htmlview';
-
-
-import {  COFFEE_COLOR } from '../config/const' ;
 
 import BenHeader from '../components/BenHeader';
 import BenStatusBar  from "../components/BenStatusBar";
-
-
 
 
 export default class FeedViewPage extends Component{
@@ -64,13 +63,13 @@ export default class FeedViewPage extends Component{
                  fontSize:20,
                  color:COFFEE_COLOR
                }} defaultValue={ data.title || '...' } />
-               
+
            </View>
 
 
         </BenHeader>
-        
-        
+
+
         <Content style={{marginTop:-10}}>
           <Image source={{uri: data.photo}}
               style={{height: 200, width: null, flex: 1, marginVertical: 10}}
@@ -80,7 +79,7 @@ export default class FeedViewPage extends Component{
             padding: 20
           }} >
 
-              
+
               <HTMLView
                 value={ data.content || '' }
                 stylesheet={s}

@@ -1,27 +1,24 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, ImageBackground, TouchableOpacity  } from 'react-native';
-
-
-import { Container,Content,Item,Icon ,Text,Input, Button  } from 'native-base';
-import Toast from 'react-native-easy-toast';
-
-
-
-import BenLoader from '../components/BenLoader';
- 
 /* MODEL */
 import USER from '../config/user';
 
-
 /* hook */
 import {detectForm} from '../hook/before/';
-
 import { validateEmail, validatePassword, confirmPassword } from '../hook/ultil/validate';
+
+
+
+import React, { Component } from 'react';
+import { View, StyleSheet, ImageBackground, TouchableOpacity  } from 'react-native';
+import { Container,Content,Item,Icon ,Text,Input, Button  } from 'native-base';
+
+
+import Toast from 'react-native-easy-toast';
+import BenLoader from '../components/BenLoader';
 
 
 class Register extends Component {
 
-  
+
   constructor(props){
 
     super(props);
@@ -64,16 +61,8 @@ class Register extends Component {
   _onFree(){
     this._whereStateChange({typeAction:''})
   }
-  _onSuccess(){
 
-    this.refs.toast.show('Register successful !', 500, () => {
-       <Redirect to={{
-         pathname:"/",
-         state:this.data
-       }} />
-    });
-
-  }
+  
   async _onSubmit(){
 
 
@@ -96,11 +85,11 @@ class Register extends Component {
 
               USER.checkLoginStatus();
 
-            }else{  
-              this.refs.toast.show(msg,3000); 
+            }else{
+              this.refs.toast.show(msg,3000);
               this._onFree();
             }
-            
+
           }
 
           if(msg!==''){

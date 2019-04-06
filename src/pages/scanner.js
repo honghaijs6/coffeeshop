@@ -1,5 +1,7 @@
 /* @flow */
 
+import { Camera, BarCodeScanner, Permissions } from 'expo';
+
 import React, { Component } from 'react';
 import {
   View,
@@ -11,7 +13,7 @@ import {
 
 import { Container } from 'native-base';
 
-import { Camera, BarCodeScanner, Permissions } from 'expo';
+
 
 import BenStatusBar from '../components/BenStatusBar';
 import BenHeader from '../components/BenHeader';
@@ -47,7 +49,7 @@ export default class Scanner extends Component {
   _handleBarCodeRead = data => {
 
     Vibration.vibrate(2000)
-    
+
 
     this.props.navigation.navigate('CouponPage',{
         data:data
@@ -57,10 +59,10 @@ export default class Scanner extends Component {
 
 
 
-  
+
   render() {
 
-    
+
 
     return (
       <Container>
@@ -75,26 +77,26 @@ export default class Scanner extends Component {
         </BenHeader>
 
         <View style={s.bg}>
-            
-            
+
+
             <BarCodeScanner
                 onBarCodeRead={this._handleBarCodeRead}
                 style={{ height: 300, width: 300, marginTop:-60 }}
             />
         </View>
-        
+
       </Container>
     );
   }
 }
 
 const s = StyleSheet.create({
-  
+
   bg:{
       backgroundColor:'#333',
       width:'100%',
-     
-      
+
+
       justifyContent:'center',
       alignItems: 'center',
       height:'100%'

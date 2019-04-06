@@ -1,4 +1,5 @@
 /* @flow weak */
+import { COFFEE_COLOR } from '../../config/const';
 
 import React from 'react';
 import {
@@ -9,7 +10,6 @@ import {
 
 import {  Tab, Tabs, TabHeading } from 'native-base';
 
-import { COFFEE_COLOR } from '../../config/const';
 
 
 import BodyDrinks from './drinks';
@@ -18,7 +18,7 @@ import BodyFavories from './favories';
 
 
 const MenuBody = (props) => (
-  
+
 
     <Tabs textStyle={{color:'#000'}} tabBarUnderlineStyle={{ backgroundColor: COFFEE_COLOR,height:2, }}>
         <Tab heading={

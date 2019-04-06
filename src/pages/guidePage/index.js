@@ -1,27 +1,20 @@
 /* @flow */
+import moFire from '../../model/moFirebase';
+const MODE = 'company';
 
 import React, { Component } from 'react';
 import {
   View,
   Text,
-  StyleSheet, 
+  StyleSheet,
   WebView
 } from 'react-native';
 
 import { Container } from 'native-base';
 
-import moFire from '../../model/moFirebase';
-
-
 import BenStatusBar from '../../components/BenStatusBar';
 import BenHeader from '../../components/BenHeader';
 import BackButton from '../../components/BackButton';
-
-
-
-const MODE = 'company';
-
-
 
 
 export default class HelpPage extends Component {
@@ -49,7 +42,7 @@ export default class HelpPage extends Component {
       const content = res[0]['content'];
       this.setState({content:content});
 
-      
+
 
     })
   }
@@ -57,14 +50,14 @@ export default class HelpPage extends Component {
 
     const htmlContent = `
     <style>
-    
+
       body {
         padding:30px;
         font-size: 40px;
         font-family:'Arial';
         color:'#666'
       }
-    
+
     </style>
       <body>
         ${ this.state.content || '' }
@@ -86,17 +79,17 @@ export default class HelpPage extends Component {
         <WebView
           originWhitelist={['*']}
           source={{html: htmlContent }}
-         
+
         />
 
-        
+
       </Container>
     );
   }
 }
 
 const s = StyleSheet.create({
-  
+
   h1:{
     fontSize: 28,
     fontWeight: 'bold',

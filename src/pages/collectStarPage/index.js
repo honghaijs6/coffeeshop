@@ -26,30 +26,21 @@ export default class CollectStarPage extends Component {
     super(props);
 
     this.store = props.screenProps ;
-    
+
     this.state = {
       userInfo: this.store.getState().user.userInfo
     }
 
-    this._setup();
-
   }
-
-  _setup(){
-
-    //this.model = new moFire(MODE);
-
-  }
-
   
   render() {
 
-    
+
 
     return (
       <Container>
         <BenStatusBar/>
- 
+
         <BenHeader>
           <BackButton onPress={()=>{ this.props.navigation.goBack() }} />
           <View>
@@ -65,19 +56,19 @@ export default class CollectStarPage extends Component {
                     <Text style={s.txt}>Collecting more star point to receive more coupon code </Text>
                 </View>
             </BenBody>
-            
+
         </Content>
 
 
-        
-        
+
+
       </Container>
     );
   }
 }
 
 const s = StyleSheet.create({
-  
+
   h1:{
     fontSize: 28,
     fontWeight: 'bold',

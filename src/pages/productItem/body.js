@@ -1,4 +1,6 @@
 /* @flow weak */
+import { GREY_COLOR, COFFEE_COLOR, RED_COLOR } from '../../config/const' ;
+
 
 import React from 'react';
 import {
@@ -11,9 +13,6 @@ import {
 } from 'react-native';
 
 import { Icon } from 'native-base';
-
-import { GREY_COLOR, COFFEE_COLOR, RED_COLOR } from '../../config/const' ;
-
 
 const BodyItem  = (props) =>{
 

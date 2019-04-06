@@ -1,9 +1,13 @@
+import USER from './src/config/user';
+import store from './src/redux/store';
+
+
 import React from 'react';
 import { Font, AppLoading } from 'expo';
 
 
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import store from './src/redux/store';
+
 
 /* main pages*/
 import Login from './src/pages/login';
@@ -40,9 +44,6 @@ import ChangePassPage from './src/pages/changePassPage';
 import SettingDeliveryPage from './src/pages/settingDeliveryPage';
 import MapPage from './src/pages/mapPage';
 
-
-
-import USER from './src/config/user';
 
 
 const RootStack = createStackNavigator(
@@ -95,7 +96,9 @@ const LoginStack = createStackNavigator(
   }
 );
 
-
+function cacheFonts(fonts) {
+  return fonts.map(font => Font.loadAsync(font));
+}
 
 export default class App extends React.Component {
 
@@ -109,7 +112,7 @@ export default class App extends React.Component {
         onAction:''
     }
 
-    this._listenStore();
+
 
 
   }
@@ -140,26 +143,33 @@ export default class App extends React.Component {
     this.unsubscribe();
   }
 
-  componentWillMount(){
-    this.loadFonts();
+  async componentWillMount(){
+    await this.loadFonts();
 
   }
 
 
   async loadFonts() {
+
     await Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-      Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
+      Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf"),
+      FontAwesome: require("@expo/vector-icons/fonts/FontAwesome.ttf"),
+
+
     });
+
+
 
     this.setState({ isReady: true });
   }
 
   async componentDidMount(){
 
-
+    this._listenStore();
     const res =  await  USER.checkLoginStatus() ;
+
 
 
   }

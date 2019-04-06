@@ -1,17 +1,14 @@
+import USER from '../../config/user';
+import { GREY_COLOR, COFFEE_COLOR } from '../../config/const';
+
+
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-
 import { Container, Icon,  Content } from 'native-base';
 
 
 import BenHeader from '../../components/BenHeader' ;
 import BenAvatar from '../../components/BenAvatar';
-
-import { GREY_COLOR, COFFEE_COLOR } from '../../config/const';
-
-
-import USER from '../../config/user';
-
 import ProfileName from './profileName';
 
 
@@ -22,7 +19,7 @@ export default class AccountPage extends Component{
 
     this.state = {
 
-      typeAction:'', 
+      typeAction:'',
       onAction:'',
       tab:'account',
 
@@ -37,7 +34,7 @@ export default class AccountPage extends Component{
   async _onSignOut(){
 
     await USER.logout();
-    
+
     /*benAuth.doSignOut(()=>{
       //alert('signed out okay')
     },(err)=>{ console.log(err); });*/
@@ -57,9 +54,9 @@ export default class AccountPage extends Component{
 
           onPress={()=>{ this.props.navigation.navigate('EditProfilePage',{
                 userInfo:this.state.userInfo
-              }) 
+              })
           }}
-          
+
             data={{
              uri: this.state.userInfo.photoURL ,
              name: this.state.userInfo.name ,
@@ -71,7 +68,7 @@ export default class AccountPage extends Component{
         <Content>
 
           <ProfileName userInfo={ this.state.userInfo   } />
-          
+
           <View style={s.holder }>
             <TouchableOpacity onPress={ ()=>{ this.props.navigation.navigate('RewardPage') } } style={ s.btnItem }>
               <Icon style={s.icon} name="star" />
@@ -85,7 +82,7 @@ export default class AccountPage extends Component{
               <Icon style={s.icon} name="time" />
               <Text style={s.txt}>
                 History
-              </Text>  
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('HelpPage') }} style={ s.btnItem }>

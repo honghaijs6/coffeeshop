@@ -1,5 +1,7 @@
 /* @flow */
 
+import USER  from '../../config/user';
+
 
 import React, { Component } from 'react';
 import {
@@ -14,16 +16,12 @@ import {
 import { Container,  Content, Icon } from 'native-base';
 import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR, GOOGLE_MAP_KEY } from '../../config/const' ;
 
-
-import { truncate2 } from '../../hook/ultil/ultil' ;
 import MyHeader from './header';
-
 import BenStatusBar from '../../components/BenStatusBar';
 import BenLoader from '../../components/BenLoader';
 
 
 
-import USER  from '../../config/user';
 
 
 function Item(props){
@@ -245,26 +243,6 @@ export default class DeliveryPage extends Component {
             }
 
           </View>
-
-
-
-          {/* chon vi tri trên ban do
-          <View style={s.block}>
-              <TouchableOpacity style={s.items}>
-                  <View style={{
-                    flexDirection: 'row'
-                  }}>
-                    <View style={{ justifyContent: 'center'}}>
-                      <Icon style={s.icon} name="pin" />
-                    </View>
-                    <View style={{marginLeft: 10}}>
-                        <Text style={s.title}>  { truncate2('Select the location on the map',41) }   </Text>
-
-                    </View>
-                  </View>
-              </TouchableOpacity>
-          </View>
-          */}
 
         </Content>
 

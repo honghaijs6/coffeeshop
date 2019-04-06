@@ -1,11 +1,11 @@
-
-import {AsyncStorage} from 'react-native';
+import { AVATAR_URL } from '../config/const';
 import axios from 'react-native-axios';
 import socket from './socket';
-
-
-import { AVATAR_URL } from '../config/const';
 import store from '../redux/store';
+
+import {AsyncStorage} from 'react-native';
+
+
 import {myTime} from '../hook/ultil/myTime';
 
 
@@ -15,7 +15,7 @@ const USER = {
     _whereStateChange(newState){
         store.dispatch(newState);
     },
-    
+
 
     async register(data){
         return new Promise((resole,reject)=>{
@@ -135,7 +135,7 @@ const USER = {
 
                 }, (message, data)=> {
 
-                  if(data!==undefined){  
+                  if(data!==undefined){
 
                     resole('success')
 
@@ -160,7 +160,7 @@ const USER = {
 
                 }, (message, data)=> {
 
-                  if(data!==undefined){  
+                  if(data!==undefined){
 
                     AsyncStorage.setItem('token',data.accessToken);
 

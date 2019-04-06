@@ -7,7 +7,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  
+
   Alert
 } from 'react-native';
 
@@ -19,7 +19,7 @@ import BenHeader from '../../components/BenHeader';
 import BackButton from '../../components/BackButton';
 
 import CartBody from './CartBody';
-  
+
 
 
 
@@ -44,6 +44,10 @@ export default class Cart extends Component {
     this._onOrderNow = this._onOrderNow.bind(this);
     this._onItemSelect = this._onItemSelect.bind(this);
 
+
+  }
+
+  componentDidMount(){
     this._listenStore();
   }
 

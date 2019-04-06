@@ -1,4 +1,5 @@
 /* @flow */
+import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const';
 
 import React, { Component } from 'react';
 import {
@@ -11,7 +12,7 @@ import {
 
 import { Container, Content, Icon } from 'native-base';
 
-import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const';
+
 
 import BenStatusBar from '../../components/BenStatusBar';
 import BenHeader from '../../components/BenHeader';
@@ -43,13 +44,13 @@ export default class CouponPage extends Component {
 
   }
 
-  
+
   render() {
 
     let myBarcode = this.props.navigation.getParam('data') ;
     myBarcode =  myBarcode !== undefined ? myBarcode.data : '';
 
-    
+
     return (
       <Container>
         <BenStatusBar/>
@@ -72,7 +73,7 @@ export default class CouponPage extends Component {
                   <Icon name="barcode"></Icon>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={s.btn}>  
+                <TouchableOpacity style={s.btn}>
                   <Text style={s.btnText}> Apply </Text>
                 </TouchableOpacity>
 
@@ -85,17 +86,17 @@ export default class CouponPage extends Component {
 
           </BenBody>
         </Content>
-        
-        
+
+
       </Container>
     );
   }
 }
 
 const s = StyleSheet.create({
-  
+
   historyList:{
-    
+
   },
   wrapperInput:{
     marginTop: 10,
@@ -120,7 +121,7 @@ const s = StyleSheet.create({
     color:'#fff',
     fontSize:14
   },
-  
+
   title: {
     fontFamily: 'Roboto',
     fontSize:18

@@ -12,10 +12,6 @@ import BenBody from '../../components/BenBody' ;
 
 import CartBody from './CartBody';
 
-
-
-
-
 // create a component
 class HistoryPageView extends Component {
 
@@ -31,7 +27,7 @@ class HistoryPageView extends Component {
     render() {
 
         const data = this.props.navigation.getParam('data');
-        
+
         return (
             <Container>
                 <BenStatusBar/>
@@ -42,7 +38,7 @@ class HistoryPageView extends Component {
                 </View>
                 <View></View>
                 </BenHeader>
-                
+
 
                 <Content>
                     <BenBody>

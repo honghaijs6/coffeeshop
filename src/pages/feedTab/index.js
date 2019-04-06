@@ -1,9 +1,13 @@
+import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const'
+import { AVATAR_URL } from '../../config/const';
+import Api from '../../model/api';
+
+
 import React, { Component } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Container, Icon,  Text, Content } from 'native-base';
 
 import moment from 'moment';
-import Api from '../../model/api';
 
 // LIB Component
 import BenHeader from '../../components/BenHeader'
@@ -14,19 +18,12 @@ import BenNoti from '../../components/BenNoti';
 
 import BenLoader from '../../components/BenLoader';
 
-
-import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const'
-
 import MyCard from './MyCard';
 import CardHeader from './CardHeader';
 import CardFooter from './CardFooter';
 import CardImage from './CardImage';
 
 import Box from './Box';
-import { AVATAR_URL } from '../../config/const';
-
-
-
 
 export default class FeedPage extends Component{
 
@@ -48,7 +45,7 @@ export default class FeedPage extends Component{
       { code:'star', name:'Collect Star' },
       { code:'cafe', name:'Orders' },
       { code:'pizza', name:'Coupon' },
-      
+
     ];
 
     this.data = [];
@@ -142,7 +139,7 @@ export default class FeedPage extends Component{
            <BenAvatar
               onPress={()=>{ this.props.navigation.navigate('EditProfilePage',{
                     userInfo:this.state.userInfo
-                  }) 
+                  })
               }}
               data={{
                uri: this.state.userInfo.photoURL ,
@@ -155,7 +152,7 @@ export default class FeedPage extends Component{
         </BenHeader>
 
         <BenLoader visible={this.state.loader} />
-        
+
         <Content>
 
           <View style={ s.wraper }>
@@ -171,12 +168,12 @@ export default class FeedPage extends Component{
                   }
 
               </View>
-                
+
             {
                   this.data.map((item)=>{
 
                     const creatorAvatar = item.creator_avatar === null ? AVATAR_URL : item.creator_avatar ;
-                    timeAgo = moment()
+
                     return(
                       <MyCard key={ item.id }>
                         <CardHeader>
@@ -200,10 +197,10 @@ export default class FeedPage extends Component{
                               marginTop: 5,
                               marginBottom: 5
                             }}>
-                                <Text style={{fontSize: 16, fontWeight: '500', color: COFFEE_COLOR}}> { item.title } </Text>
+                                <Text style={{fontSize: 16,fontFamily:'Roboto',fontWeight: '500', color: COFFEE_COLOR}}>{ item.title } </Text>
                             </View>
                             <View>
-                                <Text> { item.short_content.replace(/&nbsp;/g,' ') } </Text>
+                                <Text style={{fontFamily: 'Roboto', color: '#666'}}>{ item.short_content.replace(/&nbsp;/g,' ') } </Text>
                             </View>
 
                         </View>

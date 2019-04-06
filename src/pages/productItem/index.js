@@ -1,4 +1,7 @@
 /* @flow */
+import Model from '../../model/model';
+import { GREY_COLOR, COFFEE_COLOR, RED_COLOR } from '../../config/const' ;
+
 
 import React, { Component } from 'react';
 import {
@@ -9,11 +12,6 @@ import {
 } from 'react-native';
 
 import { Container,  Content, Icon } from 'native-base';
-import { GREY_COLOR, COFFEE_COLOR, RED_COLOR } from '../../config/const' ;
-
-
-/* OBJECT */
-import Model from '../../model/model';
 
 
 import BenHeader from '../../components/BenHeader';

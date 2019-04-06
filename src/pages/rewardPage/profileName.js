@@ -1,4 +1,5 @@
 /* @flow weak */
+import {COFFEE_COLOR, USERS_LEVEL} from '../../config/const';
 
 import React from 'react';
 import {
@@ -10,15 +11,10 @@ import {
 
 import { Icon } from 'native-base';
 
-import {COFFEE_COLOR, USERS_LEVEL} from '../../config/const';
-
-
 const ProfileName = (props)=>{
 
   const userInfo = props.userInfo || {};
-
-
-
+  
   return(
     <ImageBackground resizeMode="repeat" source={require('../../../assets/images/profileBg.png')} style={{
       backgroundColor:COFFEE_COLOR,

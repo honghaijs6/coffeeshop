@@ -1,4 +1,6 @@
 /* @flow weak */
+import {RED_COLOR, COFFEE_COLOR, BLACK_COLOR, GREY_COLOR } from '../../config/const';
+
 
 import React, { Component } from 'react';
 import {
@@ -8,14 +10,12 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-
-import {RED_COLOR, COFFEE_COLOR, BLACK_COLOR, GREY_COLOR } from '../../config/const';
-
 import {  Icon, Content } from 'native-base';
+
+
 import BenBody from '../../components/BenBody';
 import NoData from '../../components/NoData';
 
-import drinksData from './data.json';
 
 
 

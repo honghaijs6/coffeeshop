@@ -1,4 +1,6 @@
 /* @flow */
+import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
+import moFire from '../../model/moFirebase';
 
 import React, { Component } from 'react';
 import {
@@ -8,20 +10,13 @@ import {
   TouchableOpacity,
   Image
 } from 'react-native';
-
-
-import moFire from '../../model/moFirebase';
-
 import { Container,  Content } from 'native-base';
-import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
 
-import products from '../../data/products.json';
 
 
 import MenuHeader from './header';
 import BenStatusBar  from "../../components/BenStatusBar";
 import BenLoader  from "../../components/BenLoader";
-
 
 import MenuBody from './body'
 
@@ -107,7 +102,7 @@ export default class Menu extends Component {
 
     this.model = new moFire('products');
 
-    this._listenStore();
+
   }
 
   _listenStore(){
@@ -127,6 +122,8 @@ export default class Menu extends Component {
 
   componentDidMount(){
 
+    this._listenStore();
+    
     this.setState({loader:true})
     this.model.fetch("categories",this.state.cateInfo.uid,(data)=>{
 

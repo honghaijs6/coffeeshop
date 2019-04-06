@@ -1,3 +1,11 @@
+import USER from '../../config/user';
+
+import {  COFFEE_COLOR, GOOGLE_MAP_KEY } from '../../config/const';
+import RetroMapStyle from '../../data/retroStyle.json';
+import NightMapStyle from '../../data/nightStyle.json';
+import STORE_LOCATIONS from '../../data/stores.json';
+
+
 import React, { Component } from 'react';
 import { View, Text,  SafeAreaView,  TouchableOpacity, Keyboard  } from 'react-native';
 
@@ -17,15 +25,6 @@ import BenHeader from '../../components/BenHeader' ;
 import BackButton from '../../components/BackButton';
 import BenBody from '../../components/BenBody';
 
-import {  COFFEE_COLOR, GOOGLE_MAP_KEY } from '../../config/const';
-
-import RetroMapStyle from '../../data/retroStyle.json';
-import NightMapStyle from '../../data/nightStyle.json';
-import STORE_LOCATIONS from '../../data/stores.json';
-
-
-
-import USER from '../../config/user';
 
 import BoxSearch from './boxSearch';
 
@@ -135,7 +134,7 @@ export default class MapPage extends Component{
     this.setState({loader:false})
 
     this.refs.toast.show(resMsg,3000);
-    
+
 
   }
 

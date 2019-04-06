@@ -1,4 +1,6 @@
 /* @flow weak */
+import {BLACK_COLOR, COFFEE_COLOR}  from '../../config/const';
+
 
 import React from 'react';
 import {
@@ -7,9 +9,6 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
-
-import {BLACK_COLOR, COFFEE_COLOR}  from '../../config/const';
-
 
 const CartItem = (props) => (
   <View style={{ borderBottomWidth: 0.5, borderBottomColor: 'rgba(0,0,0,0.2)'}}>

@@ -1,5 +1,9 @@
-import { ImagePicker, Permissions } from 'expo';
+import { storage } from '../../config/firebase';
+import { COFFEE_COLOR } from '../../config/const';
+import USER from '../../config/user';
 
+
+import { ImagePicker, Permissions } from 'expo';
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, ImageEditor  } from 'react-native';
 
@@ -8,31 +12,15 @@ import Toast from 'react-native-easy-toast';
 
 
 import DatePicker from 'react-native-datepicker';
-
-import { storage } from '../../config/firebase';
-
-
-
-
-
-import { COFFEE_COLOR } from '../../config/const';
-
-/* MODEL */
-
 import BenHeader from '../../components/BenHeader';
 
-import USER from '../../config/user';
 
 import BenStatusBar from '../../components/BenStatusBar';
 import BackButton  from '../../components/BackButton';
 
 /* hook */
 import {detectForm} from '../../hook/before/';
-
 import BenLoader from '../../components/BenLoader';
-
-
-
 import { validateEmail, validatePassword, confirmPassword } from '../../hook/ultil/validate';
 
 
@@ -52,7 +40,7 @@ class EditProfilePage extends Component {
       status:'',
 
       image: this.store.getState().user.userInfo.photoURL ,
-    
+
 
     }
 
@@ -131,7 +119,7 @@ class EditProfilePage extends Component {
   askPermissionsAsync = async () => {
     await Permissions.askAsync(Permissions.CAMERA);
     await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    
+
   };
 
 
@@ -141,11 +129,11 @@ class EditProfilePage extends Component {
     const photoName = this.data.id;
 
     await this.askPermissionsAsync();
-    let result = await ImagePicker.launchImageLibraryAsync({ 
+    let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
     });
-    
+
     if (result.cancelled) {
       console.log('got here');
       return;
@@ -163,8 +151,8 @@ class EditProfilePage extends Component {
         () => reject(),
       );
     });
-    
-    
+
+
     this.setState({loader:true})
     const resURL = await this._uploadImage(resizedUri, photoName) ;
 
@@ -172,9 +160,9 @@ class EditProfilePage extends Component {
       name:this.data.name,
       photoURL:resURL
     });
-    
+
     this.setState({loader:false})
-    
+
     this.setState({ image: resizedUri });
 
   };
@@ -201,11 +189,11 @@ class EditProfilePage extends Component {
     var ref = storage.ref().child("images/" + imageName);
 
     const snapshot = await ref.put(blob);
-      
+
     blob.close();
     return await snapshot.ref.getDownloadURL();
 
-    
+
 
   }
 
@@ -251,7 +239,7 @@ class EditProfilePage extends Component {
                               style={{height: 100, width: 100, borderRadius:50, borderWidth: 0.5, borderColor: 'rgba(0,0,0,0.2)'}}
                               />
                               <TouchableOpacity
-                                onPress={()=>{this._pickImage()}} 
+                                onPress={()=>{this._pickImage()}}
                               style={{
                                 backgroundColor:'#333',
                                 width:30, height:30,
@@ -263,15 +251,15 @@ class EditProfilePage extends Component {
                                 bottom:0,
                                 justifyContent:'center',
                                 alignItems:'center'
-                              }}>      
+                              }}>
                                   <Text style={{color:'#fff'}}> + </Text>
                               </TouchableOpacity>
-      
-                            </View>  
+
+                            </View>
 
                         </View>
 
-  
+
                         <Item stackedLabel style={ s.item}>
 
 

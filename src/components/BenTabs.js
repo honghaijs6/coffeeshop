@@ -34,7 +34,7 @@ export default class BenTabs extends Component {
         const notiOrder = this.props.notiOrder || 0 ;
         const notiOrderDisplay = parseInt(notiOrder) > 0 ? 'block' : 'none';
 
-        
+
 
 
         return (
@@ -50,7 +50,7 @@ export default class BenTabs extends Component {
 
                           const activeColor = this.props.onTab === item.tab ? tabColor : BLACK_COLOR;
 
-                          
+
                           const Notification = item.tab === 'order' ? (
                             <View style={[s.notiHolder,{ display:notiOrderDisplay }]}>
                                   <Text style={{color:'#fff', fontSize:10}}> { notiOrder } </Text>
@@ -70,14 +70,14 @@ export default class BenTabs extends Component {
                                       color:activeColor
                                     }} name={item.icon}></Icon>
                                     <Text style={[
-                                        {fontSize:12},
+                                        {fontSize:12,fontFamily: 'Roboto'},
                                         {color:activeColor}
 
                                     ]} > { item.name } </Text>
                                 </Button>
 
                                 { Notification }
-                                
+
                               </View>
                             )
                           }

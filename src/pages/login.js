@@ -1,3 +1,8 @@
+import USER from '../config/user';
+/* hook */
+import {detectForm} from '../hook/before/';
+
+
 import React, { Component } from 'react';
 import {
   View, StyleSheet, ImageBackground, Text,TouchableOpacity
@@ -6,19 +11,11 @@ import {
 
 import { Content,Item,Icon , Input,  Button } from 'native-base';
 import Toast from 'react-native-easy-toast';
-
 import { Ionicons } from '@expo/vector-icons';
 
 
+import BenLoader from '../components/BenLoader';
 
-import USER from '../config/user';
-
-import BenLoader from '../components/BenLoader'; 
-
-
-  
-/* hook */
-import {detectForm} from '../hook/before/';   
 
 
 
@@ -44,23 +41,23 @@ class LoginPage extends Component {
 
 
    async _onSubmitLogin(){
-
+ 
 
 
      if(detectForm(['email','password'],this.state)===''){
 
-       
-      
+
+
        this.setState({loader:true});
        const res = await USER.authenticate(this.state.email,this.state.password);
-       
+
        if(res.data===undefined){
         this.refs.toast.show('There is no user record corresponding to this identifier',4000)
        }else if(res.userInfo !== undefined){
           USER.checkLoginStatus();
        }
        this.setState({loader:false});
-       
+
 
 
 
@@ -89,7 +86,7 @@ class LoginPage extends Component {
 
   }
 
-  
+
   render() {
 
 
@@ -112,7 +109,7 @@ class LoginPage extends Component {
                 <Content>
 
 
-                    <View style={{  
+                    <View style={{
                         width:'80%',
                         marginTop:'15%',
                         alignSelf:'center',

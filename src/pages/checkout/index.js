@@ -1,3 +1,10 @@
+import Model from '../../model/model'; // shoppingcart only
+import Api from '../../model/api';
+import USER from '../../config/user';
+
+/* hook */
+import {detectForm} from '../../hook/before/';
+
 
 import React, { Component } from 'react';
 
@@ -7,20 +14,11 @@ import {
 } from 'react-native';
 
 import { Container,  Content} from 'native-base';
-
-
 import Toast from 'react-native-easy-toast';
 
-import Model from '../../model/model'; // shoppingcart only
-import Api from '../../model/api';
-import USER from '../../config/user';
 
 import BenLoader from '../../components/BenLoader';
 
-
-
-/* hook */
-import {detectForm} from '../../hook/before/';
 
 import BenStatusBar from '../../components/BenStatusBar';
 import BenHeader from '../../components/BenHeader';
@@ -47,7 +45,7 @@ export default class CheckOutPage extends Component{
 
     }
 
-    
+
     this.moShoppingcart = new Model('shoppingcart');
 
     this._settup();
@@ -142,7 +140,7 @@ export default class CheckOutPage extends Component{
             }}> Check out </Text>
           </View>
 
-          
+
         </BenHeader>
         <BenLoader visible={this.state.loader} />
         <Content>

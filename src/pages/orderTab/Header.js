@@ -1,20 +1,20 @@
+import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const' ;
 
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity,TextInput } from 'react-native';
-
 import {  Icon,  Content,  } from 'native-base';
 
-import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const' ;
+import { FontAwesome, } from '@expo/vector-icons';
+
+
 
 import BenHeader from '../../components/BenHeader';
-
-
 
 export default class OrderHeader extends Component{
 
 
   constructor(props){
-  
+
     super(props);
 
 
@@ -35,7 +35,7 @@ export default class OrderHeader extends Component{
                   <Icon style={{ fontSize: 32, color: COFFEE_COLOR}} name="bicycle"></Icon>
                   <View style={{ paddingHorizontal: 10, width: '90%'}}>
                       <Text style={{ fontSize: 10, color: BLACK_COLOR}}><Icon style={{fontSize: 12, color: BLACK_COLOR}} name="pin" /> Delivery to </Text>
-                      
+  
                       <View style={{
                         flexDirection:'row'
                       }}>
@@ -47,10 +47,10 @@ export default class OrderHeader extends Component{
                         }} defaultValue={ address } />
 
                       </View>
-                      
+
                   </View>
               </TouchableOpacity>
-          </BenHeader>  
+          </BenHeader>
 
           <View style={{
             flexDirection: 'row',

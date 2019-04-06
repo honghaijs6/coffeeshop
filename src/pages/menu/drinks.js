@@ -1,4 +1,5 @@
 /* @flow weak */
+import {RED_COLOR, COFFEE_COLOR, BLACK_COLOR, GREY_COLOR } from '../../config/const';
 
 import React, { Component } from 'react';
 import {
@@ -10,18 +11,14 @@ import {
   Dimensions
 } from 'react-native';
 
-import {RED_COLOR, COFFEE_COLOR, BLACK_COLOR, GREY_COLOR } from '../../config/const';
 
 import {  Icon, Content } from 'native-base';
 import BenBody from '../../components/BenBody';
 
-import drinksData from './data.json';
 import NoData from '../../components/NoData';
 
 
-
 const w = Dimensions.get('window');
-
 export default class BodyDrinks extends Component{
 
 
@@ -61,7 +58,7 @@ export default class BodyDrinks extends Component{
                     flexDirection: 'row',
                     borderBottomColor: 'rgba(0,0,0,0.1)',
                     borderBottomWidth: 0,
-                    
+
                   }}>
 
                     <TouchableOpacity style={{

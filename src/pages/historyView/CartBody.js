@@ -1,4 +1,6 @@
 /* @flow weak */
+import { GREY_COLOR, COFFEE_COLOR, RED_COLOR, BLACK_COLOR } from '../../config/const' ;
+
 
 import React, { Component } from 'react';
 import {
@@ -8,13 +10,11 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native';
-
 import { Icon } from 'native-base';
 
-import { GREY_COLOR, COFFEE_COLOR, RED_COLOR, BLACK_COLOR } from '../../config/const' ;
+
 
 import CartItem from './CartItem';
-
 
 export default class  CartBody extends Component{
 
@@ -126,7 +126,7 @@ export default class  CartBody extends Component{
                   <Icon name="card" style={{fontSize: 20, color:COFFEE_COLOR, marginRight: 10, marginLeft: 5}} />
                   <Text style={s.txt}> Visa/Master/JCB </Text>
                 </View>
-                
+
 
               </View>
 

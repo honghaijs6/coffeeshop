@@ -1,19 +1,16 @@
 /*
 MAIN TAB ON SHOP
 */
-
-import React, { Component } from 'react';
-
-// Lib
-import BenTabs  from "../components/BenTabs";
-import BenStatusBar  from "../components/BenStatusBar";
-
-
 import moFire from '../model/moFirebase';
 import Api from '../model/api';
 
 
+import React, { Component } from 'react';
+
+import BenTabs  from "../components/BenTabs";
+import BenStatusBar  from "../components/BenStatusBar";
 import BenLoader from '../components/BenLoader';
+
 
 /* TABS : 5 tab items */
 import FeedTab from './feedTab/';
@@ -56,7 +53,7 @@ class shop extends Component {
         orders:[]
       };
 
-      this._listenUserInfo();
+
       this._setup() ;
 
 
@@ -76,9 +73,13 @@ class shop extends Component {
 
     }
 
+
+
     _listenUserInfo(){
       this.unsubscribe = this.store.subscribe(()=>{
+
         const userInfo = this.store.getState().user.userInfo;
+
 
         this.setState({
           userInfo:userInfo
@@ -98,12 +99,13 @@ class shop extends Component {
         res = res.data ;
         if(res.name==='success'){
           this.data.orders = res.rows ;
-          this.setState({onAction:'_readOrders'}) ; 
+          this.setState({onAction:'_readOrders'}) ;
         }
       })
     }
 
     componentDidMount(){
+      this._listenUserInfo();
 
       this._isMounted = true;
       this.setState({loader:true});
@@ -121,9 +123,10 @@ class shop extends Component {
 
       });
 
-      // READ ORDERS 
+      // READ ORDERS
       this._readOrders();
-      
+
+
     }
 
 
@@ -141,15 +144,18 @@ class shop extends Component {
 
 
         this.moCate.read((data)=>{
-
-
           this.setState({
             onAction:'fetch_categories'
           })
+        });
+
+        // READ AGAIN ;
+        this._readOrders();
+
+        // LISTENNING AGAIN ;
+        this._listenUserInfo();
 
 
-
-        })
       }
 
     }
@@ -178,6 +184,7 @@ class shop extends Component {
               onPress={(data)=>{ this._onChangeTab(data) }}
               onTab={ this.state.onTab }
               data={ this.state.tabs }
+              notiOrder={ this.data.orders.length }
             >
               <BenLoader visible={this.state.loader} />
 
@@ -185,7 +192,7 @@ class shop extends Component {
 
               <FeedTab onPressChangeTab={ (data)=>{ this._onChangeTab(data) } } { ...this.state } />
               <MissionTab { ...this.state } />
-              <OrderTab data={this.data} { ...this.state } />
+              <OrderTab  data={this.data} { ...this.state } />
               <StoreTab { ...this.state } />
               <AccountTab { ...this.state } />
 

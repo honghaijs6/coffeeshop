@@ -1,4 +1,5 @@
 /* @flow */
+import { COFFEE_COLOR, GREY_COLOR } from '../../config/const';
 
 import React, { Component } from 'react';
 import {
@@ -13,9 +14,6 @@ import BenHeader from '../../components/BenHeader';
 import BenStatusBar from '../../components/BenStatusBar';
 import BackButton from '../../components/BackButton';
 import BenBody from '../../components/BenBody'
-
-import { COFFEE_COLOR, GREY_COLOR } from '../../config/const';
-
 
 
 export default class SettingDeliveryPage extends Component {

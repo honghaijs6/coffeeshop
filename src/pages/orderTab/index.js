@@ -1,31 +1,28 @@
+import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
 
 import { Asset } from 'expo';
 
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-
 import { Container, Content, } from 'native-base';
+
 import BenProgress from '../../components/BenProgress';
 
-import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
 import OrderHeader from './Header';
 import OrderBody from './Body';
 
 
-
-/*import Img from '../../components/html/Img';*/
-
 function ListItem(props){
-  
+
   const categories = props.data || [] ;
 
   return(
     categories.map((item,index)=>{
 
       const photoURL = item.photo.replace(/ /g,'%20')
-      
+
       return(
-        <TouchableOpacity  onPress={()=>{ this._onCateItemPress(item) }} key={item.uid} style={{
+        <TouchableOpacity  onPress={()=>{ props.onCateItemPress(item) }} key={item.uid} style={{
             width: '48%',
             borderRadius: 6,
             marginBottom: 14
@@ -35,9 +32,9 @@ function ListItem(props){
           <Image source={{uri:photoURL}}
           style={{height: 140, width: '100%', flex: 1, borderRadius: 6, borderWidth: 0.5, borderColor: 'rgba(0,0,0,0.2)'}}
           />
-          
 
-          
+
+
           <View style={{
               width: '100%',
               height: 140,
@@ -57,7 +54,7 @@ function ListItem(props){
           </View>
 
 
-        </TouchableOpacity> 
+        </TouchableOpacity>
       )
 
    })
@@ -79,15 +76,15 @@ function ListOrderItem(props){
 
       const info = item ;
       const step = parseInt(info.status) + 1
-      const statusPercent = step * 33.3; 
-      
+      const statusPercent = step * 33.3;
+
       return(
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={()=>{
             props.navigation.navigate('HistoryPageView',{
               data:item
             })
-          }} 
+          }}
 
           style={{marginBottom:10}} key={info.id}>
           <View style={{flexDirection:'row',justifyContent:'space-between', marginBottom:5}}>
@@ -100,7 +97,7 @@ function ListOrderItem(props){
       )
     })
   )
- 
+
 
 }
 
@@ -143,6 +140,13 @@ export default class OrderPage extends Component{
     this.props.navigation.navigate(code)
   }
 
+
+  componentWillReceiveProps(newProps){
+    if(newProps.onTab===this.state.tab){
+      this.component._root.scrollToPosition(0, 0);
+    }
+  }
+
   render(){
 
     const categories = this.props.data['categories'];
@@ -158,12 +162,12 @@ export default class OrderPage extends Component{
         <OrderHeader onPressNavigate={ this._onPressNavigate } userInfo={ this.props.userInfo }  />
 
 
-        <Content>
+        <Content ref={c => (this.component = c)} >
 
             <OrderBody>
 
-                <ListOrderItem navigation={ this.props.navigation } data={ordersData} /> 
-                
+                <ListOrderItem navigation={ this.props.navigation } data={ordersData} />
+
                 {/* LIST VIEW  */}
                 <Text style={s.h4}> King Kong Menu </Text>
                 <View style={{
@@ -172,8 +176,8 @@ export default class OrderPage extends Component{
                      flexDirection:'row'
 
                   }}>
-                  
-                  <ListItem data={categories} />
+
+                  <ListItem onCateItemPress={(item)=>{ this._onCateItemPress(item) }} data={categories} />
                </View>
             </OrderBody>
 
@@ -208,14 +212,10 @@ const s = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Roboto',
     marginTop: 10,
-    
+
     textTransform:'uppercase',
     marginBottom: 10,
     color:COFFEE_COLOR
 
   }
 });
-
-
-
-

@@ -1,4 +1,5 @@
 /* @flow */
+import { COFFEE_COLOR, GREY_COLOR } from '../../config/const';
 
 import React, { Component } from 'react';
 import {
@@ -10,7 +11,7 @@ import {
 
 import { Container, Content, Icon } from 'native-base';
 
-import { COFFEE_COLOR, GREY_COLOR } from '../../config/const';
+
 
 import BenStatusBar from '../../components/BenStatusBar';
 import BackButton from '../../components/BackButton';
