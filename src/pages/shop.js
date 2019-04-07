@@ -3,6 +3,7 @@ MAIN TAB ON SHOP
 */
 import moFire from '../model/moFirebase';
 import Api from '../model/api';
+import socket from '../config/socket'
 
 
 import React, { Component } from 'react';
@@ -62,6 +63,7 @@ class shop extends Component {
 
 
     _setup(){
+
       this.moCate = new moFire('categories');
       this.moOrder = new Api('orders');
 
@@ -74,6 +76,11 @@ class shop extends Component {
     }
 
 
+    _listenSocket(){
+       socket.on('feeds updated',(message)=>{
+          alert(JSON.stringify(message));
+       })
+    }
 
     _listenUserInfo(){
       this.unsubscribe = this.store.subscribe(()=>{
@@ -106,6 +113,8 @@ class shop extends Component {
 
     componentDidMount(){
       this._listenUserInfo();
+      this._listenSocket();
+
 
       this._isMounted = true;
       this.setState({loader:true});
