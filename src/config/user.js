@@ -114,10 +114,37 @@ const USER = {
                     type:'LOGIN',
                     isLoggedIn: data === null ? false : true ,
                     userInfo:info
-                })
+                });
+                
+                // SILENT LOGIN SERVER
+                if(data!==null){
+                    AsyncStorage.getItem('authenticateInfo').then((info)=>{
+                        socket.emit('authenticate', {
+    
+                            "strategy":"local",
+                            "email": info.email,
+                            "password": info.password
+            
+                            }, (message, data)=> {
+            
+                              if(data!==undefined){
+            
+                                //alert('silent logined') ;
 
+                                
+            
+                              }else{
+        
+                                //alert('silent failt')
+        
+                              }
+            
+                        });
+                    });
+                }    
+                
 
-
+                // END SILENT
 
             });
 
@@ -178,10 +205,14 @@ const USER = {
                                     data:data,
                                     userInfo:data.rows[0]
                                 });
+                                
+                           });
 
+                           AsyncStorage.setItem('authenticateInfo',JSON.stringify({
+                               email:email,
+                               password:password
+                           }));
 
-
-                           })
 
                          }
 

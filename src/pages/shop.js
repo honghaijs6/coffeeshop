@@ -7,6 +7,9 @@ import socket from '../config/socket'
 
 
 import React, { Component } from 'react';
+import {  Notifications, Permissions } from 'expo';
+
+
 
 import BenTabs  from "../components/BenTabs";
 import BenStatusBar  from "../components/BenStatusBar";
@@ -20,6 +23,16 @@ import OrderTab from './orderTab';
 import StoreTab from './storeTab/';
 import AccountTab from './userTab/';
 
+
+
+async function getiOSNotificationPermission() {
+  const { status } = await Permissions.getAsync(
+    Permissions.NOTIFICATIONS
+  );
+  if (status !== 'granted') {
+    await Permissions.askAsync(Permissions.NOTIFICATIONS);
+  }
+}
 
 
 class shop extends Component {
@@ -75,11 +88,62 @@ class shop extends Component {
 
     }
 
+    // SEND LOCALNOTIFICATION
+    _sendLocalNotification(json){
+      const localnotification = {
+        title: json.title,
+        body: json.body,
+        android: {
+          sound: true,
+        },
+        ios: {
+          sound: true,
+        },
+      };
+
+      let afterOneSecond = Date.now();
+      afterOneSecond += 1000;
+
+      const schedulingOptions = { time: afterOneSecond };
+      Notifications.scheduleLocalNotificationAsync(
+        localnotification,
+        schedulingOptions
+      );
+
+
+
+    }
+
+
+    // NHAN NOTI
+    /*listenForNotifications = () => {
+      Notifications.addListener(notification => {
+        if (notification.origin === 'received') {
+           alert('nhan socket notification')
+        }
+      });
+    };*/
+
 
     _listenSocket(){
-       socket.on('feeds updated',(message)=>{
-          alert(JSON.stringify(message));
-       })
+
+      // START LISTENING CENTER
+      socket.on('connect',()=>{
+
+      });
+      socket.on('disconnect',()=>{
+
+      });
+
+      /* LISTENING ORDERS ON created */
+      socket.on('feeds updated',(res)=>{
+        //console.log(res);
+        alert('socket updated');
+      })
+
+
+
+
     }
 
     _listenUserInfo(){
@@ -112,13 +176,15 @@ class shop extends Component {
     }
 
     componentDidMount(){
+
       this._listenUserInfo();
       this._listenSocket();
+
+      getiOSNotificationPermission();
 
 
       this._isMounted = true;
       this.setState({loader:true});
-
       this.moCate.read((data)=>{
 
         this.data.categories = data;
