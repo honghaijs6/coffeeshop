@@ -15,16 +15,6 @@ const connectionConfig = {
   transports: ['websocket'], // you need to explicitly tell it to use websockets
 };
 const socket = io(server.host,connectionConfig);
-
-socket.on('connect',()=>{
-  console.log('connect')
-});
-
-
-socket.on('disconnect',()=>{
-  console.log('disconnect');
-})
-
 Object.assign(socket,{
 
     server:server

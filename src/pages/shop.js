@@ -77,6 +77,10 @@ class shop extends Component {
 
     _setup(){
 
+      this._listenUserInfo();
+      this._listenSocket();
+
+
       this.moCate = new moFire('categories');
       this.moOrder = new Api('orders');
 
@@ -90,6 +94,7 @@ class shop extends Component {
 
     // SEND LOCALNOTIFICATION
     _sendLocalNotification(json){
+
       const localnotification = {
         title: json.title,
         body: json.body,
@@ -116,30 +121,42 @@ class shop extends Component {
 
 
     // NHAN NOTI
-    /*listenForNotifications = () => {
+    listenForNotifications = () => {
       Notifications.addListener(notification => {
         if (notification.origin === 'received') {
            alert('nhan socket notification')
         }
       });
-    };*/
+    };
 
 
     _listenSocket(){
 
-      // START LISTENING CENTER
-      socket.on('connect',()=>{
-
-      });
-      socket.on('disconnect',()=>{
-
-      });
-
       /* LISTENING ORDERS ON created */
-      socket.on('feeds updated',(res)=>{
-        //console.log(res);
-        alert('socket updated');
+      socket.on('orders updated',(res)=>{
+
+        alert('soket')
+        if(res.name==='success'){
+          this._sendLocalNotification({
+            title:'Orders Progress',
+            body:` Your orders #${ res.data.code } is in progress of delivery `
+          })
+          this._readOrders();
+        }
+        //alert('ok')
+      });
+
+      socket.on('connect',()=>{
+        console.log('connect socket');
       })
+
+      socket.on('disconnect',()=>{
+        console.log('disconnect');
+        socket.connect();
+        this._listenSocket();
+
+      })
+
 
 
 
@@ -175,13 +192,15 @@ class shop extends Component {
       })
     }
 
+
+    _initNotification(){
+      getiOSNotificationPermission();
+      this.listenForNotifications();
+    }
+
     componentDidMount(){
 
-      this._listenUserInfo();
-      this._listenSocket();
-
-      getiOSNotificationPermission();
-
+      this._initNotification();
 
       this._isMounted = true;
       this.setState({loader:true});

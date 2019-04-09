@@ -87,6 +87,9 @@ const USER = {
     async logout(){
         return new Promise((resole,reject)=>{
 
+          socket.emit('logout',(message,data)=>{
+
+
             AsyncStorage.clear(()=>{
 
                 this._whereStateChange({
@@ -97,6 +100,11 @@ const USER = {
 
                 resole(true);
             })
+
+
+          })
+
+
 
         })
     },
@@ -115,34 +123,41 @@ const USER = {
                     isLoggedIn: data === null ? false : true ,
                     userInfo:info
                 });
-                
+
                 // SILENT LOGIN SERVER
                 if(data!==null){
-                    AsyncStorage.getItem('authenticateInfo').then((info)=>{
+                    AsyncStorage.getItem('authenticateInfo').then((info2)=>{
+
+                        info2 = JSON.parse(info2);
+
+
                         socket.emit('authenticate', {
-    
+
                             "strategy":"local",
-                            "email": info.email,
-                            "password": info.password
-            
+                            "email": info2.email,
+                            "password": info2.password
+
                             }, (message, data)=> {
-            
+
+
+
                               if(data!==undefined){
-            
+
+                                //alert(JSON.stringify(data))
                                 //alert('silent logined') ;
 
-                                
-            
+
                               }else{
-        
+
+                                //alert(info2.email+'-'+info2.password)
                                 //alert('silent failt')
-        
+
                               }
-            
+
                         });
                     });
-                }    
-                
+                }
+
 
                 // END SILENT
 
@@ -205,7 +220,7 @@ const USER = {
                                     data:data,
                                     userInfo:data.rows[0]
                                 });
-                                
+
                            });
 
                            AsyncStorage.setItem('authenticateInfo',JSON.stringify({

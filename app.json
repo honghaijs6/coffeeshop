@@ -6,12 +6,12 @@
     "sdkVersion": "32.0.0",
     "platforms": [
       "ios",
-      "android"  
+      "android"
     ],
     "notification": {
       "icon": "./assets/images/notification.png"
     },
-    
+
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,7 +27,13 @@
       "assets/images/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
+      }
     },
     "description": ""
   }
