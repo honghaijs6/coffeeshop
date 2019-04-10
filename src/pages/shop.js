@@ -121,7 +121,7 @@ class shop extends Component {
 
       this.moOrder.set('method',{
         name:'listAll',
-        params:'all?creator_id='+this.state.userInfo.id+'&status=lte2'
+        params:'all?creator_id='+this.state.userInfo.id+'&status=lt2'
       });
 
 
