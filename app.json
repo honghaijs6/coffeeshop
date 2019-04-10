@@ -27,6 +27,7 @@
       "assets/images/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.honghai.coffeeshop",
       "supportsTablet": true,
       "infoPlist": {
         "UIBackgroundModes": [
@@ -34,6 +35,9 @@
           "fetch"
         ]
       }
+    },
+    "android": {
+      "package": "com.honghai.coffeeshop"
     },
     "description": ""
   }

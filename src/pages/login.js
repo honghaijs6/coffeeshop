@@ -41,7 +41,7 @@ class LoginPage extends Component {
 
 
    async _onSubmitLogin(){
- 
+
 
 
      if(detectForm(['email','password'],this.state)===''){
@@ -142,10 +142,10 @@ class LoginPage extends Component {
                                 <Text style={[s.text, {color: 'rgba(87,60,35,0.8)'}]}> Login </Text>
                             </Button>
 
-                            <Button onPress={ this._onSubmitLoginWithFacebook } full style={[s.button,{backgroundColor:'rgba(68,103,176,0.6)'}]}>
+                            {/*<Button onPress={ this._onSubmitLoginWithFacebook } full style={[s.button,{backgroundColor:'rgba(68,103,176,0.6)'}]}>
                                 <Icon style={{ color:'#fff' }} name='logo-facebook' />
                                 <Text style={s.text}> Login with Facebook </Text>
-                            </Button>
+                            </Button>*/}
 
                         </View>
 

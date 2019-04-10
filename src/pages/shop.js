@@ -24,7 +24,7 @@ import StoreTab from './storeTab/';
 import AccountTab from './userTab/';
 
 
-
+/* NOTIFICATIONS  */
 async function getiOSNotificationPermission() {
   const { status } = await Permissions.getAsync(
     Permissions.NOTIFICATIONS
@@ -33,6 +33,40 @@ async function getiOSNotificationPermission() {
     await Permissions.askAsync(Permissions.NOTIFICATIONS);
   }
 }
+
+function listenForNotifications(){
+  Notifications.addListener(notification => {
+    if (notification.origin === 'received') {
+       alert(JSON.stringify(notification))
+    }
+  });
+}
+
+function sendLocalNotification(json){
+  const localnotification = {
+    title: json.title,
+    body: json.body,
+    android: {
+      sound: true,
+    },
+    ios: {
+      sound: true,
+    },
+  };
+
+  let afterOneSecond = Date.now();
+  afterOneSecond += 1000;
+
+  const schedulingOptions = { time: afterOneSecond };
+  Notifications.scheduleLocalNotificationAsync(
+    localnotification,
+    schedulingOptions
+  );
+}
+
+/* END NOTIFICATION */
+
+
 
 
 class shop extends Component {
@@ -77,6 +111,7 @@ class shop extends Component {
 
     _setup(){
 
+      // START LISTEN REDUX - SOCKJET
       this._listenUserInfo();
       this._listenSocket();
 
@@ -92,42 +127,6 @@ class shop extends Component {
 
     }
 
-    // SEND LOCALNOTIFICATION
-    _sendLocalNotification(json){
-
-      const localnotification = {
-        title: json.title,
-        body: json.body,
-        android: {
-          sound: true,
-        },
-        ios: {
-          sound: true,
-        },
-      };
-
-      let afterOneSecond = Date.now();
-      afterOneSecond += 1000;
-
-      const schedulingOptions = { time: afterOneSecond };
-      Notifications.scheduleLocalNotificationAsync(
-        localnotification,
-        schedulingOptions
-      );
-
-
-
-    }
-
-
-    // NHAN NOTI
-    listenForNotifications = () => {
-      Notifications.addListener(notification => {
-        if (notification.origin === 'received') {
-           alert('nhan socket notification')
-        }
-      });
-    };
 
 
     _listenSocket(){
@@ -135,9 +134,10 @@ class shop extends Component {
       /* LISTENING ORDERS ON created */
       socket.on('orders updated',(res)=>{
 
-        alert('soket')
+
+
         if(res.name==='success'){
-          this._sendLocalNotification({
+          sendLocalNotification({
             title:'Orders Progress',
             body:` Your orders #${ res.data.code } is in progress of delivery `
           })
@@ -147,13 +147,20 @@ class shop extends Component {
       });
 
       socket.on('connect',()=>{
-        console.log('connect socket');
+        console.log('connect socket me');
       })
 
       socket.on('disconnect',()=>{
-        console.log('disconnect');
-        socket.connect();
-        this._listenSocket();
+        console.log('disconnect me');
+
+        sendLocalNotification({
+          title:'Test Noti',
+          body:` Just test localnotification  `
+        });
+
+        socket.open();
+        //this._listenSocket();
+
 
       })
 
@@ -195,7 +202,8 @@ class shop extends Component {
 
     _initNotification(){
       getiOSNotificationPermission();
-      this.listenForNotifications();
+      listenForNotifications();
+
     }
 
     componentDidMount(){
