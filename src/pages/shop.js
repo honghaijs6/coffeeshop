@@ -91,8 +91,7 @@ class shop extends Component {
         ],
         onTab:'order',
         tab:{},
-        userInfo:props.screenProps.getState().user.userInfo,
-
+        userInfo:props.screenProps.getState().user.userInfo
 
       }
 
@@ -101,6 +100,7 @@ class shop extends Component {
         orders:[]
       };
 
+      this.poll = '';
 
       this._setup() ;
 
@@ -108,6 +108,37 @@ class shop extends Component {
 
     }
 
+    _poll(type){
+      this.poll = type ;
+      if(this.poll==='start'){
+
+          console.log('poll on running');
+
+          setTimeout(()=>{
+            socket.emit('find','notifications',{
+              is_read:0,
+              belong_uid:15
+            },(err,data)=>{
+
+              
+              if(data.total>0){
+                sendLocalNotification({
+                  title:'Test Noti',
+                  body:` Just test localnotification  `
+                });
+              }
+
+              console.log(data);
+
+
+              this._poll(type);
+            });
+          },30000)
+      }else{
+        console.log('poll stop!');
+      }
+
+    }
 
     _setup(){
 
@@ -134,8 +165,6 @@ class shop extends Component {
       /* LISTENING ORDERS ON created */
       socket.on('orders updated',(res)=>{
 
-
-
         if(res.name==='success'){
           sendLocalNotification({
             title:'Orders Progress',
@@ -148,15 +177,19 @@ class shop extends Component {
 
       socket.on('connect',()=>{
         console.log('connect socket me');
+
+        this._poll('start');
+
       })
 
       socket.on('disconnect',()=>{
         console.log('disconnect me');
 
-        sendLocalNotification({
+        /*sendLocalNotification({
           title:'Test Noti',
           body:` Just test localnotification  `
-        });
+        });*/
+
 
         socket.open();
         //this._listenSocket();
