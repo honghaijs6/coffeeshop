@@ -101,6 +101,7 @@ class shop extends Component {
       };
 
       this.poll = '';
+      this.time_id = 2000 ;
 
       this._setup() ;
 
@@ -113,14 +114,14 @@ class shop extends Component {
       if(this.poll==='start'){
 
           console.log('poll on running');
+          clearInterval(this.time_id);
 
-          setTimeout(()=>{
+          this.time_id = setInterval(()=>{
             socket.emit('find','notifications',{
               is_read:0,
               belong_uid:15
             },(err,data)=>{
 
-              
               if(data.total>0){
                 sendLocalNotification({
                   title:'Test Noti',
@@ -133,9 +134,11 @@ class shop extends Component {
 
               this._poll(type);
             });
-          },30000)
+          },30000);
+
       }else{
         console.log('poll stop!');
+        clearInterval(this.time_id);
       }
 
     }
@@ -163,37 +166,16 @@ class shop extends Component {
     _listenSocket(){
 
       /* LISTENING ORDERS ON created */
-      socket.on('orders updated',(res)=>{
-
-        if(res.name==='success'){
-          sendLocalNotification({
-            title:'Orders Progress',
-            body:` Your orders #${ res.data.code } is in progress of delivery `
-          })
-          this._readOrders();
-        }
-        //alert('ok')
-      });
-
       socket.on('connect',()=>{
-        console.log('connect socket me');
 
+        console.log('connect socket me');
         this._poll('start');
 
       })
 
       socket.on('disconnect',()=>{
         console.log('disconnect me');
-
-        /*sendLocalNotification({
-          title:'Test Noti',
-          body:` Just test localnotification  `
-        });*/
-
-
         socket.open();
-        //this._listenSocket();
-
 
       })
 
