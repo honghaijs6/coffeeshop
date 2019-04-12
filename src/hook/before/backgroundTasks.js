@@ -5,11 +5,18 @@ import {  BackgroundFetch, TaskManager } from 'expo';
 
 
 export default async function backgroundTasks(socket) {
-    TaskManager.defineTask(FETCH_TASKNAME, ()=>{  
-      console.log('BackgroundFetch running 2');
+    TaskManager.defineTask(FETCH_TASKNAME, ()=>{
+
+      socket.emit('find','notifications',{
+          is_read:0,
+          belong_uid:15
+        },(err,data)=>{
+
+          console.log(data);
+
+      });
 
     });
-
 
     const status = await BackgroundFetch.getStatusAsync();
     switch (status) {

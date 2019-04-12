@@ -5,6 +5,8 @@ import moFire from '../model/moFirebase';
 import Api from '../model/api';
 import socket from '../config/socket'
 
+import { backgroundTasks } from '../hook/before';
+
 
 import React, { Component } from 'react';
 import {  Notifications, Permissions } from 'expo';
@@ -147,7 +149,8 @@ class shop extends Component {
 
       // START LISTEN REDUX - SOCKJET
       this._listenUserInfo();
-      this._listenSocket();
+      //this._listenSocket();
+
 
 
       this.moCate = new moFire('categories');
@@ -242,6 +245,10 @@ class shop extends Component {
 
       // READ ORDERS
       this._readOrders();
+
+      // INI BackgroundFetch 
+      backgroundTasks(socket);
+
 
 
     }

@@ -2,6 +2,8 @@ import USER from './src/config/user';
 import store from './src/redux/store';
 
 
+import { Provider } from 'react-redux';
+
 import React from 'react';
 import { Font, AppLoading } from 'expo';
 
@@ -96,9 +98,7 @@ const LoginStack = createStackNavigator(
   }
 );
 
-function cacheFonts(fonts) {
-  return fonts.map(font => Font.loadAsync(font));
-}
+
 
 export default class App extends React.Component {
 
