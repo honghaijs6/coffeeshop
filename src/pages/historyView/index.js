@@ -13,17 +13,8 @@ import BenBody from '../../components/BenBody' ;
 import CartBody from './CartBody';
 
 // create a component
-class HistoryPageView extends Component {
+export default class HistoryPageView extends Component {
 
-
-    constructor(props){
-        super(props);
-
-        this.store = props.screenProps;
-        this.state = {}
-        this.userInfo = this.store.getState().user.userInfo;
-
-    }
     render() {
 
         const data = this.props.navigation.getParam('data');
@@ -60,6 +51,3 @@ const s = StyleSheet.create({
     textTransform:'uppercase'
   },
 });
-
-//make this component available to the app
-export default HistoryPageView;

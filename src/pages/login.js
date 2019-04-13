@@ -54,7 +54,7 @@ class LoginPage extends Component {
        if(res.data===undefined){
         this.refs.toast.show('There is no user record corresponding to this identifier',4000)
        }else if(res.userInfo !== undefined){
-          USER.checkLoginStatus();
+         USER.checkLoginStatus();
        }
        this.setState({loader:false});
 

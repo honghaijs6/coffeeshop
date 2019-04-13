@@ -3,12 +3,15 @@ import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
 import moFire from '../../model/moFirebase';
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image
+  Image,
+  BackHandler
 } from 'react-native';
 import { Container,  Content } from 'native-base';
 
@@ -75,12 +78,11 @@ function ButtonOrder (props){
   )
 }
 
-export default class Menu extends Component {
+class Menu extends Component {
 
   constructor(props){
     super(props)
 
-    this.store = props.screenProps ;
 
     this.state = {
       loader:false,
@@ -91,7 +93,7 @@ export default class Menu extends Component {
       category:'milktea',
       data:[], // all list products from server
       cateInfo : props.navigation.getParam('cateInfo', null),
-      shoppingcart:  props.screenProps.getState().shoppingcart.list
+      shoppingcart:  props.shoppingcart.list
 
     }
 
@@ -105,28 +107,17 @@ export default class Menu extends Component {
 
   }
 
-  _listenStore(){
-    this.unsubscribe = this.store.subscribe(()=>{
-        let cart = this.store.getState().shoppingcart.list;
+  componentWillReceiveProps(newProps){
 
-        this.setState({
-          shoppingcart:cart
-        });
-
+    this.setState({
+      shoppingcart:newProps.shoppingcart.list
     })
-  }
-
-  componentWillUnmount(){
-    this.unsubscribe();
   }
 
   componentDidMount(){
 
-    this._listenStore();
-    
-    this.setState({loader:true})
+    this.setState({loader:true});
     this.model.fetch("categories",this.state.cateInfo.uid,(data)=>{
-
       this.setState({
           loader:false,
           data:data
@@ -190,6 +181,14 @@ export default class Menu extends Component {
 
   }
 }
+
+function mapStateToProps(state){
+  return {
+    shoppingcart:state.shoppingcart
+  }
+}
+
+export default connect(mapStateToProps)(Menu);
 
 const s = StyleSheet.create({
 

@@ -1,27 +1,27 @@
+import { COFFEE_COLOR } from '../../config/const';
+/* MODEL */
+import USER from '../../config/user';
+
+/* hook */
+import {detectForm} from '../../hook/before/';
+import {  validatePassword, confirmPassword } from '../../hook/ultil/validate';
+
+
+
 import React, { Component } from 'react';
 import { View, StyleSheet, Keyboard  } from 'react-native';
 
 import { Container,Content,Item,Icon ,Text,Input, Button  } from 'native-base';
+import { connect } from 'react-redux';
+
 import Toast from 'react-native-easy-toast';
-
-import { COFFEE_COLOR } from '../../config/const';
-
-
 import BenLoader from '../../components/BenLoader';
-/* MODEL */
-import USER from '../../config/user';
-
 
 
 /* MODEL */
 import BenHeader from '../../components/BenHeader';
 import BenStatusBar from '../../components/BenStatusBar';
 import BackButton  from '../../components/BackButton';
-
-/* hook */
-import {detectForm} from '../../hook/before/';
-import {  validatePassword, confirmPassword } from '../../hook/ultil/validate';
-
 
 class ChangePassPage extends Component {
 
@@ -30,15 +30,13 @@ class ChangePassPage extends Component {
 
     super(props);
 
-    this.store = props.screenProps ; 
-
     this.state = {
       loader:false,
       typeAction:'',
       onAction:'',
       status:'',
 
-      userInfo:this.store.getState().user.userInfo
+      userInfo: props.user.userInfo // connected redux before
     }
 
     this.data = {
@@ -52,11 +50,9 @@ class ChangePassPage extends Component {
 
   }
 
-  _onChangeText(json){  
-    
+  _onChangeText(json){
 
      Object.assign(this.data,json);
-
      this.setState({
        onAction:'typing'
      })
@@ -70,18 +66,18 @@ class ChangePassPage extends Component {
     this._whereStateChange({typeAction:''})
   }
 
-  async _onSubmit(){ 
+  async _onSubmit(){
 
     Keyboard.dismiss();
 
     if(detectForm(['curent','password','repassword'], this.data )===''){
 
        this.setState({loader:true});
-       
-       // PROGRESS AUTHENTICATE 
+
+       // PROGRESS AUTHENTICATE
        let resMsg = await USER.authentication(this.state.userInfo.email,this.data.curent);
        this.setState({loader:false});
-       
+
        if(resMsg==='success'){
 
         resMsg = '';
@@ -102,7 +98,7 @@ class ChangePassPage extends Component {
           this.setState({loader:false});
 
           this.refs.toast.show(resetMsg,1000);
-          
+
 
         }
 
@@ -113,28 +109,11 @@ class ChangePassPage extends Component {
        }else{  this.refs.toast.show("your current password incorrect",1000); }
 
 
-    }else{  
+    }else{
       this.refs.toast.show("Please type your correct info!",1000);
     }
 
-    
 
-    // PROGRESS UPDATE PASSWORD
-
-
-    /*
-    const ret = benAuth.resetPassword({
-      email:this.state.userInfo.email,
-      password:this.data.password
-    });
-
-    if(ret){
-      this.refs.toast.show("please check your email for processing reset your password",2000);
-
-      setTimeout(()=>{
-        this.props.navigation.goBack()  
-      },2000)
-    }*/
   }
 
   /* WHERE */
@@ -191,7 +170,7 @@ class ChangePassPage extends Component {
                             <Icon style={s.icon} name='lock' />
                             <Input autoCapitalize='none' secureTextEntry={true} onChangeText={(text)=>{ this._onChangeText({repassword:text}) }} placeholderTextColor="rgba(0,0,0,0.3)" style={s.text}  placeholder='Re-type new'/>
                         </Item>
-                       
+
                     </View>
 
                     <View style={{marginTop:81}}>
@@ -200,8 +179,8 @@ class ChangePassPage extends Component {
                       </Button>
                     </View>
 
-                   
-                    
+
+
 
                 </View>
 
@@ -244,4 +223,11 @@ const s = StyleSheet.create({
 
 });
 
-export default ChangePassPage;
+function mapStateToProps(state){
+  return {
+    user:state.user
+  }
+}
+
+
+export default connect(mapStateToProps)(ChangePassPage);

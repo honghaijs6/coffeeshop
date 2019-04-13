@@ -149,7 +149,7 @@ export default class App extends React.Component {
   }
 
 
-  async loadFonts() {
+  async loadFonts() { 
 
     await Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
@@ -183,8 +183,11 @@ export default class App extends React.Component {
       return <AppLoading />;
     }
     return (
+      <Provider store={store}>
+        {/*<AppContainer screenProps={ store } /> */}
+        <AppContainer />
 
-      <AppContainer screenProps={ store } />
+      </Provider>
 
     );
   }

@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
+import { connect } from 'react-redux';
 
 import { Container, Content, Icon } from 'native-base';
 import BenHeader from '../../components/BenHeader';
@@ -16,36 +17,42 @@ import BackButton from '../../components/BackButton';
 import BenBody from '../../components/BenBody'
 
 
-export default class SettingDeliveryPage extends Component {
+class SettingDeliveryPage extends Component {
 
   constructor(props){
     super(props);
 
-    this.store = props.screenProps ;
     this.state = {
-      userInfo:this.store.getState().user.userInfo
+      userInfo:props.userInfo
     }
 
   }
 
+  componentWillReceiveProps(newProps){
+    
+    this.setState({
+      userInfo:newProps.userInfo
+    });
 
+  }
   _listenStore(){
-    this.unsubscribe = this.store.subscribe(()=>{
+
+    /*this.unsubscribe = this.store.subscribe(()=>{
       const userInfo = this.store.getState().user.userInfo;
 
       this.setState({
         userInfo:userInfo
       });
 
-    })
+    })*/
   }
 
   componentDidMount(){
-    this._listenStore();
+    //this._listenStore();
   }
   componentWillUnmount(){
 
-    this.unsubscribe();
+    //this.unsubscribe();
 
   }
   render() {
@@ -111,6 +118,15 @@ export default class SettingDeliveryPage extends Component {
     );
   }
 }
+
+function mapStateToProps(state){
+  return {
+    userInfo:state.user.userInfo
+  }
+}
+
+export default connect(mapStateToProps)(SettingDeliveryPage);
+
 
 const s = StyleSheet.create({
   icon:{

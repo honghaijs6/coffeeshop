@@ -5,6 +5,8 @@ import USER from '../../config/user';
 
 import { ImagePicker, Permissions } from 'expo';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import { View, StyleSheet, Image, TouchableOpacity, ImageEditor  } from 'react-native';
 
 import { Container,Content,Item,Label ,Text,Input, Button  } from 'native-base';
@@ -31,20 +33,18 @@ class EditProfilePage extends Component {
 
     super(props);
 
-    this.store = props.screenProps
-
     this.state = {
       loader:false,
       typeAction:'',
       onAction:'',
       status:'',
 
-      image: this.store.getState().user.userInfo.photoURL ,
+      image: props.user.userInfo.photoURL ,
 
 
     }
 
-    this.data = this.store.getState().user.userInfo
+    this.data = props.user.userInfo
 
 
     this._onSubmit = this._onSubmit.bind(this);
@@ -193,7 +193,7 @@ class EditProfilePage extends Component {
     blob.close();
     return await snapshot.ref.getDownloadURL();
 
-
+    
 
   }
 
@@ -389,4 +389,10 @@ const s = StyleSheet.create({
 
 });
 
-export default EditProfilePage;
+function mapStateToProps(state){
+  return {
+    user:state.user
+  }
+}
+
+export default connect(mapStateToProps)(EditProfilePage);

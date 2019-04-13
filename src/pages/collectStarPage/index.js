@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet
 } from 'react-native';
+import { connect } from 'react-redux';
 
 import { Container, Content } from 'native-base';
 
@@ -19,23 +20,21 @@ import BenBody from '../../components/BenBody';
 import CardName from './cardName';
 
 
-export default class CollectStarPage extends Component {
+class CollectStarPage extends Component {
 
 
   constructor(props){
     super(props);
 
-    this.store = props.screenProps ;
-
     this.state = {
-      userInfo: this.store.getState().user.userInfo
+      userInfo: props.user.userInfo
     }
 
   }
+
   
+
   render() {
-
-
 
     return (
       <Container>
@@ -91,3 +90,11 @@ const s = StyleSheet.create({
     color:BLACK_COLOR
   },
 });
+
+function mapStateToProps(state){
+  return {
+    userInfo:state.user
+  }
+}
+
+export default connect(mapStateToProps)(CollectStarPage);

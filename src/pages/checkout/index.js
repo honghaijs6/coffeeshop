@@ -7,11 +7,11 @@ import {detectForm} from '../../hook/before/';
 
 
 import React, { Component } from 'react';
-
 import {
   View,
   Text
 } from 'react-native';
+import { connect } from 'react-redux';
 
 import { Container,  Content} from 'native-base';
 import Toast from 'react-native-easy-toast';
@@ -27,12 +27,10 @@ import BackButton from '../../components/BackButton';
 import CheckOutBody from './body';
 
 
-export default class CheckOutPage extends Component{
+class CheckOutPage extends Component{
 
   constructor(props){
     super(props)
-
-    this.store = props.screenProps ;
 
     this.state = {
 
@@ -40,14 +38,11 @@ export default class CheckOutPage extends Component{
       typeAction:'',
       onAction:'',
       tab:'checkout',
-      shoppingcart: this.store.getState().shoppingcart.list,
-      userInfo: this.store.getState().user.userInfo
+      shoppingcart: props.shoppingcart.list,
+      userInfo:props.user.userInfo
 
     }
-
-
     this.moShoppingcart = new Model('shoppingcart');
-
     this._settup();
   }
 
@@ -127,6 +122,13 @@ export default class CheckOutPage extends Component{
 
   }
 
+  componentWillReceiveProps(newProps){
+    this.setState({
+      userInfo:newProps.user.userInfo,
+      shoppingcart:newProps.shoppingcart.list
+    })
+  }
+
   render(){
     return(
       <Container>
@@ -159,3 +161,12 @@ export default class CheckOutPage extends Component{
     )
   }
 }
+
+function mapStateToProps(state){
+  return {
+    userInfo:state.user,
+    shoppingcart:state.shoppingcart
+  }
+}
+
+export default connect(mapStateToProps)(CheckOutPage);

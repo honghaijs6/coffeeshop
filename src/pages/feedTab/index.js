@@ -104,7 +104,11 @@ export default class FeedPage extends Component{
   componentWillReceiveProps(newProps){
     if(this.state.tab===newProps.onTab){
 
-      this._fetchData()
+      this._fetchData() ;
+      this.setState({
+        userInfo:newProps.userInfo
+      });
+
     }
 
   }

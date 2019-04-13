@@ -10,6 +10,8 @@ import {
 
 } from 'react-native';
 
+import { connect } from 'react-redux';
+
 import { Container, Content } from 'native-base';
 
 import BenStatusBar from '../../components/BenStatusBar';
@@ -22,20 +24,18 @@ import NoData from '../../components/NoData';
 
 import OrderItem from './OrderItem';
 
-
-export default class HistoryPage extends Component {
+class HistoryPage extends Component {
 
   constructor(props){
 
     super(props)
-    this.store = props.screenProps;
 
     this.state = {
       loader:false,
       data:[]
     }
 
-    this.userInfo = this.store.getState().user.userInfo;
+    this.userInfo = props.userInfo;
     this._setup();
 
 
@@ -107,6 +107,14 @@ export default class HistoryPage extends Component {
     );
   }
 }
+
+function mapStateToProps(state){
+  return {
+    userInfo:state.user.userInfo
+  }
+}
+
+export default connect(mapStateToProps)(HistoryPage);
 
 const s = StyleSheet.create({
   bg:{

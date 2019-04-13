@@ -3,12 +3,14 @@ MAIN TAB ON SHOP
 */
 import moFire from '../model/moFirebase';
 import Api from '../model/api';
-import socket from '../config/socket'
+
 
 import { backgroundTasks } from '../hook/before';
 
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import {  Notifications, Permissions } from 'expo';
 
 
@@ -78,7 +80,6 @@ class shop extends Component {
     constructor(props){
       super(props);
 
-      this.store = props.screenProps;
 
       this.state = state = {
         loader:false,
@@ -93,17 +94,17 @@ class shop extends Component {
         ],
         onTab:'order',
         tab:{},
-        userInfo:props.screenProps.getState().user.userInfo
+        userInfo:props.user.userInfo
 
       }
+
+      //alert(JSON.stringify(props.user.userInfo));
+
 
       this.data = {
         categories:[],
         orders:[]
       };
-
-      this.poll = '';
-      this.time_id = 2000 ;
 
       this._setup() ;
 
@@ -111,46 +112,8 @@ class shop extends Component {
 
     }
 
-    _poll(type){
-      this.poll = type ;
-      if(this.poll==='start'){
-
-          console.log('poll on running');
-          clearInterval(this.time_id);
-
-          this.time_id = setInterval(()=>{
-            socket.emit('find','notifications',{
-              is_read:0,
-              belong_uid:15
-            },(err,data)=>{
-
-              if(data.total>0){
-                sendLocalNotification({
-                  title:'Test Noti',
-                  body:` Just test localnotification  `
-                });
-              }
-
-              console.log(data);
-
-
-              this._poll(type);
-            });
-          },30000);
-
-      }else{
-        console.log('poll stop!');
-        clearInterval(this.time_id);
-      }
-
-    }
 
     _setup(){
-
-      // START LISTEN REDUX - SOCKJET
-      this._listenUserInfo();
-      //this._listenSocket();
-
 
 
       this.moCate = new moFire('categories');
@@ -161,49 +124,6 @@ class shop extends Component {
         params:'all?creator_id='+this.state.userInfo.id+'&status=lt2'
       });
 
-
-    }
-
-
-
-    _listenSocket(){
-
-      /* LISTENING ORDERS ON created */
-      socket.on('connect',()=>{
-
-        console.log('connect socket me');
-        this._poll('start');
-
-      })
-
-      socket.on('disconnect',()=>{
-        console.log('disconnect me');
-        socket.open();
-
-      })
-
-
-
-
-
-    }
-
-    _listenUserInfo(){
-      this.unsubscribe = this.store.subscribe(()=>{
-
-        const userInfo = this.store.getState().user.userInfo;
-
-
-        this.setState({
-          userInfo:userInfo
-        });
-
-      })
-    }
-
-    componentWillUnmount(){
-      this._isMounted = false;
-      this.unsubscribe();
 
     }
 
@@ -246,18 +166,22 @@ class shop extends Component {
       // READ ORDERS
       this._readOrders();
 
-      // INI BackgroundFetch 
-      backgroundTasks(socket);
+    }
+
+    componentWillReceiveProps(newProps){
 
 
+      this.setState({
+        userInfo:newProps.user.userInfo
+      });
 
+      //console.log('receive redux');
     }
 
 
     _onChangeTab(data){
 
       this._isMounted = false;
-      this.unsubscribe();
 
       this.setState({
         onTab:data.tab,
@@ -265,7 +189,6 @@ class shop extends Component {
       });
 
       if(data.tab==='order'){
-
 
         this.moCate.read((data)=>{
           this.setState({
@@ -276,13 +199,10 @@ class shop extends Component {
         // READ AGAIN ;
         this._readOrders();
 
-        // LISTENNING AGAIN ;
-        this._listenUserInfo();
-
-
       }
-
     }
+
+
 
     onStateChange(newState){
 
@@ -301,6 +221,8 @@ class shop extends Component {
 
     }
     render() {
+
+        //alert(JSON.stringify(this.props.user));
 
 
         return (
@@ -326,4 +248,10 @@ class shop extends Component {
         );
     }
 }
-export default shop;
+
+function mapStateToProps(state){
+  return {
+    user:state.user
+  }
+}
+export default  connect(mapStateToProps)(shop) ;

@@ -116,7 +116,7 @@ const USER = {
 
                 const info = JSON.parse(data) || {}
 
-                resole(info);
+                //resole(info);
 
                 this._whereStateChange({
                     type:'LOGIN',

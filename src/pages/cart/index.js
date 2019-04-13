@@ -10,6 +10,8 @@ import {
 
   Alert
 } from 'react-native';
+import { connect } from 'react-redux';
+
 
 import { Container,  Content  } from 'native-base';
 import {  COFFEE_COLOR,  } from '../../config/const' ;
@@ -21,23 +23,19 @@ import BackButton from '../../components/BackButton';
 import CartBody from './CartBody';
 
 
-
-
-
-export default class Cart extends Component {
+class Cart extends Component {
 
   constructor(props){
     super(props)
 
-    this.store = props.screenProps ;
 
     this.state = {
 
       typeAction:'',
       onAction:'',
       tab:'cart',
-      data: this.store.getState().shoppingcart.list,
-      userInfo: this.store.getState().user.userInfo
+      data: props.shoppingcart.list,
+      userInfo: props.user.userInfo
     }
 
 
@@ -47,43 +45,10 @@ export default class Cart extends Component {
 
   }
 
-  componentDidMount(){
-    this._listenStore();
-  }
-
-  componentWillUnmount(){
-    this.unsubscribe();
-  }
-
-  _listenStore(){
-    this.unsubscribe = this.store.subscribe(()=>{
-
-        let cart = this.store.getState().shoppingcart.list;
-
-        if(cart.length>0){
-          this.setState({
-            data:cart
-          });
-        }else{
-          this.props.navigation.goBack()
-        }
-
-
-
-
-    })
-  }
-
-
   _onChangeText(json){
-
     this.setState(Object.assign(this.state.userInfo,json));
-
-
   }
   _onOrderNow(){
-
-
 
     let msg = '';
     if(this.state.userInfo.phone.length < 6 ){
@@ -108,12 +73,19 @@ export default class Cart extends Component {
   // Go back to product Item page
   _onItemSelect(data){
 
-
     this.props.navigation.navigate('ProItem',{
       proInfo:data
     });
 
   }
+
+  componentWillReceiveProps(newProps){
+    this.setState({
+      userInfo:newProps.user.userInfo,
+      shoppingcart:newProps.shoppingcart.list
+    })
+  }
+
   render() {
 
 
@@ -161,6 +133,15 @@ export default class Cart extends Component {
 
   }
 }
+
+function mapStateToProps(state){
+  return {
+    shoppingcart:state.shoppingcart,
+    user:state.user
+  }
+}
+
+export default connect(mapStateToProps)(Cart);
 
 const s = StyleSheet.create({
 

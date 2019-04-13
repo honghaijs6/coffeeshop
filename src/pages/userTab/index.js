@@ -41,6 +41,13 @@ export default class AccountPage extends Component{
 
   }
 
+  componentWillReceiveProps(newProps){
+    this.setState({
+      userInfo:newProps.userInfo
+    });
+
+  }
+
 
   render(){
     return(

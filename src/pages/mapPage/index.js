@@ -7,7 +7,10 @@ import STORE_LOCATIONS from '../../data/stores.json';
 
 
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
+
 import { View, Text,  SafeAreaView,  TouchableOpacity, Keyboard  } from 'react-native';
+
 
 import MapView, { Marker, PROVIDER_GOOGLE,  } from 'react-native-maps';
 
@@ -28,21 +31,18 @@ import BenBody from '../../components/BenBody';
 
 import BoxSearch from './boxSearch';
 
-
-export default class MapPage extends Component{
+class MapPage extends Component{
 
 
   constructor(props){
 
     super(props);
 
-    this.store = props.screenProps ;
-
     this.state = {
 
         loader:false,
         settingFor:'',
-        userInfo:this.store.getState().user.userInfo,
+        userInfo:props.userInfo,
         countMapChange:0,
         data:[],
         keyFind:'',
@@ -370,3 +370,12 @@ export default class MapPage extends Component{
     )
   }
 }
+
+function mapStateToProps(state){
+  return {
+    userInfo:state.user.userInfo
+  }
+}
+
+
+export default connect(mapStateToProps)(MapPage);

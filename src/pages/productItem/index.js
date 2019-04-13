@@ -4,6 +4,8 @@ import { GREY_COLOR, COFFEE_COLOR, RED_COLOR } from '../../config/const' ;
 
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import {
   View,
   Text,
@@ -21,12 +23,12 @@ import LikeButton from '../../components/LikeButton';
 import BodyItem from './body';
 
 
-export default class ProductItem extends Component {
+class ProductItem extends Component {
 
   constructor(props){
     super(props)
 
-    this.store = props.screenProps ;
+
     this.state = {
 
       typeAction:'',
@@ -34,7 +36,7 @@ export default class ProductItem extends Component {
       tab:'productitem',
       amount:1, // cureent amount
       info:{}, // current product info
-      shoppingcart:  props.screenProps.getState().shoppingcart.list
+      shoppingcart:  props.shoppingcart
 
     }
 
@@ -251,6 +253,16 @@ export default class ProductItem extends Component {
 
   }
 }
+
+function mapStateToProps(state){
+  return {
+    shoppingcart:state.shoppingcart.list
+  }
+}
+
+export default connect(mapStateToProps)(ProductItem);
+
+
 
 const s = StyleSheet.create({
   footerBar:{

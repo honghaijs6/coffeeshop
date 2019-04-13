@@ -1,9 +1,9 @@
 /* @flow */
-
+import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR, GOOGLE_MAP_KEY } from '../../config/const' ;
 import USER  from '../../config/user';
 
-
 import React, { Component } from 'react';
+
 import {
   View,
   Text,
@@ -11,10 +11,10 @@ import {
   TouchableOpacity,
   Keyboard
 } from 'react-native';
+import { connect } from 'react-redux';
 
 
 import { Container,  Content, Icon } from 'native-base';
-import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR, GOOGLE_MAP_KEY } from '../../config/const' ;
 
 import MyHeader from './header';
 import BenStatusBar from '../../components/BenStatusBar';
@@ -45,12 +45,10 @@ function Item(props){
   )
 }
 
-export default class DeliveryPage extends Component {
+class DeliveryPage extends Component {
 
   constructor(props){
     super(props)
-
-    this.store = props.screenProps;
 
     this.state = {
 
@@ -60,22 +58,22 @@ export default class DeliveryPage extends Component {
       tab:'delivery',
 
       mode:'none',
-      userInfo: this.store.getState().user.userInfo ,
+      userInfo: props.userInfo ,
 
       personalItems:[
         {
           code:'home',
           icon:'home',
           label:'Home',
-          name: this.store.getState().user.userInfo['home_address'] || '',
-          isEmpty: this.store.getState().user.userInfo['home_address'] || ''
+          name: props.userInfo['home_address'] || '',
+          isEmpty: props.userInfo['home_address'] || ''
         },
         {
           code:'office',
           icon:'briefcase',
           label:'Work place',
-          name:this.store.getState().user.userInfo['work_address'] || '',
-          isEmpty:this.store.getState().user.userInfo['work_address'] || ''
+          name:props.userInfo['work_address'] || '',
+          isEmpty:props.userInfo['work_address'] || ''
         },
         /*{
           code:'current',
@@ -87,7 +85,7 @@ export default class DeliveryPage extends Component {
           code:'recent',
           icon:'time',
           label:'Recent search',
-          name:this.store.getState().user.userInfo.recent_address || '...'
+          name:props.userInfo.recent_address || '...'
         },
 
       ]
@@ -251,6 +249,15 @@ export default class DeliveryPage extends Component {
   }
 }
 
+function mapStateToProps(state){
+  return {
+    userInfo:state.user.userInfo
+  }
+}
+
+export default connect(mapStateToProps)(DeliveryPage);
+
+
 const s = StyleSheet.create({
 
   icon:{
@@ -280,4 +287,4 @@ const s = StyleSheet.create({
     width: '100%',
     marginTop: 10
   }
-})
+});
