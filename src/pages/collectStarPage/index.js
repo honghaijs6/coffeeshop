@@ -32,7 +32,7 @@ class CollectStarPage extends Component {
 
   }
 
-  
+
 
   render() {
 
@@ -93,7 +93,7 @@ const s = StyleSheet.create({
 
 function mapStateToProps(state){
   return {
-    userInfo:state.user
+    user:state.user
   }
 }
 

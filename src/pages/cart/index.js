@@ -80,10 +80,17 @@ class Cart extends Component {
   }
 
   componentWillReceiveProps(newProps){
-    this.setState({
-      userInfo:newProps.user.userInfo,
-      shoppingcart:newProps.shoppingcart.list
-    })
+
+
+    if(newProps.shoppingcart.list.length>0){
+      this.setState({
+        userInfo:newProps.user.userInfo,
+        data:newProps.shoppingcart.list
+      });
+    }else{ this.props.navigation.goBack(); }
+
+
+
   }
 
   render() {

@@ -67,12 +67,10 @@ export default class HelpPage extends Component {
     return (
       <Container>
         <BenStatusBar/>
-        <BenHeader>
+        <BenHeader type="flex-start">
           <BackButton onPress={()=>{ this.props.navigation.goBack() }} />
-          <View>
-            <Text style={s.title}> How to earn star  </Text>
-          </View>
-          <View></View>
+          <Text style={s.title}> How to earn star  </Text>
+
         </BenHeader>
 
 

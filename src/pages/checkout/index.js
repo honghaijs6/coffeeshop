@@ -85,6 +85,10 @@ class CheckOutPage extends Component{
 
         this.refs.toast.show('Your order on processing delivery, thank you for your orders',3000);
 
+        setTimeout(()=>{
+          this.props.navigation.navigate('Home')
+        },2000);
+        
 
 
       }
@@ -164,7 +168,7 @@ class CheckOutPage extends Component{
 
 function mapStateToProps(state){
   return {
-    userInfo:state.user,
+    user:state.user,
     shoppingcart:state.shoppingcart
   }
 }

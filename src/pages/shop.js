@@ -124,14 +124,17 @@ class shop extends Component {
         params:'all?creator_id='+this.state.userInfo.id+'&status=lt2'
       });
 
-
     }
 
     _readOrders(){
       this.moOrder.fetch((res)=>{
         res = res.data ;
+
+
         if(res.name==='success'){
           this.data.orders = res.rows ;
+
+
           this.setState({onAction:'_readOrders'}) ;
         }
       })
@@ -145,6 +148,8 @@ class shop extends Component {
     }
 
     componentDidMount(){
+       
+      //backgroundTasks();
 
       this._initNotification();
 
@@ -166,6 +171,7 @@ class shop extends Component {
       // READ ORDERS
       this._readOrders();
 
+
     }
 
     componentWillReceiveProps(newProps){
@@ -174,6 +180,15 @@ class shop extends Component {
       this.setState({
         userInfo:newProps.user.userInfo
       });
+
+      // requery orders
+      this.moOrder.set('method',{
+        name:'listAll',
+        params:'all?creator_id='+newProps.user.userInfo.id+'&status=lt2'
+      })
+      this._readOrders();
+      console.log('receive from redux');
+
 
       //console.log('receive redux');
     }

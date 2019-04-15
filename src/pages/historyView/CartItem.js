@@ -29,9 +29,7 @@ const CartItem = (props) => (
               <Text> {  props.data.amount } </Text>
             </View>
 
-            <TouchableOpacity onPress={()=>{ props.onItemSelect(props.data) }} style={{marginLeft: 10}}>
-              <Text style={{color:COFFEE_COLOR}}> { props.data.name } </Text>
-            </TouchableOpacity>
+            <Text style={{color:COFFEE_COLOR}}> { props.data.name } </Text>
         </View>
 
         <View style={{alignItems: 'center', height: 30}}>

@@ -106,7 +106,7 @@ class Menu extends Component {
 
 
   }
-
+ 
   componentWillReceiveProps(newProps){
 
     this.setState({
