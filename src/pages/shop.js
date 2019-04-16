@@ -6,9 +6,11 @@ import Api from '../model/api';
 
 
 import { backgroundTasks } from '../hook/before';
-
-
 import React, { Component } from 'react';
+import { AppState } from 'react-native' ;
+
+
+
 import { connect } from 'react-redux';
 
 import {  Notifications, Permissions } from 'expo';
@@ -76,6 +78,8 @@ function sendLocalNotification(json){
 class shop extends Component {
 
     _isMounted = false;
+    _timeID = 2000;
+
 
     constructor(props){
       super(props);
@@ -148,8 +152,9 @@ class shop extends Component {
     }
 
     componentDidMount(){
-       
-      //backgroundTasks();
+
+      backgroundTasks();
+
 
       this._initNotification();
 
@@ -171,7 +176,27 @@ class shop extends Component {
       // READ ORDERS
       this._readOrders();
 
+      AppState.addEventListener("change",this._handleAppStateChange)
 
+
+    }
+    _handleAppStateChange(newState){
+      switch (newState) {
+        case 'background':
+            /*this._timeID = setInterval(()=>{
+              console.log('running in background ');
+            },5000);*/
+        break;
+
+        case 'active':
+          //clearInterval(this._timeID);
+          this._readOrders();
+
+        break ;
+
+        default:
+
+      }
     }
 
     componentWillReceiveProps(newProps){

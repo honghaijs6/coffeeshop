@@ -8,18 +8,29 @@ const INTERVAL = 60;
 import {  BackgroundFetch, TaskManager } from 'expo';
 
 
-export default async function backgroundTasks() {
-    TaskManager.defineTask(FETCH_TASKNAME, ()=>{
-
-      console.log('BackgroundFetch running');
+function getNotifications(){
+    return new Promise((resole,reject)=>{
       socket.emit('find','notifications',{
           is_read:0,
           belong_uid:15
         },(err,data)=>{
 
           console.log(data);
+          resole(data);
+
 
       });
+    })
+}
+
+
+export default async function backgroundTasks() {
+
+    TaskManager.defineTask(FETCH_TASKNAME, async ()=>{
+
+      console.log('BackgroundFetch running');
+      const receivedNewData = await getNotifications();
+      return receivedNewData ? BackgroundFetch.Result.NewData : BackgroundFetch.Result.NoData;
 
     });
 
