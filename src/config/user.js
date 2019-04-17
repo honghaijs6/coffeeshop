@@ -2,10 +2,10 @@ import { AVATAR_URL } from '../config/const';
 import axios from 'react-native-axios';
 import socket from './socket';
 import store from '../redux/store';
+import notification from '../config/notification';
+
 
 import {AsyncStorage} from 'react-native';
-
-
 import {myTime} from '../hook/ultil/myTime';
 
 
@@ -115,15 +115,17 @@ const USER = {
             AsyncStorage.getItem('userInfo').then((data)=>{
 
                 const info = JSON.parse(data) || {}
-
-                //resole(info);
-
+                
                 this._whereStateChange({
                     type:'LOGIN',
                     isLoggedIn: data === null ? false : true ,
                     userInfo:info
                 });
 
+                // GET EXPO TOKEN
+                notification.getExpoToken();
+                            
+  
                 // SILENT LOGIN SERVER
                 if(data!==null){
                     AsyncStorage.getItem('authenticateInfo').then((info2)=>{

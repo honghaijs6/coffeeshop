@@ -1,10 +1,13 @@
 import USER from './src/config/user';
 import store from './src/redux/store';
+import socket from './src/config/socket';
 
 
 import { Provider } from 'react-redux';
 
 import React from 'react';
+import { AppState } from 'react-native';
+
 import { Font, AppLoading } from 'expo';
 
 
@@ -109,11 +112,55 @@ export default class App extends React.Component {
 
         isReady:false,
         login: store.getState().user.isLoggedIn || false  ,
-        onAction:''
+        onAction:'',
+        socketRes:null
     }
 
+    this._listenSocket();
+    
 
 
+  }
+
+  _listenSocket(){
+    
+    // FEEDS 
+    socket.on('feeds created',(res)=>{
+      
+      store.dispatch({
+        type:'reset-socket',
+        res:res
+      }); 
+      
+    });
+
+    socket.on('feeds updated',(res)=>{
+      
+      console.log('socket init')
+      store.dispatch({
+        type:'reset-socket',
+        res:res
+      }); 
+      
+    });
+
+
+    // ORDERS 
+    socket.on('orders created',(res)=>{
+      store.dispatch({
+        type:'reset-socket',
+        res:res
+      }); 
+    });
+
+    socket.on('orders updated',(res)=>{
+      
+      store.dispatch({
+        type:'reset-socket',
+        res:res
+      }); 
+
+    });
 
   }
 
@@ -167,11 +214,23 @@ export default class App extends React.Component {
 
   async componentDidMount(){
 
+    // APP STATE CHANGE
+    AppState.addEventListener('change', this._handleAppStateChange);
+
     this._listenStore();
-    const res =  await  USER.checkLoginStatus() ;
+    await  USER.checkLoginStatus() ;
 
+    
 
+  }
 
+  _handleAppStateChange(newState){
+    
+    store.dispatch({
+      type:'appstate-change',
+      appState:newState
+    });
+    
   }
 
   render() {

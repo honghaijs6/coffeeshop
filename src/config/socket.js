@@ -1,19 +1,66 @@
 
 window.navigator.userAgent = "react-native";
-
 import server from './server';
-//import io from 'socket.io-client/dist/socket.io';
 import io from 'socket.io-client';
+
+
+import {AsyncStorage} from 'react-native';
+
+
 const connectionConfig = {
   jsonp: false,
-  autoConnect: false,
+  reconnection: true,
   reconnectionDelay: 1000,
   reconnectionDelayMax : 5000,
-  reconnectionAttempts: 5,
-  transports: ['websocket'], // you need to explicitly tell it to use websockets
+  reconnectionAttempts: Infinity,
+  transports: ['websocket']
 };
 const socket = io(server.host,connectionConfig);
-socket.open();
+
+
+
+socket.on('connect',()=>{
+
+  // authenticated again ;
+  AsyncStorage.getItem('authenticateInfo').then((info2)=>{
+
+      info2 = JSON.parse(info2);
+      
+      if(info2!==null){
+        socket.emit('authenticate', {
+
+            "strategy":"local",
+            "email": info2.email,
+            "password": info2.password
+
+            }, (message, data)=> {
+              
+              if(data!==undefined){
+
+                console.log('authenticated login ')
+        
+              }else{
+                //alert(info2.email+'-'+info2.password)
+                console.log('silent failt')
+              }
+
+         });
+      }
+      
+  });
+});  
+
+socket.on( 'disconnect', function () {
+  console.log( 'disconnected from server' );
+});
+
+/* END NOTIFICATION */
+
+ 
+
+
+
+
 
 Object.assign(socket,{
     server:server,

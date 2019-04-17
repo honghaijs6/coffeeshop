@@ -7,7 +7,7 @@ import Api from '../model/api';
 
 import { backgroundTasks } from '../hook/before';
 import React, { Component } from 'react';
-import { AppState } from 'react-native' ;
+
 
 
 
@@ -28,49 +28,6 @@ import MissionTab from './missionTab/';
 import OrderTab from './orderTab';
 import StoreTab from './storeTab/';
 import AccountTab from './userTab/';
-
-
-/* NOTIFICATIONS  */
-async function getiOSNotificationPermission() {
-  const { status } = await Permissions.getAsync(
-    Permissions.NOTIFICATIONS
-  );
-  if (status !== 'granted') {
-    await Permissions.askAsync(Permissions.NOTIFICATIONS);
-  }
-}
-
-function listenForNotifications(){
-  Notifications.addListener(notification => {
-    if (notification.origin === 'received') {
-       alert(JSON.stringify(notification))
-    }
-  });
-}
-
-function sendLocalNotification(json){
-  const localnotification = {
-    title: json.title,
-    body: json.body,
-    android: {
-      sound: true,
-    },
-    ios: {
-      sound: true,
-    },
-  };
-
-  let afterOneSecond = Date.now();
-  afterOneSecond += 1000;
-
-  const schedulingOptions = { time: afterOneSecond };
-  Notifications.scheduleLocalNotificationAsync(
-    localnotification,
-    schedulingOptions
-  );
-}
-
-/* END NOTIFICATION */
 
 
 
@@ -143,20 +100,8 @@ class shop extends Component {
         }
       })
     }
-
-
-    _initNotification(){
-      getiOSNotificationPermission();
-      listenForNotifications();
-
-    }
-
+    
     componentDidMount(){
-
-      backgroundTasks();
-
-
-      this._initNotification();
 
       this._isMounted = true;
       this.setState({loader:true});
@@ -175,30 +120,9 @@ class shop extends Component {
 
       // READ ORDERS
       this._readOrders();
-
-      AppState.addEventListener("change",this._handleAppStateChange)
-
-
+      
     }
-    _handleAppStateChange(newState){
-      switch (newState) {
-        case 'background':
-            /*this._timeID = setInterval(()=>{
-              console.log('running in background ');
-            },5000);*/
-        break;
-
-        case 'active':
-          //clearInterval(this._timeID);
-          this._readOrders();
-
-        break ;
-
-        default:
-
-      }
-    }
-
+    
     componentWillReceiveProps(newProps){
 
 
@@ -211,11 +135,13 @@ class shop extends Component {
         name:'listAll',
         params:'all?creator_id='+newProps.user.userInfo.id+'&status=lt2'
       })
-      this._readOrders();
-      console.log('receive from redux');
+      
+      // RECIEW FROM SOCKET 
+      if(newProps.socketData.appState==='active'){
+        this._readOrders();
+      }
+      
 
-
-      //console.log('receive redux');
     }
 
 
@@ -230,7 +156,7 @@ class shop extends Component {
 
       if(data.tab==='order'){
 
-        this.moCate.read((data)=>{
+        this.moCate.read((data)=>{ 
           this.setState({
             onAction:'fetch_categories'
           })
@@ -291,7 +217,8 @@ class shop extends Component {
 
 function mapStateToProps(state){
   return {
-    user:state.user
+    user:state.user,
+    socketData:state.socketData
   }
 }
 export default  connect(mapStateToProps)(shop) ;

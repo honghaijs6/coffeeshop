@@ -2,7 +2,7 @@
 import socket from '../../config/socket'
 
 const FETCH_TASKNAME = 'test_bg_fetch';
-const INTERVAL = 60;
+const INTERVAL = 6;
 
 
 import {  BackgroundFetch, TaskManager } from 'expo';
@@ -10,6 +10,7 @@ import {  BackgroundFetch, TaskManager } from 'expo';
 
 function getNotifications(){
     return new Promise((resole,reject)=>{
+      
       socket.emit('find','notifications',{
           is_read:0,
           belong_uid:15
@@ -17,9 +18,9 @@ function getNotifications(){
 
           console.log(data);
           resole(data);
-
-
       });
+
+
     })
 }
 
