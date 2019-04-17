@@ -110,22 +110,31 @@ const USER = {
     },
 
     async checkLoginStatus(){
+
+      // GET EXPO TOKEN
+
+
         return new Promise((resole,reject)=>{
 
             AsyncStorage.getItem('userInfo').then((data)=>{
 
                 const info = JSON.parse(data) || {}
-                
+
                 this._whereStateChange({
                     type:'LOGIN',
                     isLoggedIn: data === null ? false : true ,
                     userInfo:info
                 });
 
-                // GET EXPO TOKEN
-                notification.getExpoToken();
-                            
-  
+                notification.getExpoToken((expoToken)=>{
+                  console.log(expoToken)
+                });
+
+
+
+
+
+
                 // SILENT LOGIN SERVER
                 if(data!==null){
                     AsyncStorage.getItem('authenticateInfo').then((info2)=>{
