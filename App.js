@@ -117,48 +117,48 @@ export default class App extends React.Component {
     }
 
     this._listenSocket();
-    
+
 
 
   }
 
   _listenSocket(){
-    
-    // FEEDS 
+
+    // FEEDS
     socket.on('feeds created',(res)=>{
-      
+
       store.dispatch({
         type:'reset-socket',
         res:res
-      }); 
-      
-    });
+      });
 
+    });
+  
     socket.on('feeds updated',(res)=>{
-      
+
       console.log('socket init')
       store.dispatch({
         type:'reset-socket',
         res:res
-      }); 
-      
+      });
+
     });
 
 
-    // ORDERS 
+    // ORDERS
     socket.on('orders created',(res)=>{
       store.dispatch({
         type:'reset-socket',
         res:res
-      }); 
+      });
     });
 
     socket.on('orders updated',(res)=>{
-      
+
       store.dispatch({
         type:'reset-socket',
         res:res
-      }); 
+      });
 
     });
 
@@ -196,7 +196,7 @@ export default class App extends React.Component {
   }
 
 
-  async loadFonts() { 
+  async loadFonts() {
 
     await Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
@@ -220,17 +220,17 @@ export default class App extends React.Component {
     this._listenStore();
     await  USER.checkLoginStatus() ;
 
-    
+
 
   }
 
   _handleAppStateChange(newState){
-    
+
     store.dispatch({
       type:'appstate-change',
       appState:newState
     });
-    
+
   }
 
   render() {

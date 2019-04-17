@@ -62,7 +62,7 @@ class Register extends Component {
     this._whereStateChange({typeAction:''})
   }
 
-  
+
   async _onSubmit(){
 
 
@@ -81,9 +81,15 @@ class Register extends Component {
 
             msg = await USER.register(this.data) ;
 
-            if(msg==='success'){
+            if(msg==='ok'){ 
 
-              USER.checkLoginStatus();
+              //USER.checkLoginStatus();
+
+              const res = await USER.authenticate(this.data.email,this.data.password);
+              if(res.userInfo !== undefined){
+                USER.checkLoginStatus();
+              }
+
 
             }else{
               this.refs.toast.show(msg,3000);

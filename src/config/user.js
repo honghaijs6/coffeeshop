@@ -19,17 +19,27 @@ const USER = {
 
     async register(data){
         return new Promise((resole,reject)=>{
+
             const url = socket.server.host+'/users';
             axios.post(url,data).then((res)=>{
                 res = res.data ;
 
-                if(res.name==='success'){
+                if(res.name==='ok'){
 
                     AsyncStorage.setItem('userInfo',JSON.stringify(res.data)).then(()=>{
 
-                        resole(res.name);
+                        AsyncStorage.setItem('authenticateInfo',JSON.stringify({
+                            email:data.email,
+                            password:data.password
+                        })).then(()=>{
 
-                   })
+                          resole(res.name);
+
+                        });
+
+                   });
+
+
 
 
                 }else{
@@ -126,46 +136,54 @@ const USER = {
                     userInfo:info
                 });
 
-                notification.getExpoToken((expoToken)=>{
-                  console.log(expoToken)
-                });
 
 
+                if(info.id !== undefined){
+                  notification.getExpoToken((expoToken)=>{
 
+                    if(info.expo_token===undefined || info.expo_token === null ){
+                       this.update(info.id,{
+                         name:info.name,
+                         expo_token:expoToken
+                       });
+                    }
 
+                  });
+                }
 
+  
 
                 // SILENT LOGIN SERVER
                 if(data!==null){
                     AsyncStorage.getItem('authenticateInfo').then((info2)=>{
 
-                        info2 = JSON.parse(info2);
+                        if(info2!==null){
+
+                          info2 = JSON.parse(info2);
+                          socket.emit('authenticate', {
+
+                              "strategy":"local",
+                              "email": info2.email,
+                              "password": info2.password
+
+                              }, (message, data)=> {
+
+                                if(data!==undefined){
+                                  //alert(JSON.stringify(data))
+                                  //alert('silent logined') ;
 
 
-                        socket.emit('authenticate', {
+                                }else{
 
-                            "strategy":"local",
-                            "email": info2.email,
-                            "password": info2.password
+                                  //alert(info2.email+'-'+info2.password)
+                                  //alert('silent failt')
 
-                            }, (message, data)=> {
+                                }
 
-
-
-                              if(data!==undefined){
-
-                                //alert(JSON.stringify(data))
-                                //alert('silent logined') ;
+                          });
+                        }
 
 
-                              }else{
-
-                                //alert(info2.email+'-'+info2.password)
-                                //alert('silent failt')
-
-                              }
-
-                        });
                     });
                 }
 
@@ -238,6 +256,7 @@ const USER = {
                                email:email,
                                password:password
                            }));
+
 
 
                          }
