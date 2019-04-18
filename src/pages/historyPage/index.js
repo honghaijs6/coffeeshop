@@ -1,5 +1,5 @@
 /* @flow */
-import { GREY_COLOR } from '../../config/const';
+import { GREY_COLOR, TIMEOUT } from '../../config/const';
 import Api from '../../model/api';
 
 import React, { Component } from 'react';
@@ -55,7 +55,9 @@ class HistoryPage extends Component {
 
   componentDidMount(){
 
-    this.setState({loader:true})
+    this.setState({loader:true});
+    setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+
     this.Api.fetch((res)=>{
 
       res = res.data ;

@@ -1,5 +1,5 @@
 /* @flow */
-import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
+import { GREY_COLOR, COFFEE_COLOR, TIMEOUT } from '../../config/const' ;
 import moFire from '../../model/moFirebase';
 
 import React, { Component } from 'react';
@@ -106,7 +106,7 @@ class Menu extends Component {
 
 
   }
- 
+
   componentWillReceiveProps(newProps){
 
     this.setState({
@@ -117,6 +117,8 @@ class Menu extends Component {
   componentDidMount(){
 
     this.setState({loader:true});
+    setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+
     this.model.fetch("categories",this.state.cateInfo.uid,(data)=>{
       this.setState({
           loader:false,

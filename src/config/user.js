@@ -6,7 +6,7 @@ import notification from '../config/notification';
 
 
 import {AsyncStorage} from 'react-native';
-import {myTime} from '../hook/ultil/myTime';
+
 
 
 const USER = {
@@ -151,7 +151,7 @@ const USER = {
                   });
                 }
 
-  
+
 
                 // SILENT LOGIN SERVER
                 if(data!==null){

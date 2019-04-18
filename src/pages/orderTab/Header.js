@@ -29,13 +29,13 @@ export default class OrderHeader extends Component{
 
     return(
       <View>
-          <BenHeader>
+          <BenHeader >
               <TouchableOpacity onPress={ ()=>{ this.props.onPressNavigate('DeliveryPage') } }  style={{ flexDirection: 'row', paddingLeft: 10}}>
 
                   <Icon style={{ fontSize: 32, color: COFFEE_COLOR}} name="bicycle"></Icon>
                   <View style={{ paddingHorizontal: 10, width: '90%'}}>
                       <Text style={{ fontSize: 10, color: BLACK_COLOR}}><Icon style={{fontSize: 12, color: BLACK_COLOR}} name="pin" /> Delivery to </Text>
-  
+
                       <View style={{
                         flexDirection:'row'
                       }}>

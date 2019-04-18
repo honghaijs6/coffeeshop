@@ -1,4 +1,5 @@
 /* MODEL */
+import { TIMEOUT } from '../config/const';
 import USER from '../config/user';
 
 /* hook */
@@ -81,7 +82,7 @@ class Register extends Component {
 
             msg = await USER.register(this.data) ;
 
-            if(msg==='ok'){ 
+            if(msg==='ok'){
 
               //USER.checkLoginStatus();
 
@@ -120,7 +121,8 @@ class Register extends Component {
 
   _whereStateChange(newState){
     if(newState.typeAction==='post'){
-        this.setState({loader:true})
+        this.setState({loader:true});
+        setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT);
     }else{
       this.setState({loader:false})
     }

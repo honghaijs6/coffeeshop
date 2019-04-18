@@ -30,7 +30,7 @@ class Cart extends Component {
 
 
     this.state = {
-
+      
       typeAction:'',
       onAction:'',
       tab:'cart',
@@ -88,8 +88,6 @@ class Cart extends Component {
         data:newProps.shoppingcart.list
       });
     }else{ this.props.navigation.goBack(); }
-
-
 
   }
 

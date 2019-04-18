@@ -1,21 +1,15 @@
 /*
 MAIN TAB ON SHOP
 */
+import { TIMEOUT } from '../config/const'
 import moFire from '../model/moFirebase';
 import Api from '../model/api';
-
 
 import { backgroundTasks } from '../hook/before';
 import React, { Component } from 'react';
 
-
-
-
 import { connect } from 'react-redux';
-
 import {  Notifications, Permissions } from 'expo';
-
-
 
 import BenTabs  from "../components/BenTabs";
 import BenStatusBar  from "../components/BenStatusBar";
@@ -30,8 +24,6 @@ import StoreTab from './storeTab/';
 import AccountTab from './userTab/';
 
 
-
-
 class shop extends Component {
 
     _isMounted = false;
@@ -43,6 +35,10 @@ class shop extends Component {
 
 
       this.state = state = {
+
+
+        socketRes:{},
+
         loader:false,
         onAction:'',
         navigation:props.navigation,
@@ -59,8 +55,6 @@ class shop extends Component {
 
       }
 
-      //alert(JSON.stringify(props.user.userInfo));
-
 
       this.data = {
         categories:[],
@@ -68,8 +62,6 @@ class shop extends Component {
       };
 
       this._setup() ;
-
-
 
     }
 
@@ -80,31 +72,38 @@ class shop extends Component {
       this.moCate = new moFire('categories');
       this.moOrder = new Api('orders');
 
-      this.moOrder.set('method',{
+      /*this.moOrder.set('method',{
         name:'listAll',
         params:'all?creator_id='+this.state.userInfo.id+'&status=lt2'
-      });
+      });*/
+
+
 
     }
 
     _readOrders(){
+
+      this.moOrder.set('method',{
+        name:'listAll',
+        params:'all?creator_id='+this.state.userInfo.id+'&status=lt2'
+      })
+
       this.moOrder.fetch((res)=>{
         res = res.data ;
-
-
         if(res.name==='success'){
           this.data.orders = res.rows ;
-
 
           this.setState({onAction:'_readOrders'}) ;
         }
       })
     }
-    
+
     componentDidMount(){
 
       this._isMounted = true;
       this.setState({loader:true});
+      setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+
       this.moCate.read((data)=>{
 
         this.data.categories = data;
@@ -120,27 +119,20 @@ class shop extends Component {
 
       // READ ORDERS
       this._readOrders();
-      
+
     }
-    
+
     componentWillReceiveProps(newProps){
 
 
       this.setState({
         userInfo:newProps.user.userInfo
       });
-
-      // requery orders
-      this.moOrder.set('method',{
-        name:'listAll',
-        params:'all?creator_id='+newProps.user.userInfo.id+'&status=lt2'
-      })
-      
-      // RECIEW FROM SOCKET 
-      if(newProps.socketData.appState==='active'){
+      // RECIEW FROM SOCKET
+      const {socketData} = newProps ;
+      if(socketData.appState==='active'){
         this._readOrders();
       }
-      
 
     }
 
@@ -156,7 +148,7 @@ class shop extends Component {
 
       if(data.tab==='order'){
 
-        this.moCate.read((data)=>{ 
+        this.moCate.read((data)=>{
           this.setState({
             onAction:'fetch_categories'
           })

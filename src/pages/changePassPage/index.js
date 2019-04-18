@@ -1,4 +1,4 @@
-import { COFFEE_COLOR } from '../../config/const';
+import { COFFEE_COLOR, TIMEOUT } from '../../config/const';
 /* MODEL */
 import USER from '../../config/user';
 
@@ -31,6 +31,7 @@ class ChangePassPage extends Component {
     super(props);
 
     this.state = {
+
       loader:false,
       typeAction:'',
       onAction:'',
@@ -107,6 +108,8 @@ class ChangePassPage extends Component {
 
 
        }else{  this.refs.toast.show("your current password incorrect",1000); }
+
+       setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
 
 
     }else{

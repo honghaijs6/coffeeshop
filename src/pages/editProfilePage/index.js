@@ -1,5 +1,5 @@
 import { storage } from '../../config/firebase';
-import { COFFEE_COLOR } from '../../config/const';
+import { COFFEE_COLOR, TIMEOUT } from '../../config/const';
 import USER from '../../config/user';
 
 
@@ -82,6 +82,7 @@ class EditProfilePage extends Component {
           }else{
 
              this.setState({loader:true});
+             setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
 
              const resMsg =  await USER.update(this.data.id,{
                name:this.data.name,
@@ -153,7 +154,9 @@ class EditProfilePage extends Component {
     });
 
 
-    this.setState({loader:true})
+    this.setState({loader:true});
+    setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+
     const resURL = await this._uploadImage(resizedUri, photoName) ;
 
     await USER.update(this.data.id,{
@@ -193,7 +196,7 @@ class EditProfilePage extends Component {
     blob.close();
     return await snapshot.ref.getDownloadURL();
 
-    
+
 
   }
 

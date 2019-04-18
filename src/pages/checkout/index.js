@@ -1,6 +1,9 @@
+
+import { TIMEOUT } from '../../config/const';
 import Model from '../../model/model'; // shoppingcart only
 import Api from '../../model/api';
 import USER from '../../config/user';
+
 
 /* hook */
 import {detectForm} from '../../hook/before/';
@@ -88,11 +91,14 @@ class CheckOutPage extends Component{
         setTimeout(()=>{
           this.props.navigation.navigate('Home')
         },2000);
-        
+
 
 
       }
     })
+
+    setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+
 
   }
   async _onCheckOut(data){
@@ -117,6 +123,9 @@ class CheckOutPage extends Component{
       if(msg==='Update success'){
         this._onSuccess();
       }else{ alert(msg) }
+
+      setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+
 
 
     }else{

@@ -1,5 +1,5 @@
 /* @flow */
-import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR, GOOGLE_MAP_KEY } from '../../config/const' ;
+import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR, GOOGLE_MAP_KEY, TIMEOUT } from '../../config/const' ;
 import USER  from '../../config/user';
 
 import React, { Component } from 'react';
@@ -158,7 +158,9 @@ class DeliveryPage extends Component {
 
 
       const userInfo = this.state.userInfo;
-      this.setState({loader:true})
+      this.setState({loader:true});
+      setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+      
       const msg = await USER.update(userInfo.id,{
           name:userInfo.name,
           recent_address:data.name
@@ -178,6 +180,8 @@ class DeliveryPage extends Component {
         },500)
 
       }else{ alert(msg); }
+
+
 
 
 

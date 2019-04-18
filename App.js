@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import React from 'react';
 import { AppState } from 'react-native';
 
+
 import { Font, AppLoading } from 'expo';
 
 
@@ -133,7 +134,7 @@ export default class App extends React.Component {
       });
 
     });
-  
+
     socket.on('feeds updated',(res)=>{
 
       console.log('socket init')
@@ -188,6 +189,11 @@ export default class App extends React.Component {
   componentWillUnmount(){
 
     this.unsubscribe();
+    AppState.removeEventListener('change', this._handleAppStateChange);
+
+
+
+
   }
 
   async componentWillMount(){
@@ -223,6 +229,7 @@ export default class App extends React.Component {
 
 
   }
+
 
   _handleAppStateChange(newState){
 

@@ -88,7 +88,7 @@ function ListOrderItem(props){
 
           style={{marginBottom:10}} key={info.id}>
           <View style={{flexDirection:'row',justifyContent:'space-between', marginBottom:5}}>
-              <Text style={s.p}> Your orders on progress </Text>
+              <Text style={s.p}> Your orders in progress </Text>
               <Text style={[s.p,{textTransform:'uppercase'}]}> #{ item.code }  </Text>
 
           </View>
@@ -159,7 +159,7 @@ export default class OrderPage extends Component{
         display:  this.props.onTab === this.state.tab ? 'block':'none'
       }}>
 
-        <OrderHeader onPressNavigate={ this._onPressNavigate } userInfo={ this.props.userInfo }  />
+        <OrderHeader  onPressNavigate={ this._onPressNavigate } userInfo={ this.props.userInfo }  />
 
 
         <Content ref={c => (this.component = c)} >

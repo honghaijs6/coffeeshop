@@ -14,6 +14,9 @@ MODEL : MAKE RESFUL API
 */
 
 //import Socket from './socket';
+
+import { TIMEOUT } from '../config/const';
+
 import {AsyncStorage} from 'react-native';
 
 // DATABASE
@@ -21,7 +24,7 @@ import server from '../config/server';
 import axios from 'react-native-axios';
 
 class Api {
-  
+
   constructor(model){
 
 
@@ -54,7 +57,7 @@ class Api {
 
     // database : config header ajax with token : do POST - PUT ...
     this.configDB();
-    
+
   }
 
   configDB(){
@@ -80,6 +83,7 @@ class Api {
 
     AsyncStorage.getItem('token').then((token)=>{
       this.db.config = {
+        timeout: TIMEOUT,
         headers:{
           "Content-Type": "application/json",
           "Authorization": token,
@@ -106,7 +110,7 @@ class Api {
 
   /********WHEN *********** */
   onError(err){
-    
+
     /*const data = err.response.data ;
     const msg = data.errors[0];
     this.showErr(msg);*/
@@ -207,7 +211,7 @@ class Api {
             //preLoad('stop');
             //this.listenDataChange(res) // CAP NHAT REDUX STORE
             onSuccess(res.data) // callback for auto notification
-            
+
 
           },(error)=>{
 
@@ -224,7 +228,7 @@ class Api {
     this.status = data ;
 
     const url = server.base() + '/' + this.model + '?id='+id;
-    
+
     axios.put(url,data,this.db.config)
           .then((res)=>{
 
@@ -343,14 +347,14 @@ class Api {
           );
   }
 
-  
+
 
   getInfo(id,onSuccess){
     this.db.type = 'GET';
     const { config} = this.db ;
 
     const url = server.base() + '/'+ this.model+'/getInfo/'+id;
-    
+
     axios.get(url,config)
             .then((res) => {
 
@@ -374,7 +378,7 @@ class Api {
 
       this.db.type = 'GET';
       const {url, config} = this.db ;
-      
+
       axios.get(url,config)
             .then((res) => {
               //this.restResp(res); // KHÔNG LUU localStorage
