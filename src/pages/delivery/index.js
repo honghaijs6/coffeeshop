@@ -131,7 +131,8 @@ class DeliveryPage extends Component {
       this.setState({
         typeAction:'get',
         onAction:'search',
-      })
+      }); 
+
       //console.log(responseJson.predictions);
 
 
@@ -159,28 +160,19 @@ class DeliveryPage extends Component {
 
       const userInfo = this.state.userInfo;
       this.setState({loader:true});
-      setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+      //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
       
       const msg = await USER.update(userInfo.id,{
           name:userInfo.name,
           recent_address:data.name
       });
+      
 
       this.setState({loader:false})
       Keyboard.dismiss();
 
 
-      if(msg==='Update success'){
-
-        setTimeout(()=>{
-          this._whereStateChange({
-            onAction:'goBack',
-          });
-
-        },500)
-
-      }else{ alert(msg); }
-
+      
 
 
 

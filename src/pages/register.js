@@ -9,6 +9,9 @@ import { validateEmail, validatePassword, confirmPassword } from '../hook/ultil/
 
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux'; 
+
+
 import { View, StyleSheet, ImageBackground, TouchableOpacity  } from 'react-native';
 import { Container,Content,Item,Icon ,Text,Input, Button  } from 'native-base';
 
@@ -88,7 +91,7 @@ class Register extends Component {
 
               const res = await USER.authenticate(this.data.email,this.data.password);
               if(res.userInfo !== undefined){
-                USER.checkLoginStatus();
+                await USER.checkLoginStatus();
               }
 
 
@@ -127,6 +130,13 @@ class Register extends Component {
       this.setState({loader:false})
     }
 
+  }
+
+  componentWillReceiveProps(newProps){
+    const userInfo = newProps.user;
+    if(userInfo.isLoggedIn){
+      this.props.navigation.navigate('Home');
+    }  
   }
 
   render() {
@@ -268,4 +278,10 @@ const s = StyleSheet.create({
 
 });
 
-export default Register;
+function mapStateToProps(state){
+  return {
+    user:state.user
+  }
+}
+
+export default connect(mapStateToProps)(Register);

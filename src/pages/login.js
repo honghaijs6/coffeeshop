@@ -5,6 +5,8 @@ import {detectForm} from '../hook/before/';
 
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux' ; 
+
 import {
   View, StyleSheet, ImageBackground, Text,TouchableOpacity
 
@@ -50,14 +52,19 @@ class LoginPage extends Component {
 
 
        this.setState({loader:true});
+
        setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT);
        const res = await USER.authenticate(this.state.email,this.state.password);
+
+       //alert(JSON.stringify(res));
+       //console.log(res); 
 
        if(res.data===undefined){
         this.refs.toast.show('There is no user record corresponding to this identifier',4000)
        }else if(res.userInfo !== undefined){
-         USER.checkLoginStatus();
+         await USER.checkLoginStatus();
        }
+
        this.setState({loader:false});
 
 
@@ -88,6 +95,22 @@ class LoginPage extends Component {
 
   }
 
+  async componentDidMount(){
+    await  USER.checkLoginStatus() ; 
+  }
+  componentWillReceiveProps(newProps){
+    
+    this.setState({
+      email:'',
+      password:''
+    });
+
+    const userInfo = newProps.user;
+    if(userInfo.isLoggedIn){
+      this.props.navigation.navigate('Home');
+    }  
+
+  }
 
   render() {
 
@@ -126,12 +149,12 @@ class LoginPage extends Component {
                         }}>
                             <Item style={ s.item}>
                                 <Icon style={{ color:'#fff' }} name='mail' />
-                                <Input keyboardType="email-address"  placeholderTextColor="rgba(255,255,255,0.3)" autoCapitalize='none' onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={{ color:'#ffffff'}} placeholder='E-mail'/>
+                                <Input defaultValue={this.state.email} keyboardType="email-address"  placeholderTextColor="rgba(255,255,255,0.3)" autoCapitalize='none' onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={{ color:'#ffffff'}} placeholder='E-mail'/>
                             </Item>
 
                             <Item style={ s.item}>
                                 <Icon style={{ color:'#fff' }} name='unlock' />
-                                <Input type="password"  onChangeText={(text)=>{ this._onChangeText({password:text}) }} autoCapitalize='none' placeholderTextColor="rgba(255,255,255,0.3)" style={{ color:'#ffffff'}}   placeholder='Password'/>
+                                <Input defaultValue={this.state.password} type="password" secureTextEntry={true}  onChangeText={(text)=>{ this._onChangeText({password:text}) }} autoCapitalize='none' placeholderTextColor="rgba(255,255,255,0.3)" style={{ color:'#ffffff'}}   placeholder='Password'/>
                             </Item>
                         </View>
 
@@ -186,7 +209,14 @@ class LoginPage extends Component {
     }
 }
 
-export default LoginPage;
+function mapStateToProps(state){
+  return {
+    user:state.user
+  }
+}
+
+export default connect(mapStateToProps)(LoginPage);
+
 
 const s = StyleSheet.create({
     text:{ fontFamily:'Roboto',color:'#fff'},

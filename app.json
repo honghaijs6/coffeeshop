@@ -28,13 +28,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.honghai.coffeeshop",
-      "supportsTablet": true,
-      "infoPlist": {
-        "UIBackgroundModes": [
-          "location",
-          "fetch"
-        ]
-      }
+      "supportsTablet": true
     },
     "android": {
       "package": "com.honghai.coffeeshop"

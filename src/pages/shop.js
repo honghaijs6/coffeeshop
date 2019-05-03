@@ -5,11 +5,10 @@ import { TIMEOUT } from '../config/const'
 import moFire from '../model/moFirebase';
 import Api from '../model/api';
 
-import { backgroundTasks } from '../hook/before';
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import {  Notifications, Permissions } from 'expo';
+
 
 import BenTabs  from "../components/BenTabs";
 import BenStatusBar  from "../components/BenStatusBar";

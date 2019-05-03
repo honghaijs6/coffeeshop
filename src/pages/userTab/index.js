@@ -33,8 +33,10 @@ export default class AccountPage extends Component{
 
   async _onSignOut(){
 
-    await USER.logout();
-
+    const ret = await USER.logout();
+    if(ret!==false){
+      this.props.navigation.navigate('Login')
+    }
     /*benAuth.doSignOut(()=>{
       //alert('signed out okay')
     },(err)=>{ console.log(err); });*/

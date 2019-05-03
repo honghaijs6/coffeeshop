@@ -11,7 +11,7 @@ import {AsyncStorage} from 'react-native';
 
 const USER = {
 
-
+ 
     _whereStateChange(newState){
         store.dispatch(newState);
     },
@@ -97,23 +97,27 @@ const USER = {
     async logout(){
         return new Promise((resole,reject)=>{
 
-          socket.emit('logout',(message,data)=>{
+          try{
+            socket.emit('logout',(message,data)=>{
 
 
-            AsyncStorage.clear(()=>{
-
-                this._whereStateChange({
-                    type:'LOGIN',
-                    isLoggedIn:false,
-                    userInfo:{}
-                });
-
-                resole(true);
+              AsyncStorage.clear(()=>{
+  
+                  this._whereStateChange({
+                      type:'LOGIN',
+                      isLoggedIn:false,
+                      userInfo:{}
+                  });
+  
+                  resole(true);
+              })
+              
             })
-
-
-          })
-
+  
+          }catch(err){
+            resole(false)
+          }
+          
 
 
         })
