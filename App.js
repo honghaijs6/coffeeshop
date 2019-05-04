@@ -1,4 +1,3 @@
-import USER from './src/config/user';
 import store from './src/redux/store';
 import socket from './src/config/socket';
 
@@ -54,6 +53,8 @@ import MapPage from './src/pages/mapPage';
 
 const RootStack = createStackNavigator(
   {
+    Login:Login,
+    Register:Register,
     Home: Shop,
     FeedView:FeedView,
 
@@ -79,30 +80,13 @@ const RootStack = createStackNavigator(
 
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "Login",
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,
     }
   }
 );
-
-const LoginStack = createStackNavigator(
-  {
-    Home: Login,
-    Register: Register,
-
-  },
-  {
-    initialRouteName: "Home",
-    headerMode: 'none',
-    navigationOptions: {
-        headerVisible: false,
-    }
-  }
-);
-
-
 
 export default class App extends React.Component {
 
@@ -112,7 +96,6 @@ export default class App extends React.Component {
     this.state = {
 
         isReady:false,
-        login: store.getState().user.isLoggedIn || false  ,
         onAction:'',
         socketRes:null
     }
@@ -164,31 +147,10 @@ export default class App extends React.Component {
     });
 
   }
-
-
-  _listenStore(){
-
-    this.unsubscribe = store.subscribe(()=>{
-
-        const userInfo = store.getState().user;
-
-        if(userInfo.isLoggedIn !== this.state.login){
-
-          if(userInfo.userInfo !==null){
-            this.setState({
-              login: userInfo.isLoggedIn
-            });
-          }
-
-        }
-
-    })
-
-  }
-
+  
   componentWillUnmount(){
 
-    this.unsubscribe();
+    
     AppState.removeEventListener('change', this._handleAppStateChange);
 
 
@@ -222,12 +184,7 @@ export default class App extends React.Component {
 
     // APP STATE CHANGE
     AppState.addEventListener('change', this._handleAppStateChange);
-
-    this._listenStore();
-    await  USER.checkLoginStatus() ;
-
-
-
+    
   }
 
 
@@ -242,7 +199,7 @@ export default class App extends React.Component {
 
   render() {
 
-    const AppContainer = createAppContainer(this.state.login ? RootStack : LoginStack );
+    const AppContainer =  createAppContainer(RootStack) ;   //createAppContainer(this.state.login ? RootStack : LoginStack );
 
 
     if (!this.state.isReady) {
