@@ -6,9 +6,8 @@ import USER from '../config/user';
 import {detectForm} from '../hook/before/';
 import { validateEmail, validatePassword, confirmPassword } from '../hook/ultil/validate';
 
-
-
 import React, { Component } from 'react';
+
 import { View, StyleSheet, ImageBackground, TouchableOpacity  } from 'react-native';
 import { Container,Content,Item,Icon ,Text,Input, Button  } from 'native-base';
 
@@ -21,7 +20,7 @@ class Register extends Component {
 
 
   constructor(props){
-
+  
     super(props);
 
     this.state = {
@@ -126,7 +125,14 @@ class Register extends Component {
     }else{
       this.setState({loader:false})
     }
+  }
 
+  componentWillReceiveProps(newProps){
+    const userInfo = newProps.user;
+      
+    if(userInfo.isLoggedIn !==false){
+      this.props.navigation.navigate('Home') ; 
+    }
   }
 
   render() {
@@ -267,5 +273,6 @@ const s = StyleSheet.create({
     },
 
 });
+
 
 export default Register;

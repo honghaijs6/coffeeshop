@@ -174,9 +174,7 @@ export default class App extends React.Component {
 
 
     });
-
-
-
+    
     this.setState({ isReady: true });
   }
 
@@ -189,7 +187,7 @@ export default class App extends React.Component {
 
 
   _handleAppStateChange(newState){
-
+    
     store.dispatch({
       type:'appstate-change',
       appState:newState
@@ -199,7 +197,7 @@ export default class App extends React.Component {
 
   render() {
 
-    const AppContainer =  createAppContainer(RootStack) ;   //createAppContainer(this.state.login ? RootStack : LoginStack );
+    const AppContainer =  createAppContainer(RootStack) ; 
 
 
     if (!this.state.isReady) {

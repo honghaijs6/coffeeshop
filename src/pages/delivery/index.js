@@ -1,5 +1,5 @@
 /* @flow */
-import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR, GOOGLE_MAP_KEY, TIMEOUT } from '../../config/const' ;
+import {  COFFEE_COLOR, BLACK_COLOR, GOOGLE_MAP_KEY, TIMEOUT } from '../../config/const' ;
 import USER  from '../../config/user';
 
 import React, { Component } from 'react';
@@ -50,6 +50,8 @@ class DeliveryPage extends Component {
   constructor(props){
     super(props)
 
+        
+
     this.state = {
 
       loader:false,
@@ -59,6 +61,8 @@ class DeliveryPage extends Component {
 
       mode:'none',
       userInfo: props.userInfo ,
+
+      
 
       personalItems:[
         {
@@ -154,12 +158,13 @@ class DeliveryPage extends Component {
   //
   async _onItemPress(data){
 
-    if(data.isEmpty!=='' || data.name !=='...'){
+    
+    if(data.name !=='...'){
 
 
       const userInfo = this.state.userInfo;
       this.setState({loader:true});
-      setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+      //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
       
       const msg = await USER.update(userInfo.id,{
           name:userInfo.name,
@@ -168,21 +173,7 @@ class DeliveryPage extends Component {
 
       this.setState({loader:false})
       Keyboard.dismiss();
-
-
-      if(msg==='Update success'){
-
-        setTimeout(()=>{
-          this._whereStateChange({
-            onAction:'goBack',
-          });
-
-        },500)
-
-      }else{ alert(msg); }
-
-
-
+      
 
 
     }

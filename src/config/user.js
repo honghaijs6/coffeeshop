@@ -135,8 +135,7 @@ const USER = {
                     isLoggedIn: data === null ? false : true ,
                     userInfo:info
                 });
-
-
+                
 
                 if(info.id !== undefined){
                   notification.getExpoToken((expoToken)=>{
@@ -171,13 +170,11 @@ const USER = {
                                 if(data!==undefined){
                                   //alert(JSON.stringify(data))
                                   //alert('silent logined') ;
-
-
+                                  resole('logedin')
                                 }else{
-
                                   //alert(info2.email+'-'+info2.password)
                                   //alert('silent failt')
-
+                                  resole('fail')
                                 }
 
                           });
