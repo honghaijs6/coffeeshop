@@ -1,5 +1,4 @@
 /* MODEL */
-import { TIMEOUT } from '../config/const';
 import USER from '../config/user';
 
 /* hook */
@@ -121,7 +120,8 @@ class Register extends Component {
   _whereStateChange(newState){
     if(newState.typeAction==='post'){
         this.setState({loader:true});
-        setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT);
+        //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT);
+
     }else{
       this.setState({loader:false})
     }

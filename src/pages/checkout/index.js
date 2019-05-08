@@ -1,5 +1,4 @@
 
-import { TIMEOUT } from '../../config/const';
 import Model from '../../model/model'; // shoppingcart only
 import Api from '../../model/api';
 import USER from '../../config/user';
@@ -92,12 +91,12 @@ class CheckOutPage extends Component{
           this.props.navigation.navigate('Home')
         },2000);
 
+        this.setState({loader:false});
 
 
       }
-    })
-
-    setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+    });
+    //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
 
 
   }
@@ -109,8 +108,7 @@ class CheckOutPage extends Component{
       let userInfoData = this.state.userInfo;
       userInfoData.creditcard = data ;
 
-      const _this = this ;
-
+      
       this.setState({loader:true});
       // SAVE USER INFO creditcard
       const msg = await USER.update(this.state.userInfo.id,{
@@ -123,10 +121,7 @@ class CheckOutPage extends Component{
       if(msg==='Update success'){
         this._onSuccess();
       }else{ alert(msg) }
-
-      setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
-
-
+      
 
     }else{
       this.refs.toast.show('Please enter correct infomation',3000);

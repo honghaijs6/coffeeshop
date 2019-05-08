@@ -2,7 +2,7 @@ import USER from '../../config/user';
 
 import {  COFFEE_COLOR, GOOGLE_MAP_KEY, TIMEOUT } from '../../config/const';
 import RetroMapStyle from '../../data/retroStyle.json';
-import NightMapStyle from '../../data/nightStyle.json';
+
 import STORE_LOCATIONS from '../../data/stores.json';
 
 
@@ -127,8 +127,7 @@ class MapPage extends Component{
     this.state.userInfo[this.state.settingFor] = this.state.currentAdress;
 
     this.setState({loader:true});
-    setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
-
+    
     const resMsg = await USER.update(this.state.userInfo.id,{
       name:this.state.userInfo.name,
       [this.state.settingFor]:this.state.currentAdress

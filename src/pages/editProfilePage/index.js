@@ -1,5 +1,5 @@
 import { storage } from '../../config/firebase';
-import { COFFEE_COLOR, TIMEOUT } from '../../config/const';
+import { COFFEE_COLOR } from '../../config/const';
 import USER from '../../config/user';
 
 
@@ -23,7 +23,7 @@ import BackButton  from '../../components/BackButton';
 /* hook */
 import {detectForm} from '../../hook/before/';
 import BenLoader from '../../components/BenLoader';
-import { validateEmail, validatePassword, confirmPassword } from '../../hook/ultil/validate';
+import { validateEmail } from '../../hook/ultil/validate';
 
 
 class EditProfilePage extends Component {
@@ -82,7 +82,7 @@ class EditProfilePage extends Component {
           }else{
 
              this.setState({loader:true});
-             setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+             //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
 
              const resMsg =  await USER.update(this.data.id,{
                name:this.data.name,
@@ -155,7 +155,7 @@ class EditProfilePage extends Component {
 
 
     this.setState({loader:true});
-    setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+    //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
 
     const resURL = await this._uploadImage(resizedUri, photoName) ;
 

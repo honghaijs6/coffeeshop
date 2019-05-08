@@ -1,4 +1,4 @@
-import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR, TIMEOUT } from '../../config/const'
+import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const'
 import { AVATAR_URL } from '../../config/const';
 import Api from '../../model/api';
 
@@ -89,7 +89,7 @@ export default class FeedPage extends Component{
   _fetchData(){
 
     this.setState({loader:true})
-    setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+    //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
 
     this.Api.fetch((res)=>{
       this.data = res.data.rows;

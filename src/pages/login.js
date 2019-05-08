@@ -1,4 +1,3 @@
-import { TIMEOUT } from '../config/const';
 import USER from '../config/user';
 /* hook */
 import {detectForm} from '../hook/before/';
@@ -50,7 +49,6 @@ class LoginPage extends Component {
 
 
        this.setState({loader:true});
-       setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT);  
        const res = await USER.authenticate(this.state.email,this.state.password);
 
        if(res.data===undefined){

@@ -1,14 +1,13 @@
 import { GREY_COLOR, COFFEE_COLOR, GOOGLE_MAP_KEY } from '../../config/const';
 import RetroMapStyle from '../../data/retroStyle.json';
-import NightMapStyle from '../../data/nightStyle.json';
+
 import STORE_LOCATIONS from '../../data/stores.json';
 
-import { Constants, Location, Permissions } from 'expo';
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE, AnimatedRegion, Animated, Callout } from 'react-native-maps';
-import { Container, Icon, Content, Button } from 'native-base';
+import { View, Text } from 'react-native';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { Container } from 'native-base';
 
 
 import BenHeader from '../../components/BenHeader' ;

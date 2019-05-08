@@ -1,15 +1,12 @@
 /*
 MAIN TAB ON SHOP
 */
-import { TIMEOUT } from '../config/const'
 import moFire from '../model/moFirebase';
 import Api from '../model/api';
 
-import { backgroundTasks } from '../hook/before';
-import React, { Component } from 'react';
 
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {  Notifications, Permissions } from 'expo';
 
 import BenTabs  from "../components/BenTabs";
 import BenStatusBar  from "../components/BenStatusBar";
@@ -102,7 +99,7 @@ class shop extends Component {
 
       this._isMounted = true;
       this.setState({loader:true});
-      setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+      //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
 
       this.moCate.read((data)=>{
 

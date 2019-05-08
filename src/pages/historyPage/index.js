@@ -56,7 +56,8 @@ class HistoryPage extends Component {
   componentDidMount(){
 
     this.setState({loader:true});
-    setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+    //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT); 
+
 
     this.Api.fetch((res)=>{
 
