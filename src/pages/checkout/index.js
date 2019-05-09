@@ -27,7 +27,7 @@ import BenHeader from '../../components/BenHeader';
 import BackButton from '../../components/BackButton';
 
 import CheckOutBody from './body';
-
+``
 
 class CheckOutPage extends Component{
 
@@ -81,17 +81,9 @@ class CheckOutPage extends Component{
     this.moOrder.post(data,(res)=>{
       if(res.name==='success'){
 
-        this.setState({loader:false})
+        //this.setState({loader:false})
         // clear shoppingcart
         this.moShoppingcart.removeStoreData()
-
-        this.refs.toast.show('Your order on processing delivery, thank you for your orders',3000);
-
-        setTimeout(()=>{
-          this.props.navigation.navigate('Home')
-        },2000);
-
-        this.setState({loader:false});
 
 
       }
@@ -159,7 +151,7 @@ class CheckOutPage extends Component{
 
 
         <Toast position='top'
-        positionValue={200}
+          positionValue={200}
           fadeInDuration={750}
           fadeOutDuration={1000}
           opacity={0.8}

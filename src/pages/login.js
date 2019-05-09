@@ -131,7 +131,10 @@ class LoginPage extends Component {
                         alignSelf:'center',
                         justifyContent:'space-between'
                     }}>
-                        <ImageBackground source={require('../../assets/mylogo.png')} style={{width: 106, height: 106, alignSelf: 'center', marginBottom: 20}} />
+                        <ImageBackground 
+                            source={require('../../assets/mylogo.png')} 
+                            style={{width: 106, height: 106, alignSelf: 'center', marginBottom: 20}} 
+                        />
 
 
                         <View style={{
@@ -140,12 +143,27 @@ class LoginPage extends Component {
                         }}>
                             <Item style={ s.item}>
                                 <Icon style={{ color:'#fff' }} name='mail' />
-                                <Input keyboardType="email-address" defaultValue={this.state.email}  placeholderTextColor="rgba(255,255,255,0.3)" autoCapitalize='none' onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={{ color:'#ffffff'}} placeholder='E-mail'/>
+                                <Input keyboardType="email-address" 
+                                    defaultValue={this.state.email}  
+                                    placeholderTextColor="rgba(255,255,255,0.3)" 
+                                    autoCapitalize='none' 
+                                    onChangeText={(text)=>{ this._onChangeText({email:text}) }} 
+                                    style={{ color:'#ffffff'}} placeholder='E-mail'
+                                  />
                             </Item>
 
                             <Item style={ s.item}>
                                 <Icon style={{ color:'#fff' }} name='unlock' />
-                                <Input type="password" secureTextEntry={true} defaultValue={this.state.password} onChangeText={(text)=>{ this._onChangeText({password:text}) }} autoCapitalize='none' placeholderTextColor="rgba(255,255,255,0.3)" style={{ color:'#ffffff'}}   placeholder='Password'/>
+                                <Input 
+                                    type="password" 
+                                    secureTextEntry={true} 
+                                    defaultValue={this.state.password} 
+                                    onChangeText={(text)=>{ this._onChangeText({password:text}) }} 
+                                    autoCapitalize='none' 
+                                    placeholderTextColor="rgba(255,255,255,0.3)" 
+                                    style={{ color:'#ffffff'}}   
+                                    placeholder='Password'
+                                  />
                             </Item>
                         </View>
 
