@@ -12,7 +12,7 @@
       "icon": "./assets/images/notification.png"
     },
 
-    "version": "1.0.2",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -28,7 +28,13 @@
     ],
     "ios": {
       "bundleIdentifier": "com.honghai.coffeeshop",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
+      }
       
     },
     "android": {
