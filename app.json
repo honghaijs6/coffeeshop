@@ -12,7 +12,7 @@
       "icon": "./assets/images/notification.png"
     },
 
-    "version": "1.0.3",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -21,21 +21,20 @@
       "backgroundColor": "#3b853f"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0  
     },
     "assetBundlePatterns": [
       "assets/images/*"
     ],
     "ios": {
       "bundleIdentifier": "com.honghai.coffeeshop",
-      "supportsTablet": true,
+      "supportsTablet": false,
       "infoPlist": {
-        "UIBackgroundModes": [
-          "location",
-          "fetch"
-        ]
+        "NSCameraUsageDescription":
+          "The app needs permission to your camera in order to scan barcode",
+        "NSPhotoLibraryUsageDescription":
+          "The app needs permission to your camera roll in order to add photos you've already taken for upload"
       }
-      
     },
     "android": {
       "package": "com.honghai.coffeeshop"
