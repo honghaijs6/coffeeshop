@@ -120,7 +120,8 @@ export default class App extends React.Component {
 
     socket.on('feeds updated',(res)=>{
 
-      console.log('socket init')
+      console.log('socket init');
+      
       store.dispatch({
         type:'reset-socket',
         res:res
@@ -205,7 +206,7 @@ export default class App extends React.Component {
     }
     return (
       <Provider store={store}>
-        {/*<AppContainer screenProps={ store } /> */}
+
         <AppContainer />
 
       </Provider>

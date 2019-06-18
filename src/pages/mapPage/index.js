@@ -305,11 +305,9 @@ class MapPage extends Component{
 
         <MapView
           style={{ flex: 1 }}
-          provider={PROVIDER_GOOGLE}
+          
           showsUserLocation={ true }
-          customMapStyle={
-            RetroMapStyle
-          }
+              
           region={mapRegion}
 
           onRegionChangeComplete={this._handleMapRegionChange}

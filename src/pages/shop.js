@@ -21,6 +21,7 @@ import StoreTab from './storeTab/';
 import AccountTab from './userTab/';
 
 
+
 class shop extends Component {
 
     _isMounted = false;
@@ -191,11 +192,15 @@ class shop extends Component {
 
               <BenStatusBar/>
 
+
+              <OrderTab  data={this.data} { ...this.state } />
+              <AccountTab { ...this.state } />
+              
               <FeedTab onPressChangeTab={ (data)=>{ this._onChangeTab(data) } } { ...this.state } />
               <MissionTab { ...this.state } />
-              <OrderTab  data={this.data} { ...this.state } />
+
               <StoreTab { ...this.state } />
-              <AccountTab { ...this.state } />
+
 
 
 

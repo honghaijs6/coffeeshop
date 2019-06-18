@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import { Constants } from 'expo';
 
 export default function(){
 
   return(
+
     <View style={{
       height:Constants.statusBarHeight
-    }}></View>
+    }}>
+
+
+      <StatusBar backgroundColor="blue" barStyle="dark-content" />
+
+    </View>
   )
 }

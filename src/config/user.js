@@ -138,6 +138,7 @@ const USER = {
                 
 
                 if(info.id !== undefined){
+
                   notification.getExpoToken((expoToken)=>{
 
                     if(info.expo_token===undefined || info.expo_token === null ){

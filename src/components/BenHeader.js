@@ -44,9 +44,10 @@ export default class BenHeader extends Component {
     return (
       <View>
 
-        <View style={[styles.netInfo,{display:display}]}>
+        {/*<View style={[styles.netInfo,{display:display}]}>
            <Text style={styles.txt}> Check your internet connection </Text>
-        </View>
+    </View>*/}
+
         <View style={[
             styles.container,
             { justifyContent:arr[type] },
