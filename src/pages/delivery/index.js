@@ -60,7 +60,7 @@ class DeliveryPage extends Component {
       tab:'delivery',
 
       mode:'none',
-      userInfo: props.userInfo ,
+      userInfo: props.userInfo || {} ,
 
       
 
@@ -69,15 +69,15 @@ class DeliveryPage extends Component {
           code:'home',
           icon:'home',
           label:'Home',
-          name: props.userInfo['home_address'] || '',
-          isEmpty: props.userInfo['home_address'] || ''
+          name:  props.userInfo !== undefined ? props.userInfo['home_address'] : '',
+          isEmpty:props.userInfo !== undefined ? props.userInfo['home_address'] : ''
         },
         {
           code:'office',
           icon:'briefcase',
           label:'Work place',
-          name:props.userInfo['work_address'] || '',
-          isEmpty:props.userInfo['work_address'] || ''
+          name: props.userInfo !== undefined ?  props.userInfo['work_address'] : '',
+          isEmpty: props.userInfo !== undefined ?  props.userInfo['work_address'] : ''
         },
         /*{
           code:'current',
@@ -89,7 +89,7 @@ class DeliveryPage extends Component {
           code:'recent',
           icon:'time',
           label:'Recent search',
-          name:props.userInfo.recent_address || '...'
+          name: props.userInfo !== undefined ?  props.userInfo.recent_address : '...'
         },
 
       ]
@@ -103,16 +103,15 @@ class DeliveryPage extends Component {
 
   componentWillReceiveProps(newProps){
 
-    this.state.personalItems[3]['name'] = newProps.userInfo.recent_address;
+    this.state.personalItems[3]['name'] = newProps.userInfo.recent_address || '';
     this.setState({
-      userInfo:newProps.userInfo
+      userInfo:newProps.userInfo || {}
     });
 
   }
 
   addressAutoComplete(key){
-
-
+    
 
     let uri = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input='+key+'&key='+GOOGLE_MAP_KEY;
     fetch(uri)
@@ -136,9 +135,7 @@ class DeliveryPage extends Component {
         typeAction:'get',
         onAction:'search',
       })
-      //console.log(responseJson.predictions);
-
-
+      
 
     })
     .catch((error) => {
@@ -155,26 +152,29 @@ class DeliveryPage extends Component {
     })
   }
 
-  //
+  // 
   async _onItemPress(data){
 
     
     if(data.name !=='...'){
 
 
+
       const userInfo = this.state.userInfo;
-      this.setState({loader:true});
-      //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
-      
-      const msg = await USER.update(userInfo.id,{
-          name:userInfo.name,
-          recent_address:data.name
-      });
 
-      this.setState({loader:false})
-      Keyboard.dismiss();
-      
+      if(JSON.stringify(userInfo)!=='{}'){
+        
+        this.setState({loader:true});
+        const msg = await USER.update(userInfo.id,{
+            name:userInfo.name,
+            recent_address:data.name
+        });
+        this.setState({loader:false})
+        Keyboard.dismiss();
 
+      }else{  alert(JSON.stringify(data)) }
+      
+      
 
     }
 
@@ -206,7 +206,11 @@ class DeliveryPage extends Component {
 
         <BenStatusBar/>
 
-        <MyHeader onBackBtnPress={()=>{  this.props.navigation.goBack()  }}  onAction={ this.state.onAction } onCloseSearch={ ()=>{  this._onCloseSearch() } } onChangeText={(text)=>{ this._onTextChange(text)  }} />
+        <MyHeader 
+          onBackBtnPress={()=>{  this.props.navigation.goBack()  }}  
+          onAction={ this.state.onAction } onCloseSearch={ ()=>{  this._onCloseSearch() } } 
+          onChangeText={(text)=>{ this._onTextChange(text)  }} 
+        />
 
         <BenLoader visible={ this.state.loader } />
 

@@ -6,13 +6,9 @@ import { Provider } from 'react-redux';
 
 import React from 'react';
 import { AppState } from 'react-native';
-
-
 import { Font, AppLoading } from 'expo';
 
-
 import { createStackNavigator, createAppContainer } from "react-navigation";
-
 
 /* main pages*/
 import Login from './src/pages/login';
@@ -80,7 +76,7 @@ const RootStack = createStackNavigator(
 
   },
   {
-    initialRouteName: "Login",
+    initialRouteName: "Home",
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

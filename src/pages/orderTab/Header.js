@@ -2,10 +2,7 @@ import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const' ;
 
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity,TextInput } from 'react-native';
-import {  Icon,  Content,  } from 'native-base';
-
-import { FontAwesome, } from '@expo/vector-icons';
-
+import {  Icon } from 'native-base';
 
 
 import BenHeader from '../../components/BenHeader';
@@ -24,8 +21,8 @@ export default class OrderHeader extends Component{
   }
   render(){
 
-    let address = this.props.userInfo.recent_address ;
-    //address = this.truncate(address);
+    let address = this.props.userInfo.recent_address || 'Enter your delivery address' ;
+    
 
     return(
       <View>
@@ -34,6 +31,7 @@ export default class OrderHeader extends Component{
 
                   <Icon style={{ fontSize: 32, color: COFFEE_COLOR}} name="bicycle"></Icon>
                   <View style={{ paddingHorizontal: 10, width: '90%'}}>
+
                       <Text style={{ fontSize: 10, color: BLACK_COLOR}}><Icon style={{fontSize: 12, color: BLACK_COLOR}} name="pin" /> Delivery to </Text>
 
                       <View style={{

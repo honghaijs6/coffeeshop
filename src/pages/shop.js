@@ -29,6 +29,7 @@ class shop extends Component {
 
 
     constructor(props){
+
       super(props);
 
 
@@ -49,7 +50,7 @@ class shop extends Component {
         ],
         onTab:'order',
         tab:{},
-        userInfo:props.user.userInfo
+        userInfo: {} //props.user.userInfo 
 
       }
 
@@ -69,12 +70,7 @@ class shop extends Component {
 
       this.moCate = new moFire('categories');
       this.moOrder = new Api('orders');
-
-      /*this.moOrder.set('method',{
-        name:'listAll',
-        params:'all?creator_id='+this.state.userInfo.id+'&status=lt2'
-      });*/
-
+      
 
 
     }
@@ -124,7 +120,7 @@ class shop extends Component {
 
 
       this.setState({
-        userInfo:newProps.user.userInfo
+        userInfo:newProps.user.userInfo || {}
       });
       // RECIEW FROM SOCKET
       const {socketData} = newProps ;
@@ -183,6 +179,7 @@ class shop extends Component {
 
         return (
             <BenTabs
+
               onPress={(data)=>{ this._onChangeTab(data) }}
               onTab={ this.state.onTab }
               data={ this.state.tabs }
@@ -191,14 +188,13 @@ class shop extends Component {
               <BenLoader visible={this.state.loader} />
 
               <BenStatusBar/>
-
+          
+              
 
               <OrderTab  data={this.data} { ...this.state } />
               <AccountTab { ...this.state } />
-              
               <FeedTab onPressChangeTab={ (data)=>{ this._onChangeTab(data) } } { ...this.state } />
               <MissionTab { ...this.state } />
-
               <StoreTab { ...this.state } />
 
 

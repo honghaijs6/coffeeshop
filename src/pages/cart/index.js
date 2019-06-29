@@ -33,8 +33,8 @@ class Cart extends Component {
       typeAction:'',
       onAction:'',
       tab:'cart',
-      data: props.shoppingcart.list,
-      userInfo: props.user.userInfo
+      data: props.shoppingcart.list || [],
+      userInfo: props.user.userInfo || {}
     }
 
 
