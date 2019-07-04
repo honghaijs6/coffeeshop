@@ -50,17 +50,27 @@ class Cart extends Component {
   _onOrderNow(){
 
     let msg = '';
-    if(this.state.userInfo.phone.length < 6 ){
-      msg = 'Please enter your phone number ';
-    }else if(this.state.userInfo.recent_address === null  ){
-      msg = 'Please add your delivery address '
+    if(JSON.stringify(this.state.userInfo)!=='{}'){
+
+      if(this.state.userInfo.phone.length < 6 ){
+        msg = 'Please enter your phone number ';
+      }else if(this.state.userInfo.recent_address === null  ){
+        msg = 'Please add your delivery address '
+      }else{
+  
+        this.props.navigation.navigate('CheckOutPage');
+  
+      }
+  
+      msg !== '' ? Alert.alert('Message',msg) : null
     }else{
-
-      this.props.navigation.navigate('CheckOutPage');
-
+      this.props.navigation.navigate('DealPage',{
+        title:'Member',
+        message:'Login or Sign up an account to continue your orders'
+      })
     }
 
-    msg !== '' ? Alert.alert('Message',msg) : null
+    
 
   }
   _onBackBtnPress(){

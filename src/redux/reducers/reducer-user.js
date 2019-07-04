@@ -21,7 +21,7 @@ const iniState = {
   tempInfo:{
     "birthday": "",
     "city": "",
-    "code": "",
+    "code": "",  
     "company_id": 0,
     "creator_id": 0,
     "creditcard": {},

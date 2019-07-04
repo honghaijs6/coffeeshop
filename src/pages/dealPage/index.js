@@ -21,6 +21,11 @@ export default class DealPage extends Component {
   }
 
   render() {
+
+    const { navigation } = this.props;
+    const title = navigation.getParam('title','Deals for you');
+    const message = navigation.getParam('message','Login or Sign up an account to receive more deals for you')
+
     return (
       <Container>
         <BenStatusBar/>
@@ -28,7 +33,7 @@ export default class DealPage extends Component {
         <BenHeader type="flex-start">
           <BackButton onPress={()=>{ this.props.navigation.goBack() }} />
           <View>
-            <Text style={s.title}> Deals for you  </Text>
+            <Text style={s.title}>  { title }  </Text>
           </View>
           <View></View>
         </BenHeader>
@@ -45,7 +50,7 @@ export default class DealPage extends Component {
             marginLeft: 'auto',
           }}>
 
-            <NoData visible={true} icon="cafe" message="Login or Register a account to receive more deals for you" />
+            <NoData visible={true} icon="cafe" message={message} />
 
             <TouchableOpacity
                 onPress={()=>{ this.props.navigation.navigate('Login') }}
