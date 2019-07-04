@@ -3,7 +3,7 @@ MAIN TAB ON SHOP
 */
 import moFire from '../model/moFirebase';
 import Api from '../model/api';
-
+import USER from '../config/user';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -48,9 +48,9 @@ class shop extends Component {
           { tab:'store',icon:'pin',name:'Stores' },
           { tab:'account',icon:'person',name:'Account' },
         ],
-        onTab:'order',
+        onTab:'account',
         tab:{},
-        userInfo: {} //props.user.userInfo 
+        userInfo: JSON.stringify(props.user.userInfo) === '{}' ? props.user.tempInfo : props.user.userInfo // get data from reducer
 
       }
 
@@ -77,26 +77,31 @@ class shop extends Component {
 
     _readOrders(){
 
-      this.moOrder.set('method',{
-        name:'listAll',
-        params:'all?creator_id='+this.state.userInfo.id+'&status=lt2'
-      })
-
-      this.moOrder.fetch((res)=>{
-        res = res.data ;
-        if(res.name==='success'){
-          this.data.orders = res.rows ;
-
-          this.setState({onAction:'_readOrders'}) ;
-        }
-      })
+      if(this.state.userInfo.id !== 0){
+        this.moOrder.set('method',{
+          name:'listAll',
+          params:'all?creator_id='+this.state.userInfo.id+'&status=lt2'
+        })
+  
+        this.moOrder.fetch((res)=>{
+          res = res.data ;
+          if(res.name==='success'){
+            this.data.orders = res.rows ;
+  
+            this.setState({onAction:'_readOrders'}) ;
+          }
+        });
+      }
+      
     }
 
     componentDidMount(){
 
       this._isMounted = true;
       this.setState({loader:true});
-      //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+
+      USER.checkLoginStatus();
+         
 
       this.moCate.read((data)=>{
 
@@ -120,7 +125,7 @@ class shop extends Component {
 
 
       this.setState({
-        userInfo:newProps.user.userInfo || {}
+        userInfo: JSON.stringify(newProps.user.userInfo) !== '{}' ? newProps.user.userInfo : newProps.user.tempInfo
       });
       // RECIEW FROM SOCKET
       const {socketData} = newProps ;
@@ -180,7 +185,7 @@ class shop extends Component {
         return (
             <BenTabs
 
-              onPress={(data)=>{ this._onChangeTab(data) }}
+              onPress={(data)=>{ this._onChangeTab(data) }}  
               onTab={ this.state.onTab }
               data={ this.state.tabs }
               notiOrder={ this.data.orders.length }

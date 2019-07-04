@@ -19,7 +19,7 @@ export default class AccountPage extends Component{
 
     this.state = {
 
-      typeAction:'',
+      typeAction:'',  
       onAction:'',
       tab:'account',
 
@@ -56,40 +56,74 @@ export default class AccountPage extends Component{
       }}>
 
         <BenHeader>
-          <BenAvatar
+            {
+              this.state.userInfo.id !== 0 ? 
+              <BenAvatar
+                onPress={()=>{ this.props.navigation.navigate('EditProfilePage',{
+                      userInfo:this.state.userInfo
+                    })
+                }}
+                data={{
+                  uri: this.state.userInfo.photoURL ,
+                  name: this.state.userInfo.name ,
+                  point:this.state.userInfo.point
+                }}
 
-          onPress={()=>{ this.props.navigation.navigate('EditProfilePage',{
-                userInfo:this.state.userInfo
-              })
-          }}
+              /> : 
+              
+              <View style={{
+                marginLeft:10,
+                flexDirection:'row',
+                justifyContent:'center',
+                alignItems:'center'
+              }}>  
+                  <Icon style={{fontSize:22, marginRight: 10,}} name="person" /> 
+                  <TouchableOpacity onPress={ ()=>{ this.props.navigation.navigate('Login') } } style={{
+                    borderWidth:1,
+                    borderRadius:22,
+                    width:100,
+                    borderColor:COFFEE_COLOR,
+                    alignItems:"center",
+                    justifyContent:'center',
+                    height:30
+                  }}>
+                     <Text style={{ color:COFFEE_COLOR, fontFamily:'Roboto' }}> Login </Text>
+                  </TouchableOpacity>
+              </View>
 
-            data={{
-             uri: this.state.userInfo.photoURL ,
-             name: this.state.userInfo.name ,
-             point:this.state.userInfo.point
-           }}
-          />
+
+              
+            }
         </BenHeader>
 
         <Content>
 
-          <ProfileName userInfo={ this.state.userInfo   } />
+            {
+              this.state.userInfo.id !== 0 ?
+              <ProfileName userInfo={ this.state.userInfo   } /> :
+              <View></View>
+            }
+          
 
           <View style={s.holder }>
-            <TouchableOpacity onPress={ ()=>{ this.props.navigation.navigate('RewardPage') } } style={ s.btnItem }>
+            <TouchableOpacity onPress={ ()=>{ this.state.userInfo.id !== 0 ? this.props.navigation.navigate('RewardPage') : this.props.navigation.navigate('DealPage') } } style={ s.btnItem }>
               <Icon style={s.icon} name="star" />
               <Text style={s.txt}>
                  King Kong Milk Tea Rewards
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('HistoryPage') }}  style={ s.btnItem }>
+            {
+              this.state.userInfo.id !== 0 ?
+              <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('HistoryPage') }}  style={ s.btnItem }>
 
-              <Icon style={s.icon} name="time" />
-              <Text style={s.txt}>
-                History
-              </Text>
-            </TouchableOpacity>
+                <Icon style={s.icon} name="time" />
+                <Text style={s.txt}>
+                  History
+                </Text>
+              </TouchableOpacity> :
+              <View></View>
+            }
 
             <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('HelpPage') }} style={ s.btnItem }>
               <Icon name="help-buoy" style={s.icon} ></Icon>
@@ -98,43 +132,63 @@ export default class AccountPage extends Component{
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('SettingDeliveryPage',{
-                userInfo:this.props.userInfo
-              }) }} style={ s.btnItem }>
+            {
+              this.state.userInfo.id !== 0 ? 
+              <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('SettingDeliveryPage',{
+                  userInfo:this.props.userInfo
+                }) }} style={ s.btnItem }>
 
-              <Icon name="settings" style={s.icon} ></Icon>
-              <Text style={s.txt}>
-                Setting Delivery Location
-              </Text>
-            </TouchableOpacity>
+                <Icon name="settings" style={s.icon} ></Icon>
+                <Text style={s.txt}>
+                  Setting Delivery Location
+                </Text>
+              </TouchableOpacity> :
+              <View></View>
 
-            <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('EditProfilePage',{
-                userInfo:this.props.userInfo
-              }) }} style={ s.btnItem }>
+              
+            }
+            
+            {
+              this.state.userInfo.id !== 0 ? 
+              <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('EditProfilePage',{
+                  userInfo:this.props.userInfo
+                }) }} style={ s.btnItem }>
 
-              <Icon name="person" style={s.icon} ></Icon>
-              <Text style={s.txt}>
-                Edit Profile
-              </Text>
-            </TouchableOpacity>
+                <Icon name="person" style={s.icon} ></Icon>
+                <Text style={s.txt}>
+                  Edit Profile
+                </Text>
+              </TouchableOpacity>:
+              <View></View>
+              
+            }
 
-            <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('ChangePassPage',{
-                userInfo:this.props.userInfo
-              }) }} style={ s.btnItem }>
+            {
+              this.state.userInfo.id !== 0 ? 
+              <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('ChangePassPage',{
+                  userInfo:this.props.userInfo
+                }) }} style={ s.btnItem }>
 
-              <Icon name="key" style={s.icon} ></Icon>
-              <Text style={s.txt}>
-                Change Password
-              </Text>
-            </TouchableOpacity>
+                <Icon name="key" style={s.icon} ></Icon>
+                <Text style={s.txt}>
+                  Change Password
+                </Text>
+              </TouchableOpacity> : 
+              <View></View>
+            }
 
-            <TouchableOpacity onPress={ this._onSignOut } style={ [s.btnItem,s.lastBtnItem] }>
+            {
+              this.state.userInfo.id !== 0 ?
+              <TouchableOpacity onPress={ this._onSignOut } style={ [s.btnItem,s.lastBtnItem] }>
 
-              <Icon name="log-out" style={s.icon} ></Icon>
-              <Text style={s.txt}>
-                Log out
-              </Text>
-            </TouchableOpacity>
+                <Icon name="log-out" style={s.icon} ></Icon>
+                <Text style={s.txt}>
+                  Log out
+                </Text>
+              </TouchableOpacity> : 
+              <View></View>
+              
+            }
 
 
           </View>

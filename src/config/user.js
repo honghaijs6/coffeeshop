@@ -24,7 +24,7 @@ const USER = {
             const url = socket.server.host+'/users';
             axios.post(url,data).then((res)=>{
                 res = res.data ;
-
+              
                 if(res.name==='ok'){
 
                     AsyncStorage.setItem('userInfo',JSON.stringify(res.data)).then(()=>{
@@ -53,43 +53,58 @@ const USER = {
 
 
 
+    // JUST USING FOR USER TABLE
     async update(id,data){
 
         return new Promise((resole,reject)=>{
 
-            const url = socket.server.host+'/users?id='+id;
-            axios.put(url,data).then((res)=>{
 
-                res = res.data ;
+            if(parseInt(id)!==0){
 
-                if(res.name==='success'){
-
-                    let userInfo = store.getState().user.userInfo;
-
-                    Object.assign(userInfo,data);
-
-
-                    AsyncStorage.setItem('userInfo',JSON.stringify(userInfo)).then(()=>{
-
-                        // REFESH REDUX
-                        this._whereStateChange({
-                            type:'LOGIN',
-                            isLoggedIn:true,
-                            userInfo:userInfo
-                        });
-
-                        resole('Update success')
+              const url = socket.server.host+'/users?id='+id;
+              axios.put(url,data).then((res)=>{
+                  res = res.data ;
+                  if(res.name==='success'){
+                      let userInfo = store.getState().user.userInfo;
+                      Object.assign(userInfo,data);
 
 
+                      AsyncStorage.setItem('userInfo',JSON.stringify(userInfo)).then(()=>{
 
-                    })
+                          // REFESH REDUX
+                          this._whereStateChange({
+                              type:'LOGIN',
+                              isLoggedIn:true,
+                              userInfo:userInfo
+                          });
 
-                }else{
-                    resole(res.message);
-                }
+                          resole('Update success')
 
 
-            });
+
+                      })
+
+                  }else{
+                      resole(res.message);
+                  }
+
+
+              });
+            }else{
+
+              let tempInfo = store.getState().user.tempInfo; 
+              Object.assign(tempInfo,data);
+
+              this._whereStateChange({
+                  type:'TEMP',
+                  tempInfo:tempInfo
+              });
+
+              resole('Update success');
+              
+            }
+
+            
 
 
         })
@@ -129,13 +144,14 @@ const USER = {
 
             AsyncStorage.getItem('userInfo').then((data)=>{
 
-                const info = JSON.parse(data) || {}
-
+                const info = JSON.parse(data) || {} ;
+                
                 this._whereStateChange({
                     type:'LOGIN',
                     isLoggedIn: data === null ? false : true ,
                     userInfo:info
                 });
+                
                 
 
                 if(info.id !== undefined){

@@ -91,7 +91,7 @@ class LoginPage extends Component {
   }
 
   componentDidMount(){
-    USER.checkLoginStatus();
+    USER.checkLoginStatus();  
   }
   componentWillReceiveProps(newProps){
     const userInfo = newProps.user;

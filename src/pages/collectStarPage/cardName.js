@@ -25,8 +25,8 @@ const ProfileName = (props)=>{
     <ImageBackground resizeMode="repeat" source={require('../../../assets/images/profileBg.png')} style={ s.bg }>
 
       <View style={s.wrapper}>
-          <Barcode width={2} height={84} value={ userInfo.code } format="CODE128" />
-          <Text style={s.txtMember}> { userInfo.code } </Text>
+          <Barcode width={2} height={84} value={ userInfo.code || 'unofficial' } format="CODE128" />
+          <Text style={s.txtMember}> { userInfo.code || 'Unofficial code' } </Text>
       </View>
 
     </ImageBackground>

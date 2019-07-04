@@ -132,6 +132,9 @@ export default class FeedPage extends Component{
       case 'pizza':
         this.props.navigation.navigate('CouponPage')
       break ;
+      case 'login':
+        this.props.navigation.navigate('Login')
+      break;
     }
   }
 
@@ -145,17 +148,41 @@ export default class FeedPage extends Component{
         display:  this.props.onTab === this.state.tab ? 'block':'none'
       }}>
         <BenHeader>
-           <BenAvatar
-              onPress={()=>{ this.props.navigation.navigate('EditProfilePage',{
-                    userInfo:this.state.userInfo
-                  })
-              }}
-              data={{
-               uri: this.state.userInfo.photoURL ,
-               name: this.state.userInfo.name ,
-               point:this.state.userInfo.point
-             }}
-           />
+           {
+             this.state.userInfo.id !== 0 ? 
+                <BenAvatar
+                  onPress={()=>{ this.props.navigation.navigate('EditProfilePage',{
+                        userInfo:this.state.userInfo
+                      })
+                  }}
+                  data={{
+                    uri: this.state.userInfo.photoURL ,
+                    name: this.state.userInfo.name ,
+                    point:this.state.userInfo.point
+                  }}
+                />:  
+             <View style={{
+               marginLeft:10,
+               flexDirection:'row',
+               justifyContent:'center',
+               alignItems:'center'
+             }}>  
+                 <Icon style={{fontSize:22, marginRight: 10,}} name="person" /> 
+                 <TouchableOpacity onPress={ ()=>{ this._goto('login') } } style={{
+                   borderWidth:1,
+                   borderRadius:22,
+                   width:100,
+                   borderColor:COFFEE_COLOR,
+                   alignItems:"center",
+                   justifyContent:'center',
+                   height:30
+                 }}>
+                    <Text style={{ color:COFFEE_COLOR, fontFamily:'Roboto' }}> Login </Text>
+                 </TouchableOpacity>
+             </View>
+              
+           }
+           
            <BenNoti onPress={ this._onPressNoti }  />
 
         </BenHeader>

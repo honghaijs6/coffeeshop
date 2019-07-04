@@ -50,8 +50,9 @@ class DeliveryPage extends Component {
   constructor(props){
     super(props)
 
-        
-
+    
+    const userInfo = JSON.stringify(props.user.userInfo) === '{}' ? props.user.tempInfo : props.user.userInfo
+    
     this.state = {
 
       loader:false,
@@ -60,7 +61,7 @@ class DeliveryPage extends Component {
       tab:'delivery',
 
       mode:'none',
-      userInfo: props.userInfo || {} ,
+      userInfo: userInfo || {} ,
 
       
 
@@ -69,15 +70,15 @@ class DeliveryPage extends Component {
           code:'home',
           icon:'home',
           label:'Home',
-          name:  props.userInfo !== undefined ? props.userInfo['home_address'] : '',
-          isEmpty:props.userInfo !== undefined ? props.userInfo['home_address'] : ''
+          name:  userInfo['home_address'],
+          isEmpty: userInfo['home_address']  
         },
         {
           code:'office',
           icon:'briefcase',
           label:'Work place',
-          name: props.userInfo !== undefined ?  props.userInfo['work_address'] : '',
-          isEmpty: props.userInfo !== undefined ?  props.userInfo['work_address'] : ''
+          name:  userInfo['work_address'] ,
+          isEmpty: userInfo['work_address'] 
         },
         /*{
           code:'current',
@@ -89,7 +90,7 @@ class DeliveryPage extends Component {
           code:'recent',
           icon:'time',
           label:'Recent search',
-          name: props.userInfo !== undefined ?  props.userInfo.recent_address : '...'
+          name:  userInfo.recent_address || '...'
         },
 
       ]
@@ -103,9 +104,11 @@ class DeliveryPage extends Component {
 
   componentWillReceiveProps(newProps){
 
-    this.state.personalItems[3]['name'] = newProps.userInfo.recent_address || '';
+    const userInfo = JSON.stringify(newProps.user.userInfo) !=='{}' ? newProps.user.userInfo : newProps.user.tempInfo;
+
+    this.state.personalItems[2]['name'] = userInfo.recent_address ||  '...' ;
     this.setState({
-      userInfo:newProps.userInfo || {}
+      userInfo: userInfo 
     });
 
   }
@@ -157,20 +160,28 @@ class DeliveryPage extends Component {
 
     
     if(data.name !=='...'){
-
-
+      
 
       const userInfo = this.state.userInfo;
 
       if(JSON.stringify(userInfo)!=='{}'){
         
-        this.setState({loader:true});
-        const msg = await USER.update(userInfo.id,{
-            name:userInfo.name,
-            recent_address:data.name
-        });
-        this.setState({loader:false})
-        Keyboard.dismiss();
+        if(data.name.length > 10){
+          
+          this.setState({loader:true});
+          const msg = await USER.update(userInfo.id,{
+              name:userInfo.name,
+              recent_address:data.name
+          });
+          this.setState({loader:false})
+          Keyboard.dismiss();
+
+          // go back
+          this._whereStateChange({ 
+            onAction:'goBack'
+          })
+
+        }
 
       }else{  alert(JSON.stringify(data)) }
       
@@ -250,7 +261,7 @@ class DeliveryPage extends Component {
 
 function mapStateToProps(state){
   return {
-    userInfo:state.user.userInfo
+    user:state.user   
   }
 }
 

@@ -29,6 +29,8 @@ import CheckOutPage from './src/pages/checkout';
 import CollectStarPage from './src/pages/collectStarPage';
 import CouponPage from './src/pages/couponPage';
 import Scanner from './src/pages/scanner';
+import DealPage from './src/pages/dealPage';
+
 
 
 /*AccountTab Link*/
@@ -63,6 +65,7 @@ const RootStack = createStackNavigator(
     CollectStarPage:CollectStarPage,
     CouponPage:CouponPage,
     Scanner:Scanner,
+    DealPage:DealPage,
 
     RewardPage:RewardPage,
     HistoryPage:HistoryPage,
