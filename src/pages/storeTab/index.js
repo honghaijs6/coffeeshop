@@ -129,6 +129,8 @@ export default class StorePage extends Component{
     const { mapRegion } = this.state
 
     if(this.props.onTab === this.state.tab){
+
+      
       return(   
         <Container style={{
           backgroundColor:GREY_COLOR,
@@ -175,7 +177,7 @@ export default class StorePage extends Component{
   
           <BoxSearch
               onItemAddressPress={ (address)=>{ this._onItemAddressPress(address) } }
-              keyFind={ this.state.currentAdress } data={ this.state.data }
+              keyFind={ this.state.currentAdress } data={ this.props.stores }  
               onCloseSearch={ ()=>{ this._onCloseSearch() } }
   
           />

@@ -28,7 +28,7 @@ export default class BoxSearchLocation extends Component {
     this.state = {
 
       isShowList:false,
-      data:STORE_LOCATIONS
+      data:props.data
     }
 
     this._onShowList = this._onShowList.bind(this);
@@ -49,6 +49,8 @@ export default class BoxSearchLocation extends Component {
     });
   }
   render() {
+
+    
     return (
       <View style={{
         top: '11%',

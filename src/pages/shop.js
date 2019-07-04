@@ -33,7 +33,7 @@ class shop extends Component {
       super(props);
 
 
-      this.state = state = {
+      this.state  = {
 
 
         socketRes:{},
@@ -48,10 +48,10 @@ class shop extends Component {
           { tab:'store',icon:'pin',name:'Stores' },
           { tab:'account',icon:'person',name:'Account' },
         ],
-        onTab:'account',
+        onTab:'order',
         tab:{},
-        userInfo: JSON.stringify(props.user.userInfo) === '{}' ? props.user.tempInfo : props.user.userInfo // get data from reducer
-
+        userInfo: JSON.stringify(props.user.userInfo) === '{}' ? props.user.tempInfo : props.user.userInfo, // get data from reducer
+        stores:[]
       }
 
 
@@ -69,6 +69,8 @@ class shop extends Component {
 
 
       this.moCate = new moFire('categories');
+      this.moStore = new moFire('stores');
+
       this.moOrder = new Api('orders');
       
 
@@ -95,6 +97,17 @@ class shop extends Component {
       
     }
 
+    _loadStores(){
+      this.moStore.read((data)=>{
+        
+        this.setState({
+          stores:data
+        });
+
+        
+      })
+    }
+
     componentDidMount(){
 
       this._isMounted = true;
@@ -115,6 +128,9 @@ class shop extends Component {
         }
 
       });
+
+      // read stores
+      this._loadStores();
 
       // READ ORDERS
       this._readOrders();
@@ -179,9 +195,8 @@ class shop extends Component {
     }
     render() {
 
-        //alert(JSON.stringify(this.props.user));
-
-
+        //alert(JSON.stringify(this.props.user)); 
+      
         return (
             <BenTabs
 
@@ -194,13 +209,16 @@ class shop extends Component {
 
               <BenStatusBar/>
           
-              
+               
 
               <OrderTab  data={this.data} { ...this.state } />
               <AccountTab { ...this.state } />
               <FeedTab onPressChangeTab={ (data)=>{ this._onChangeTab(data) } } { ...this.state } />
               <MissionTab { ...this.state } />
-              <StoreTab { ...this.state } />
+              <StoreTab 
+                { ...this.state } 
+                
+              />
 
 
 
