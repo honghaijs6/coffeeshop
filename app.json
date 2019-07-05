@@ -12,7 +12,7 @@
       "icon": "./assets/images/notification.png"
     },
 
-    "version": "1.0.12",
+    "version": "1.0.13",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
