@@ -130,7 +130,7 @@ class ProductItem extends Component {
       this.setState({
         favoryList:data || []
       });
-
+      
     })
   }
   componentDidMount(){
@@ -144,9 +144,6 @@ class ProductItem extends Component {
       amount:info.amount || this.state.amount ,
       info:Object.assign(info,cartInfo)
     });
-
-    // LOAD LIST THAT WE FAVORY MUCH
-    this._loadFavoryList();
     
   }
 
@@ -167,7 +164,6 @@ class ProductItem extends Component {
 
   _toggleLike = ()=>{
     
-    alert(JSON.stringify(this.state.info))
 
   }
   render() {
