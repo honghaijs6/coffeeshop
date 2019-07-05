@@ -124,8 +124,7 @@ export default class OrderPage extends Component{
   /*WHEN*/
 
   _onCateItemPress = (item)=>{
-
-
+    
 
     this.props.navigation.navigate('MenuPage', {
         cateInfo: item,

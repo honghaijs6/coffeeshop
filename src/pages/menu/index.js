@@ -78,6 +78,7 @@ function ButtonOrder (props){
 
 class Menu extends Component {
 
+  _tempData = [];
   constructor(props){
     super(props)
 
@@ -91,7 +92,8 @@ class Menu extends Component {
       category:'milktea',
       data:[], // all list products from server
       cateInfo : props.navigation.getParam('cateInfo', null),
-      shoppingcart:  props.shoppingcart.list
+      shoppingcart:  props.shoppingcart.list,
+      keyText:''
 
     }
 
@@ -118,6 +120,9 @@ class Menu extends Component {
     //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
 
     this.model.fetch("categories",this.state.cateInfo.uid,(data)=>{
+
+      this._tempData = data; 
+
       this.setState({
           loader:false,
           data:data
@@ -153,21 +158,41 @@ class Menu extends Component {
 
 
   }
+
+  _findProduct = (text)=>{
+    
+    
+      const rows = [] ;
+      this._tempData.map((item)=>{
+        if(item.name.indexOf(text)>-1){
+          rows.push(item);
+        }
+      });
+      
+      this.setState({
+        keyText:text,
+        data:rows
+      });
+      
+  }
+  _close = ()=>{
+    
+    this._findProduct('');
+
+  }
   render() {
 
 
     const { navigation } = this.props;
-
-    const data = this.state.data ;
-
+    
     return(
       <Container>
         <BenLoader visible={this.state.loader} />
         <BenStatusBar/>
 
-        <MenuHeader onBackBtnPress={()=>{ this._onBackBtnPress() }} />
-
-        <MenuBody onPressItem={(item)=>{ this._onPressItem(item) }} loader={this.state.loader}  data={ data } />
+        <MenuHeader keyText={this.state.keyText} onPress={ this._close } onChangeText={ this._findProduct } onBackBtnPress={()=>{ this._onBackBtnPress() }} />
+      
+        <MenuBody onPressItem={(item)=>{ this._onPressItem(item) }} loader={this.state.loader} cateInfo={this.state.cateInfo} data={ this.state.data } />
 
         { this.state.shoppingcart.length > 0 ? <ButtonOrder data={this.state.shoppingcart} onPress={()=>{  this._onPressOrder() }} /> : null }
 

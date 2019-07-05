@@ -10,7 +10,9 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert,
+  AsyncStorage
 } from 'react-native';
 
 import { Container,  Content, Icon } from 'native-base';
@@ -21,6 +23,7 @@ import BenStatusBar  from "../../components/BenStatusBar";
 import BackButton from '../../components/BackButton';
 import LikeButton from '../../components/LikeButton';
 import BodyItem from './body';
+
 
 
 class ProductItem extends Component {
@@ -36,7 +39,8 @@ class ProductItem extends Component {
       tab:'productitem',
       amount:1, // cureent amount
       info:{}, // current product info
-      shoppingcart:  props.shoppingcart
+      shoppingcart:  props.shoppingcart,
+      favoryList:[]
 
     }
 
@@ -106,7 +110,7 @@ class ProductItem extends Component {
       const cart = this.state.info;
       cart.amount = this.state.amount;
 
-      this.moOrder.addDataStore(cart);
+      this.moOrder.addDataStore(cart);  
       this.goBack();
 
     }else{
@@ -120,21 +124,30 @@ class ProductItem extends Component {
 
   }
 
+  _loadFavoryList(){
+    
+    AsyncStorage.getItem('favoryList').then((data)=>{
+      this.setState({
+        favoryList:data || []
+      });
+
+    })
+  }
   componentDidMount(){
 
     let info =  this.props.navigation.getParam('proInfo',{});
     info['price'] = info['price'] || info['price_m'];
-
     const cartInfo = this._getInfoOnShoppingCart(info.uid);
-
+    
 
     this.setState({
       amount:info.amount || this.state.amount ,
       info:Object.assign(info,cartInfo)
-    })
+    });
 
-
-
+    // LOAD LIST THAT WE FAVORY MUCH
+    this._loadFavoryList();
+    
   }
 
   goBack(){
@@ -152,6 +165,11 @@ class ProductItem extends Component {
     return json;
   }
 
+  _toggleLike = ()=>{
+    
+    alert(JSON.stringify(this.state.info))
+
+  }
   render() {
 
 
@@ -165,7 +183,7 @@ class ProductItem extends Component {
           <BenHeader>
             <BackButton onPress={ this._onBackBtnPress } />
 
-            <LikeButton />
+            <LikeButton onPress={ this._toggleLike } />
 
           </BenHeader>
 

@@ -30,14 +30,14 @@ export default class MissionPage extends Component{
         backgroundColor:GREY_COLOR,
         display:  this.props.onTab === this.state.tab ? 'block':'none'
       }}>
-      <BenHeader type="single">
-         <View>
-            <Text style={{
-              fontSize:18,
-              fontFamily:'Roboto'
-            }}> Missions </Text>
-         </View>
-      </BenHeader>
+        <BenHeader type="single">
+          <View>
+              <Text style={{
+                fontSize:18,
+                fontFamily:'Roboto'
+              }}> Missions </Text>
+          </View>
+        </BenHeader>
         <Content>
 
           <View style={{

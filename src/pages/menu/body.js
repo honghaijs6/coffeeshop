@@ -20,13 +20,13 @@ import BodyFavories from './favories';
 const MenuBody = (props) => (
 
 
-    <Tabs textStyle={{color:'#000'}} tabBarUnderlineStyle={{ backgroundColor: COFFEE_COLOR,height:2, }}>
+    <Tabs textStyle={{color:'#000'}} tabBarUnderlineStyle={{ backgroundColor: COFFEE_COLOR,height:1, }}>
         <Tab heading={
           <TabHeading>
-            <Text style={{color:'#555'}}>Drinks</Text>
+            <Text style={{color:'#555'}}>Drinks</Text>  
         </TabHeading>
         }>
-            <BodyDrinks loader={props.loader} onPressItem={(data)=>{ props.onPressItem(data) }} data={ props.data } />
+            <BodyDrinks cateInfo={props.cateInfo} loader={props.loader} onPressItem={(data)=>{ props.onPressItem(data) }} data={ props.data } />
         </Tab>
         {/*<Tab heading="Foods">
             <BodyFoods/>

@@ -140,6 +140,42 @@ class moFire {
     };
   }
 
+  find(field,value,onSuccess){
+    this.data = [] ;
+
+    this.countAllWithField(field,value,(total)=>{
+
+        this.localData.db.total = total;
+        this.db.total = total; 
+
+        const query = this.db
+                        .orderByChild(field)
+                        .startAt(`%${value}%`)
+                        .endAt(value+"\uf8ff")
+                        .limitToLast(config.paginate.max);
+                        
+                        
+
+        query.once("value",(snapshot)=>{
+
+          snapshot.forEach( (childSnapshot)=> {
+            var childKey = childSnapshot.key;
+            var childData = childSnapshot.val();
+            this.data.push(childData);
+
+          });
+
+          this.data.sort(this._sortOrder('sort'));
+          //this.data = [] ;
+          onSuccess(this.data);
+          
+          this._onSuccess('value',this.data);
+
+
+        });
+    });
+    
+  }
 
   fetch(field,value,onSuccess){
 

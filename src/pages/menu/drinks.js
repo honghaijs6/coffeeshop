@@ -17,7 +17,6 @@ import BenBody from '../../components/BenBody';
 
 import NoData from '../../components/NoData';
 
-
 const w = Dimensions.get('window');
 export default class BodyDrinks extends Component{
 
@@ -39,14 +38,31 @@ export default class BodyDrinks extends Component{
 
 
     const data = this.props.data ;
-
+    const cateInfo = this.props.cateInfo 
 
     return(
       <Content style={{
           backgroundColor: GREY_COLOR
         }}>
 
+        <View style={{
+          marginTop:15,
+          width:'95%',
+          marginLeft:'auto',
+          marginRight:'auto',
+          marginBottom:-15
+        }}>
+            <Text style={{
+              fontFamily:'Roboto',
+              fontSize:15,
+              textTransform:'uppercase',
+              color:COFFEE_COLOR
+            }}>  
+                { cateInfo.name }
+            </Text>
+        </View>    
         <BenBody>
+            
 
             {
               data.map((item, index)=>{
