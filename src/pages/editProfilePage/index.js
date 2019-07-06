@@ -164,7 +164,7 @@ class EditProfilePage extends Component {
                             <Input
                               defaultValue={ userInfo.phone }
                               placeholderTextColor="rgba(0,0,0,0.6)"
-                              onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={s.text} placeholder='Phone number'/>
+                              onChangeText={(text)=>{ this._onChangeText({phone:text}) }} style={s.text} placeholder='Phone number'/>
 
                         </Item>
 
