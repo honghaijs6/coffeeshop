@@ -21,7 +21,7 @@
       "backgroundColor": "#3b853f"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0  
+      "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "assets/images/*"
@@ -30,6 +30,7 @@
       "bundleIdentifier": "com.honghai.coffeeshop",
       "supportsTablet": false,
       "infoPlist": {
+        "NSLocationWhenInUseUsageDescription":"the app needs permission to your location in order to delivery your orders",
         "NSCameraUsageDescription":
           "The app needs permission to your camera in order to scan barcode",
         "NSPhotoLibraryUsageDescription":
