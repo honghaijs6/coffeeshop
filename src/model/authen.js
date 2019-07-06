@@ -1,10 +1,10 @@
 import {auth, database, provider} from "../config/firebase";
-import {AsyncStorage} from 'react-native';
+
+
 import { AVATAR_URL } from '../config/const';
-
 import store from '../redux/store';
-
 import {myTime} from '../hook/ultil/myTime';
+
 
 
 export const benAuth = {

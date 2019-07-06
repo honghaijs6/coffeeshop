@@ -1,4 +1,5 @@
 /* @flow */
+import {COFFEE_COLOR, GREY_COLOR, GOOGLE_MAP_KEY} from '../../config/const';
 
 import React, { Component } from 'react';
 import {
@@ -8,13 +9,10 @@ import {
   SafeAreaView,
   TextInput,
   TouchableOpacity,
-  
+
 } from 'react-native';
 
 import { Icon } from 'native-base';
-
-import {COFFEE_COLOR, GREY_COLOR, GOOGLE_MAP_KEY} from '../../config/const';
-
 import BenBody from '../../components/BenBody';
 
 export default class BoxSearchLocation extends Component {

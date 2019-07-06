@@ -1,17 +1,18 @@
 /* @flow */
+import { COFFEE_COLOR, GREY_COLOR } from '../../config/const';
 
 import React, { Component } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  ImageBackground
+  TouchableOpacity
 } from 'react-native';
+import { connect } from 'react-redux';
 
 import { Container, Content, Icon } from 'native-base';
 
-import { COFFEE_COLOR, USERS_LEVEL, GREY_COLOR } from '../../config/const';
+
 
 import BenStatusBar from '../../components/BenStatusBar';
 import BackButton from '../../components/BackButton';
@@ -21,19 +22,19 @@ import BenHeader from '../../components/BenHeader';
 import ProfileName from './profileName';
 import LevelBoard from './levelBoard' ;
 
-export default class RewardPage extends Component {
+class RewardPage extends Component {
 
 
   constructor(props){
     super(props);
 
-    this.store = props.screenProps ;
+
     this.state = {
       onAction:'',
       status:'',
 
       level:0,
-      userInfo:this.store.getState().user.userInfo
+      userInfo:props.userInfo
 
     }
   }
@@ -43,14 +44,11 @@ export default class RewardPage extends Component {
     return (
       <Container>
         <BenStatusBar/>
-        <BenHeader>
+        <BenHeader type="flex-start">
            <BackButton onPress={ ()=>{ this.props.navigation.goBack() } } ></BackButton>
+           <Text style={s.title}> King Kong Milk Tea Rewards </Text>
 
-           <View>
-             <Text style={s.title}> King Kong Milk Tea Rewards </Text>
 
-           </View>
-           <View></View>
         </BenHeader>
 
         <Content style={{ backgroundColor: GREY_COLOR}}>
@@ -90,6 +88,14 @@ export default class RewardPage extends Component {
     );
   }
 }
+
+function mapStateToProps(state){
+  return {
+    userInfo:state.user.userInfo
+  }
+}
+
+export default connect(mapStateToProps)(RewardPage);
 
 const s = StyleSheet.create({
   boxHolder:{

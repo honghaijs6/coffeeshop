@@ -1,12 +1,14 @@
+import store from './src/redux/store';
+import socket from './src/config/socket';
+
+
+import { Provider } from 'react-redux';
+
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { AppState } from 'react-native';
 import { Font, AppLoading } from 'expo';
 
-
 import { createStackNavigator, createAppContainer } from "react-navigation";
-
-
-import store from './src/redux/store';
 
 /* main pages*/
 import Login from './src/pages/login';
@@ -14,25 +16,28 @@ import Register from './src/pages/register';
 import Shop from './src/pages/shop';
 
 /* sub pages */
-
 /* FeedTab Link */
 import FeedView from './src/pages/feedview';
-
-
 /*MissionTab Link*/
-
 /* storeTab Link*/
-
 /*  OrderTabs linkin */
 import DeliveryPage from './src/pages/delivery';
 import MenuPage from './src/pages/menu';
 import ProItemPage from './src/pages/productItem';
 import CartPage from './src/pages/cart' ;
 import CheckOutPage from './src/pages/checkout';
+import CollectStarPage from './src/pages/collectStarPage';
+import CouponPage from './src/pages/couponPage';
+import Scanner from './src/pages/scanner';
+import DealPage from './src/pages/dealPage';
+
+
 
 /*AccountTab Link*/
 import RewardPage from './src/pages/rewardPage';
 import HistoryPage from './src/pages/historyPage';
+import HistoryPageView from './src/pages/historyView';
+
 import HelpPage from './src/pages/helpPage';
 import GuidePage from './src/pages/guidePage';
 import EditProfilePage from './src/pages/editProfilePage';
@@ -44,23 +49,27 @@ import MapPage from './src/pages/mapPage';
 
 
 
-import { benAuth } from './src/model/authen';
-
 const RootStack = createStackNavigator(
   {
+    Login:Login,
+    Register:Register,
     Home: Shop,
     FeedView:FeedView,
 
-    /* TAB ORDERS CHILD */
+
     MenuPage:MenuPage,
     ProItem:ProItemPage,
     CartPage:CartPage,
     CheckOutPage:CheckOutPage,
     DeliveryPage:DeliveryPage,
+    CollectStarPage:CollectStarPage,
+    CouponPage:CouponPage,
+    Scanner:Scanner,
+    DealPage:DealPage,
 
-    /* TAB ACCOUNT CHILD */
     RewardPage:RewardPage,
     HistoryPage:HistoryPage,
+    HistoryPageView:HistoryPageView,
     HelpPage:HelpPage,
     GuidePage:GuidePage,
     SettingDeliveryPage:SettingDeliveryPage,
@@ -78,23 +87,6 @@ const RootStack = createStackNavigator(
   }
 );
 
-const LoginStack = createStackNavigator(
-  {
-    Home: Login,
-    Register: Register,
-
-  },
-  {
-    initialRouteName: "Home",
-    headerMode: 'none',
-    navigationOptions: {
-        headerVisible: false,
-    }
-  }
-);
-
-
-
 export default class App extends React.Component {
 
   constructor(){
@@ -103,90 +95,121 @@ export default class App extends React.Component {
     this.state = {
 
         isReady:false,
-        login: store.getState().user.isLoggedIn || false  ,
-        onAction:''
+        onAction:'',
+        socketRes:null
     }
 
-    this._listenStore();
+    this._listenSocket();
 
 
-  }
-
-
-  _listenStore(){
-
-    this.unsubscribe = store.subscribe(()=>{
-
-        const userInfo = store.getState().user;
-
-        if(userInfo.isLoggedIn !== this.state.login){
-          if(userInfo.userInfo !==null){
-            this.setState({
-              login: userInfo.isLoggedIn
-            });
-          }
-
-        }
-
-    })
 
   }
 
+  _listenSocket(){
+
+    // FEEDS
+    socket.on('feeds created',(res)=>{
+
+      store.dispatch({
+        type:'reset-socket',
+        res:res
+      });
+
+    });
+
+    socket.on('feeds updated',(res)=>{
+
+      console.log('socket init');
+      
+      store.dispatch({
+        type:'reset-socket',
+        res:res
+      });
+
+    });
+
+
+    // ORDERS
+    socket.on('orders created',(res)=>{
+      store.dispatch({
+        type:'reset-socket',
+        res:res
+      });
+    });
+
+    socket.on('orders updated',(res)=>{
+
+      store.dispatch({
+        type:'reset-socket',
+        res:res
+      });
+
+    });
+
+  }
+  
   componentWillUnmount(){
 
-    this.unsubscribe();
+    
+    AppState.removeEventListener('change', this._handleAppStateChange);
+
+
+
+
   }
 
-  componentWillMount(){
-    this.loadFonts();
+  async componentWillMount(){
+    await this.loadFonts();
 
   }
 
 
   async loadFonts() {
+
     await Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-      Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
-    });
+      Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf"),
+      FontAwesome: require("@expo/vector-icons/fonts/FontAwesome.ttf"),
 
+
+    });
+    
     this.setState({ isReady: true });
   }
 
-  componentDidMount(){
+  async componentDidMount(){
+
+    // APP STATE CHANGE
+    AppState.addEventListener('change', this._handleAppStateChange);
+    
+  }
 
 
+  _handleAppStateChange(newState){
+    
+    store.dispatch({
+      type:'appstate-change',
+      appState:newState
+    });
 
-    benAuth.checkLoginStatus((exists,isLoggedIn)=>{
-
-      const userInfo = store.getState().user;
-      if(userInfo.userInfo!==null){
-        isLoggedIn ? this.setState({login:true}) : null ;
-      }
-
-
-    })
   }
 
   render() {
 
-    const AppContainer = createAppContainer(this.state.login ? RootStack : LoginStack );
+    const AppContainer =  createAppContainer(RootStack) ; 
 
 
     if (!this.state.isReady) {
       return <AppLoading />;
     }
     return (
+      <Provider store={store}>
 
-      <AppContainer screenProps={ store } />
+        <AppContainer />
+
+      </Provider>
 
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});

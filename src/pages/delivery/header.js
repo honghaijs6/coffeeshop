@@ -50,7 +50,7 @@ export default class MyHeader extends React.Component{
             height: 36,
             paddingHorizontal: 10,
             borderRadius: 20
-          }} placeholder="Search" />
+          }} placeholder="Add delivery address" />
 
         <TouchableOpacity onPress={ ()=>{ this._onPress() } } style={{
             display: this.props.onAction === '' ? 'none':'block',

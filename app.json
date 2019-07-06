@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "coffeeshop",
+    "name": "King Kong Tea Milk",
     "slug": "coffeeshop",
     "privacy": "public",
     "sdkVersion": "32.0.0",
@@ -8,22 +8,36 @@
       "ios",
       "android"
     ],
-    "version": "1.0.0",
+    "notification": {
+      "icon": "./assets/images/notification.png"
+    },
+
+    "version": "1.0.13",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#3b853f"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0  
     },
     "assetBundlePatterns": [
       "assets/images/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.honghai.coffeeshop",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSCameraUsageDescription":
+          "The app needs permission to your camera in order to scan barcode",
+        "NSPhotoLibraryUsageDescription":
+          "The app needs permission to your camera roll in order to add photos you've already taken for upload"
+      }
+    },
+    "android": {
+      "package": "com.honghai.coffeeshop"
     },
     "description": ""
   }

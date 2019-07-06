@@ -1,72 +1,67 @@
 
-import React, { Component } from 'react';
-
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput
-} from 'react-native';
-
-import { Container,  Content, Icon,  } from 'native-base';
-import { GREY_COLOR, COFFEE_COLOR, RED_COLOR, BLACK_COLOR } from '../../config/const' ;
-
-import Toast, {DURATION} from 'react-native-easy-toast';
-
-
-/* MODEL */
-import { myTime } from '../../hook/ultil/myTime';
-
-import { benAuth } from '../../model/authen';
-import moFire from '../../model/moFirebase' ;
 import Model from '../../model/model'; // shoppingcart only
-
+import Api from '../../model/api';
+import USER from '../../config/user';
 
 
 /* hook */
 import {detectForm} from '../../hook/before/';
+
+
+import React, { Component } from 'react';
+import {
+  View,
+  Text
+} from 'react-native';
+import { connect } from 'react-redux';
+
+import { Container,  Content} from 'native-base';
+import Toast from 'react-native-easy-toast';
+
+
+import BenLoader from '../../components/BenLoader';
+
 
 import BenStatusBar from '../../components/BenStatusBar';
 import BenHeader from '../../components/BenHeader';
 import BackButton from '../../components/BackButton';
 
 import CheckOutBody from './body';
+``
 
-
-export default class CheckOutPage extends Component{
+class CheckOutPage extends Component{
 
   constructor(props){
     super(props)
 
-    this.store = props.screenProps ;
-
     this.state = {
 
+      loader:false,
       typeAction:'',
       onAction:'',
       tab:'checkout',
-      shoppingcart: this.store.getState().shoppingcart.list,
-      userInfo: this.store.getState().user.userInfo
+      shoppingcart: props.shoppingcart.list,
+      userInfo:props.user.userInfo
 
     }
-
-    this.model = new moFire('orders');
     this.moShoppingcart = new Model('shoppingcart');
-
+    this._settup();
   }
 
+  _settup(){
+    this.moOrder = new Api('orders');
+
+  }
   _onSuccess(){
 
 
 
     const data = {
-      code:'ABC',
+
       status:0,
-      creator_id:this.state.userInfo.uid,
+      creator_id:this.state.userInfo.id,
       promo_code:'',
       isMobile:true,
-      createdAt: myTime.getUnixTime() ,
 
       cart:this.state.shoppingcart,
       user:{
@@ -81,28 +76,23 @@ export default class CheckOutPage extends Component{
       creditcard:this.state.userInfo.creditcard
     };
 
-    this.model.create(data,(data)=>{
-      //alert('success');
+    this.setState({loader:true})
 
-      // clear shoppingcart
-      this.moShoppingcart.removeStoreData()
-      // go back
-      this.refs.toast.show('Your order on processing delivery, thank you for your orders',3000);
-      setTimeout(()=>{
-        this.props.navigation.goBack();
-      },3000)
+    this.moOrder.post(data,(res)=>{
+      if(res.name==='success'){
+
+        //this.setState({loader:false})
+        // clear shoppingcart
+        this.moShoppingcart.removeStoreData()
 
 
-
-
-
-    })
-
-
+      }
+    });
+    //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
 
 
   }
-  _onCheckOut(data){
+  async _onCheckOut(data){
 
     // VALIDATE
     if(detectForm(['cardName','cardNumber','expired','cvv'],data)===''){
@@ -110,11 +100,20 @@ export default class CheckOutPage extends Component{
       let userInfoData = this.state.userInfo;
       userInfoData.creditcard = data ;
 
-      const _this = this ;
+      
+      this.setState({loader:true});
+      // SAVE USER INFO creditcard
+      const msg = await USER.update(this.state.userInfo.id,{
+        name:this.state.userInfo.name,
+        creditcard:data
+      });
 
-      benAuth.updateInfo(userInfoData,(data)=>{
-        this._onSuccess()
-      })
+      this.setState({loader:false});
+
+      if(msg==='Update success'){
+        this._onSuccess();
+      }else{ alert(msg) }
+      
 
     }else{
       this.refs.toast.show('Please enter correct infomation',3000);
@@ -123,28 +122,36 @@ export default class CheckOutPage extends Component{
 
   }
 
+  componentWillReceiveProps(newProps){
+    this.setState({
+      userInfo:newProps.user.userInfo,
+      shoppingcart:newProps.shoppingcart.list
+    })
+  }
+
   render(){
     return(
       <Container>
 
         <BenStatusBar/>
-        <BenHeader>
+        <BenHeader type="flex-start">
           <BackButton onPress={()=>{ this.props.navigation.goBack() }} />
           <View>
             <Text style={{
               fontSize: 16, fontFamily: 'Roboto'
-            }}> Setup Credit card </Text>
+            }}> Check out </Text>
           </View>
 
-          <Text>  </Text>
+
         </BenHeader>
+        <BenLoader visible={this.state.loader} />
         <Content>
            <CheckOutBody onPress={ (data)=>{ this._onCheckOut(data) } }  />
         </Content>
 
 
         <Toast position='top'
-        positionValue={200}
+          positionValue={200}
           fadeInDuration={750}
           fadeOutDuration={1000}
           opacity={0.8}
@@ -154,3 +161,12 @@ export default class CheckOutPage extends Component{
     )
   }
 }
+
+function mapStateToProps(state){
+  return {
+    user:state.user,
+    shoppingcart:state.shoppingcart
+  }
+}
+
+export default connect(mapStateToProps)(CheckOutPage);

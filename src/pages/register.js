@@ -1,29 +1,25 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, ImageBackground, TextInput, TouchableOpacity  } from 'react-native';
-
-import {  Link, Redirect } from "react-router-native";
-
-import { Container,Content,Item,Label,Icon ,Text,Input, Button  } from 'native-base';
-import Toast, {DURATION} from 'react-native-easy-toast';
-
-
-import BenLoader from '../components/BenLoader';
-
 /* MODEL */
-import { benAuth } from '../model/authen';
-
+import USER from '../config/user';
 
 /* hook */
 import {detectForm} from '../hook/before/';
-
 import { validateEmail, validatePassword, confirmPassword } from '../hook/ultil/validate';
+
+import React, { Component } from 'react';
+
+import { View, StyleSheet, ImageBackground, TouchableOpacity  } from 'react-native';
+import { Container,Content,Item,Icon ,Text,Input, Button  } from 'native-base';
+
+
+import Toast from 'react-native-easy-toast';
+import BenLoader from '../components/BenLoader';
 
 
 class Register extends Component {
 
 
   constructor(props){
-
+  
     super(props);
 
     this.state = {
@@ -64,17 +60,9 @@ class Register extends Component {
   _onFree(){
     this._whereStateChange({typeAction:''})
   }
-  _onSuccess(){
 
-    this.refs.toast.show('Register successful !', 500, () => {
-       <Redirect to={{
-         pathname:"/",
-         state:this.data
-       }} />
-    });
 
-  }
-  _onSubmit(){
+  async _onSubmit(){
 
 
     this._onProsess();
@@ -89,15 +77,24 @@ class Register extends Component {
           }else if(!confirmPassword(this.data.password,this.data.repassword)){
             msg = 'Your password  unmatch';
           }else{
-            benAuth.register(this.data,(data)=>{
-                //this._onSuccess();
 
-            },(err)=>{
+            msg = await USER.register(this.data) ;
 
-              this.refs.toast.show(err.message,3000);
+            if(msg==='ok'){
+
+              //USER.checkLoginStatus();
+
+              const res = await USER.authenticate(this.data.email,this.data.password);
+              if(res.userInfo !== undefined){
+                USER.checkLoginStatus();
+              }
+
+
+            }else{
+              this.refs.toast.show(msg,3000);
               this._onFree();
+            }
 
-            });
           }
 
           if(msg!==''){
@@ -122,11 +119,20 @@ class Register extends Component {
 
   _whereStateChange(newState){
     if(newState.typeAction==='post'){
-        this.setState({loader:true})
+        this.setState({loader:true});
+        //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT);
+
     }else{
       this.setState({loader:false})
     }
+  }
 
+  componentWillReceiveProps(newProps){
+    const userInfo = newProps.user;
+      
+    if(userInfo.isLoggedIn !==false){
+      this.props.navigation.navigate('Home') ; 
+    }
   }
 
   render() {
@@ -267,5 +273,6 @@ const s = StyleSheet.create({
     },
 
 });
+
 
 export default Register;

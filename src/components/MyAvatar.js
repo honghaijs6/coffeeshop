@@ -28,7 +28,7 @@ export default class MyComponent extends Component {
               marginLeft:5
             }}>
                 <Text style={{ fontFamily:'Roboto' }}> { name } </Text>
-                <Text style={{ color:COFFEE_COLOR, fontSize:12 }}> { info }  </Text>
+                <Text style={{ fontFamily:'Roboto', color:COFFEE_COLOR, fontSize:12 }}> { info }  </Text>
             </View>
 
 

@@ -1,4 +1,6 @@
 /* @flow */
+import moFire from '../../model/moFirebase';
+const MODE = 'company';
 
 import React, { Component } from 'react';
 import {
@@ -8,19 +10,65 @@ import {
   WebView
 } from 'react-native';
 
-import { Container, Content } from 'native-base';
+import { Container } from 'native-base';
 
-import { GREY_COLOR, COFFEE_COLOR } from '../../config/const';
 
 import BenStatusBar from '../../components/BenStatusBar';
 import BenHeader from '../../components/BenHeader';
 import BackButton from '../../components/BackButton';
-import BenBody from '../../components/BenBody' ;
-import NoData from '../../components/NoData';
+
+
 
 
 export default class HelpPage extends Component {
+
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+      content:''
+    }
+
+    this._setup();
+
+  }
+
+  _setup(){
+
+    this.model = new moFire(MODE);
+
+  }
+
+  componentDidMount(){
+    this.model.fetch("code","termofuse",(res)=>{
+      const content = res[0]['content'];
+      this.setState({content:content});
+
+
+
+    })
+  }
+
   render() {
+
+
+    const htmlContent = `
+    <style>
+
+      body {
+        padding:30px;
+        font-size: 40px;
+        font-family:'Arial';
+        color:'#666'
+      }
+
+    </style>
+      <body>
+        ${ this.state.content || '' }
+      </body>
+    ` ;
+
     return (
       <Container>
         <BenStatusBar/>
@@ -31,36 +79,13 @@ export default class HelpPage extends Component {
           </View>
           <View></View>
         </BenHeader>
-        <Content style={{
-          backgroundColor:GREY_COLOR
-          }}>
-            <BenBody>
-                <View style={{
-                  padding: 30
-                }}>
 
-                  <View style={{
-                    alignItems: 'center'
-                  }}>
-                      <Text style={s.h3}> TERMS OF USE  </Text>
-                      <Text style={s.h1}> KING KONG MILK TEA DELIVERY </Text>
+        <WebView
+          originWhitelist={['*']}
+          source={{html: htmlContent }}
 
-                  </View>
+        />
 
-                  <WebView
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      flex: 1
-                    }}
-                    source={{uri: 'https://github.com/facebook/react-native'}}
-                    style={{marginTop: 20}}
-                  />
-
-                </View>
-            </BenBody>
-
-        </Content>
       </Container>
     );
   }

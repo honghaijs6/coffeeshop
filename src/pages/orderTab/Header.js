@@ -1,14 +1,11 @@
-
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-
-import {  Icon,  Content,  } from 'native-base';
-
 import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const' ;
 
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity,TextInput } from 'react-native';
+import {  Icon } from 'native-base';
+
+
 import BenHeader from '../../components/BenHeader';
-
-
 
 export default class OrderHeader extends Component{
 
@@ -24,21 +21,31 @@ export default class OrderHeader extends Component{
   }
   render(){
 
-    let address = this.props.userInfo.recent_address ;
-    address = this.truncate(address);
+    let address = this.props.userInfo.recent_address || 'Enter your delivery address' ;
+    
 
     return(
       <View>
-          <BenHeader>
-              <TouchableOpacity onPress={ this.props.onPress }  style={{ flexDirection: 'row', paddingLeft: 10}}>
+          <BenHeader >
+              <TouchableOpacity onPress={ ()=>{ this.props.onPressNavigate('DeliveryPage') } }  style={{ flexDirection: 'row', paddingLeft: 10}}>
+
                   <Icon style={{ fontSize: 32, color: COFFEE_COLOR}} name="bicycle"></Icon>
                   <View style={{ paddingHorizontal: 10, width: '90%'}}>
+
                       <Text style={{ fontSize: 10, color: BLACK_COLOR}}><Icon style={{fontSize: 12, color: BLACK_COLOR}} name="pin" /> Delivery to </Text>
 
+                      <View style={{
+                        flexDirection:'row'
+                      }}>
+                        <TextInput editable={false} selectTextOnFocus={false} style={{
+                          width:'105%',
+                          fontFamily:'Roboto',
+                          fontSize:16,
+                          color:BLACK_COLOR
+                        }} defaultValue={ address } />
 
-                      <Text style={{ fontSize: 18, color:BLACK_COLOR}}>
-                           { address }
-                      </Text>
+                      </View>
+
                   </View>
               </TouchableOpacity>
           </BenHeader>
@@ -51,6 +58,7 @@ export default class OrderHeader extends Component{
             borderBottomColor: 'rgba(0,0,0,0.2)'
           }}>
               <TouchableOpacity
+                onPress={ ()=>{ this.props.onPressNavigate('CouponPage') } }
                 style={ s.btn }
               >
                 <Icon style={{ fontSize: 20, color: COFFEE_COLOR}} name="pizza"></Icon>
@@ -60,11 +68,12 @@ export default class OrderHeader extends Component{
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={ [ s.btn,{ borderRightWidth: 0} ] } >
-                <Icon style={{ fontSize: 20, color: COFFEE_COLOR}} name="time"></Icon>
+              <TouchableOpacity onPress={()=>{ this.props.onPressNavigate('DeliveryPage') }} style={ [ s.btn,{ borderRightWidth: 0} ] } >
+
+                <Icon style={{ fontSize: 20, color: COFFEE_COLOR}} name="pin"></Icon>
                 <View style={{ paddingHorizontal: 10}}>
-                    <Text style={{ fontSize: 10, color: BLACK_COLOR}}> Set time </Text>
-                    <Text style={{ fontSize: 15, color:BLACK_COLOR}}> Deliver </Text>
+                    <Text style={{ fontSize: 10, color: BLACK_COLOR}}> Set address </Text>
+                    <Text style={{ fontSize: 15, color:BLACK_COLOR}}> Delivery </Text>
                 </View>
               </TouchableOpacity>
 

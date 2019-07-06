@@ -1,27 +1,23 @@
 /* @flow */
+import { COFFEE_COLOR } from '../../config/const' ;
+import moFire from '../../model/moFirebase';
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  Image
+  TouchableOpacity
 } from 'react-native';
+import { Container } from 'native-base';
 
-
-import moFire from '../../model/moFirebase';
-
-import { Container,  Content } from 'native-base';
-import { GREY_COLOR, COFFEE_COLOR } from '../../config/const' ;
-
-import products from '../../data/products.json';
 
 
 import MenuHeader from './header';
 import BenStatusBar  from "../../components/BenStatusBar";
 import BenLoader  from "../../components/BenLoader";
-
 
 import MenuBody from './body'
 
@@ -80,12 +76,12 @@ function ButtonOrder (props){
   )
 }
 
-export default class Menu extends Component {
+class Menu extends Component {
 
+  _tempData = [];
   constructor(props){
     super(props)
 
-    this.store = props.screenProps ;
 
     this.state = {
       loader:false,
@@ -96,7 +92,8 @@ export default class Menu extends Component {
       category:'milktea',
       data:[], // all list products from server
       cateInfo : props.navigation.getParam('cateInfo', null),
-      shoppingcart:  props.screenProps.getState().shoppingcart.list
+      shoppingcart:  props.shoppingcart.list,
+      keyText:''
 
     }
 
@@ -107,28 +104,24 @@ export default class Menu extends Component {
 
     this.model = new moFire('products');
 
-    this._listenStore();
+
   }
 
-  _listenStore(){
-    this.unsubscribe = this.store.subscribe(()=>{
-        let cart = this.store.getState().shoppingcart.list;
+  componentWillReceiveProps(newProps){
 
-        this.setState({
-          shoppingcart:cart
-        });
-
+    this.setState({
+      shoppingcart:newProps.shoppingcart.list
     })
-  }
-
-  componentWillUnmount(){
-    this.unsubscribe();
   }
 
   componentDidMount(){
 
-    this.setState({loader:true})
+    this.setState({loader:true});
+    //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+
     this.model.fetch("categories",this.state.cateInfo.uid,(data)=>{
+
+      this._tempData = data; 
 
       this.setState({
           loader:false,
@@ -165,21 +158,41 @@ export default class Menu extends Component {
 
 
   }
+
+  _findProduct = (text)=>{
+    
+    
+      const rows = [] ;
+      this._tempData.map((item)=>{
+        if(item.name.indexOf(text)>-1){
+          rows.push(item);
+        }
+      });
+      
+      this.setState({
+        keyText:text,
+        data:rows
+      });
+      
+  }
+  _close = ()=>{
+    
+    this._findProduct('');
+
+  }
   render() {
 
 
     const { navigation } = this.props;
-
-    const data = this.state.data ;
-
+    
     return(
       <Container>
         <BenLoader visible={this.state.loader} />
         <BenStatusBar/>
 
-        <MenuHeader onBackBtnPress={()=>{ this._onBackBtnPress() }} />
-
-        <MenuBody onPressItem={(item)=>{ this._onPressItem(item) }} loader={this.state.loader}  data={ data } />
+        <MenuHeader keyText={this.state.keyText} onPress={ this._close } onChangeText={ this._findProduct } onBackBtnPress={()=>{ this._onBackBtnPress() }} />
+      
+        <MenuBody onPressItem={(item)=>{ this._onPressItem(item) }} loader={this.state.loader} cateInfo={this.state.cateInfo} data={ this.state.data } />
 
         { this.state.shoppingcart.length > 0 ? <ButtonOrder data={this.state.shoppingcart} onPress={()=>{  this._onPressOrder() }} /> : null }
 
@@ -193,6 +206,14 @@ export default class Menu extends Component {
 
   }
 }
+
+function mapStateToProps(state){
+  return {
+    shoppingcart:state.shoppingcart
+  }
+}
+
+export default connect(mapStateToProps)(Menu);
 
 const s = StyleSheet.create({
 

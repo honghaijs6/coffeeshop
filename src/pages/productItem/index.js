@@ -1,19 +1,21 @@
 /* @flow */
+import Model from '../../model/model';
+import { GREY_COLOR, COFFEE_COLOR, RED_COLOR } from '../../config/const' ;
+
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert,
+  AsyncStorage
 } from 'react-native';
 
 import { Container,  Content, Icon } from 'native-base';
-import { GREY_COLOR, COFFEE_COLOR, RED_COLOR } from '../../config/const' ;
-
-
-/* OBJECT */
-import Model from '../../model/model';
 
 
 import BenHeader from '../../components/BenHeader';
@@ -23,12 +25,13 @@ import LikeButton from '../../components/LikeButton';
 import BodyItem from './body';
 
 
-export default class ProductItem extends Component {
+
+class ProductItem extends Component {
 
   constructor(props){
     super(props)
 
-    this.store = props.screenProps ;
+
     this.state = {
 
       typeAction:'',
@@ -36,7 +39,8 @@ export default class ProductItem extends Component {
       tab:'productitem',
       amount:1, // cureent amount
       info:{}, // current product info
-      shoppingcart:  props.screenProps.getState().shoppingcart.list
+      shoppingcart:  props.shoppingcart,
+      favoryList:[]
 
     }
 
@@ -106,7 +110,7 @@ export default class ProductItem extends Component {
       const cart = this.state.info;
       cart.amount = this.state.amount;
 
-      this.moOrder.addDataStore(cart);
+      this.moOrder.addDataStore(cart);  
       this.goBack();
 
     }else{
@@ -120,21 +124,27 @@ export default class ProductItem extends Component {
 
   }
 
+  _loadFavoryList(){
+    
+    AsyncStorage.getItem('favoryList').then((data)=>{
+      this.setState({
+        favoryList:data || []
+      });
+      
+    })
+  }
   componentDidMount(){
 
     let info =  this.props.navigation.getParam('proInfo',{});
-    info['price'] = info['price'] || info['price_s'];
-
+    info['price'] = info['price'] || info['price_m'];
     const cartInfo = this._getInfoOnShoppingCart(info.uid);
-
+    
 
     this.setState({
       amount:info.amount || this.state.amount ,
       info:Object.assign(info,cartInfo)
-    })
-
-
-
+    });
+    
   }
 
   goBack(){
@@ -152,6 +162,10 @@ export default class ProductItem extends Component {
     return json;
   }
 
+  _toggleLike = ()=>{
+    
+
+  }
   render() {
 
 
@@ -165,7 +179,7 @@ export default class ProductItem extends Component {
           <BenHeader>
             <BackButton onPress={ this._onBackBtnPress } />
 
-            <LikeButton />
+            <LikeButton onPress={ this._toggleLike } />
 
           </BenHeader>
 
@@ -253,6 +267,16 @@ export default class ProductItem extends Component {
 
   }
 }
+
+function mapStateToProps(state){
+  return {
+    shoppingcart:state.shoppingcart.list
+  }
+}
+
+export default connect(mapStateToProps)(ProductItem);
+
+
 
 const s = StyleSheet.create({
   footerBar:{

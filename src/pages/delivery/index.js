@@ -1,27 +1,26 @@
 /* @flow */
-
+import {  COFFEE_COLOR, BLACK_COLOR, GOOGLE_MAP_KEY, TIMEOUT } from '../../config/const' ;
+import USER  from '../../config/user';
 
 import React, { Component } from 'react';
+
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image
+  Keyboard
 } from 'react-native';
+import { connect } from 'react-redux';
 
-
-import store from '../../redux/store';
 
 import { Container,  Content, Icon } from 'native-base';
-import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR, GOOGLE_MAP_KEY } from '../../config/const' ;
 
-
-import { truncate2 } from '../../hook/ultil/ultil' ;
 import MyHeader from './header';
-
 import BenStatusBar from '../../components/BenStatusBar';
-import {benAuth} from '../../model/authen';
+import BenLoader from '../../components/BenLoader';
+
+
 
 
 
@@ -46,34 +45,40 @@ function Item(props){
   )
 }
 
-export default class DeliveryPage extends Component {
+class DeliveryPage extends Component {
 
   constructor(props){
     super(props)
 
+    
+    const userInfo = JSON.stringify(props.user.userInfo) === '{}' ? props.user.tempInfo : props.user.userInfo
+    
     this.state = {
 
+      loader:false,
       typeAction:'',
       onAction:'',
       tab:'delivery',
 
       mode:'none',
-      userInfo: store.getState().user.userInfo ,
+      userInfo: userInfo || {} ,
+
+      
 
       personalItems:[
         {
           code:'home',
           icon:'home',
           label:'Home',
-          name: store.getState().user.userInfo['home_address'] || 'Chose your home location for delivery',
-          isEmpty: store.getState().user.userInfo['home_address'] || ''
+          name:  userInfo['home_address'],
+          isEmpty: userInfo['home_address']  
         },
         {
           code:'office',
           icon:'briefcase',
           label:'Work place',
-          name:store.getState().user.userInfo['work_address'] || 'Chose your work place for delivery',
-          isEmpty:store.getState().user.userInfo['work_address'] || ''
+          name:  userInfo['work_address'] ,
+          isEmpty: userInfo['work_address'] 
         },
         /*{
           code:'current',
@@ -85,7 +90,7 @@ export default class DeliveryPage extends Component {
           code:'recent',
           icon:'time',
           label:'Recent search',
-          name:store.getState().user.userInfo.recent_address || '...'
+          name:  userInfo.recent_address || '...'
         },
 
       ]
@@ -99,16 +104,17 @@ export default class DeliveryPage extends Component {
 
   componentWillReceiveProps(newProps){
 
-    this.state.personalItems[3]['name'] = newProps.userInfo.recent_address;
+    const userInfo = JSON.stringify(newProps.user.userInfo) !=='{}' ? newProps.user.userInfo : newProps.user.tempInfo;
+
+    this.state.personalItems[2]['name'] = userInfo.recent_address ||  '...' ;
     this.setState({
-      userInfo:newProps.userInfo
+      userInfo: userInfo 
     });
 
   }
 
   addressAutoComplete(key){
-
-
+    
 
     let uri = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input='+key+'&key='+GOOGLE_MAP_KEY;
     fetch(uri)
@@ -132,9 +138,7 @@ export default class DeliveryPage extends Component {
         typeAction:'get',
         onAction:'search',
       })
-      //console.log(responseJson.predictions);
-
-
+      
 
     })
     .catch((error) => {
@@ -151,16 +155,38 @@ export default class DeliveryPage extends Component {
     })
   }
 
-  //
-  _onItemPress(data){
+  // 
+  async _onItemPress(data){
 
-    if(data.isEmpty!=='' || data.name !=='...'){
-      this.state.userInfo.recent_address = data.name;
-      benAuth.updateInfo(this.state.userInfo,(data)=>{
-        this._whereStateChange({
-          onAction:'goBack',
-        });
-      })
+    
+    if(data.name !=='...'){
+      
+
+      const userInfo = this.state.userInfo;
+
+      if(JSON.stringify(userInfo)!=='{}'){
+        
+        if(data.name.length > 10){
+          
+          this.setState({loader:true});
+          const msg = await USER.update(userInfo.id,{
+              name:userInfo.name,
+              recent_address:data.name
+          });
+          this.setState({loader:false})
+          Keyboard.dismiss();
+
+          // go back
+          this._whereStateChange({ 
+            onAction:'goBack'
+          })
+
+        }
+
+      }else{  alert(JSON.stringify(data)) }
+      
+      
+
     }
 
 
@@ -191,7 +217,13 @@ export default class DeliveryPage extends Component {
 
         <BenStatusBar/>
 
-        <MyHeader onBackBtnPress={()=>{  this.props.navigation.goBack()  }}  onAction={ this.state.onAction } onCloseSearch={ ()=>{  this._onCloseSearch() } } onChangeText={(text)=>{ this._onTextChange(text)  }} />
+        <MyHeader 
+          onBackBtnPress={()=>{  this.props.navigation.goBack()  }}  
+          onAction={ this.state.onAction } onCloseSearch={ ()=>{  this._onCloseSearch() } } 
+          onChangeText={(text)=>{ this._onTextChange(text)  }} 
+        />
+
+        <BenLoader visible={ this.state.loader } />
 
         <Content>
 
@@ -201,7 +233,7 @@ export default class DeliveryPage extends Component {
               {
                 this.data.map((item,index)=>{
                   return(
-                    <Item onPress={ (data)=>{ this  ._onItemPress(data) } } key={index}  data={item} />
+                    <Item onPress={ (data)=>{ this._onItemPress(data) } } key={index}  data={item} />
                   )
                 })
               }
@@ -209,33 +241,16 @@ export default class DeliveryPage extends Component {
           <View style={[s.block]}>
             {
               this.state.personalItems.map((item,index)=>{
-                return(
-                  <Item onPress={ (data)=>{ this  ._onItemPress(data) } } key={index}  data={item} />
-                )
+                if(item.name!==''){
+                  return(
+                    <Item onPress={ (data)=>{ this._onItemPress(data) } } key={index}  data={item} />
+                  )
+                }
+
               })
             }
 
           </View>
-
-
-
-          {/* chon vi tri trên ban do
-          <View style={s.block}>
-              <TouchableOpacity style={s.items}>
-                  <View style={{
-                    flexDirection: 'row'
-                  }}>
-                    <View style={{ justifyContent: 'center'}}>
-                      <Icon style={s.icon} name="pin" />
-                    </View>
-                    <View style={{marginLeft: 10}}>
-                        <Text style={s.title}>  { truncate2('Select the location on the map',41) }   </Text>
-
-                    </View>
-                  </View>
-              </TouchableOpacity>
-          </View>
-          */}
 
         </Content>
 
@@ -243,6 +258,15 @@ export default class DeliveryPage extends Component {
     );
   }
 }
+
+function mapStateToProps(state){
+  return {
+    user:state.user   
+  }
+}
+
+export default connect(mapStateToProps)(DeliveryPage);
+
 
 const s = StyleSheet.create({
 
@@ -273,4 +297,4 @@ const s = StyleSheet.create({
     width: '100%',
     marginTop: 10
   }
-})
+});

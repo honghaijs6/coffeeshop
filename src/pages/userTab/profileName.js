@@ -1,4 +1,5 @@
 /* @flow weak */
+import {COFFEE_COLOR, USERS_LEVEL} from '../../config/const';
 
 import React from 'react';
 import {
@@ -9,8 +10,6 @@ import {
 } from 'react-native';
 
 import { Icon } from 'native-base';
-
-import {COFFEE_COLOR, USERS_LEVEL} from '../../config/const';
 
 
 const ProfileName = (props)=>{

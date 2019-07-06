@@ -7,11 +7,13 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  TextInput
+  Alert
 } from 'react-native';
+import { connect } from 'react-redux';
 
-import { Container,  Content, Icon,  } from 'native-base';
-import { GREY_COLOR, COFFEE_COLOR, RED_COLOR, BLACK_COLOR } from '../../config/const' ;
+
+import { Container,  Content  } from 'native-base';
+import {  COFFEE_COLOR,  } from '../../config/const' ;
 
 import BenStatusBar  from "../../components/BenStatusBar";
 import BenHeader from '../../components/BenHeader';
@@ -20,75 +22,55 @@ import BackButton from '../../components/BackButton';
 import CartBody from './CartBody';
 
 
-
-
-export default class Cart extends Component {
+class Cart extends Component {
 
   constructor(props){
     super(props)
 
-    this.store = props.screenProps ;
 
     this.state = {
-
+      
       typeAction:'',
       onAction:'',
       tab:'cart',
-      data: this.store.getState().shoppingcart.list,
-      userInfo: this.store.getState().user.userInfo
+      data: props.shoppingcart.list || [],
+      userInfo: props.user.userInfo || {}
     }
 
 
     this._onOrderNow = this._onOrderNow.bind(this);
     this._onItemSelect = this._onItemSelect.bind(this);
 
-    this._listenStore();
+
   }
-
-  componentWillUnmount(){
-    this.unsubscribe();
-  }
-
-  _listenStore(){
-    this.unsubscribe = this.store.subscribe(()=>{
-
-        let cart = this.store.getState().shoppingcart.list;
-
-        if(cart.length>0){
-          this.setState({
-            data:cart
-          });
-        }else{
-          this.props.navigation.goBack()
-        }
-
-
-
-
-    })
-  }
-
 
   _onChangeText(json){
-
     this.setState(Object.assign(this.state.userInfo,json));
-
-
   }
   _onOrderNow(){
 
     let msg = '';
-    if(this.state.userInfo.phone.length < 6 ){
-      msg = 'Please enter your phone number ';
-    }else if(this.state.userInfo.recent_address.length < 20){
-      msg = 'Please enter your delivery address '
+    if(JSON.stringify(this.state.userInfo)!=='{}'){
+
+      if(this.state.userInfo.phone.length < 6 ){
+        msg = 'Please enter your phone number ';
+      }else if(this.state.userInfo.recent_address === null  ){
+        msg = 'Please add your delivery address '
+      }else{
+  
+        this.props.navigation.navigate('CheckOutPage');
+  
+      }
+  
+      msg !== '' ? Alert.alert('Message',msg) : null
     }else{
-
-      this.props.navigation.navigate('CheckOutPage');
-
+      this.props.navigation.navigate('DealPage',{
+        title:'Member',
+        message:'Login or Sign up an account to continue your orders'
+      })
     }
 
-    msg !== '' ? alert(msg) : null
+    
 
   }
   _onBackBtnPress(){
@@ -100,12 +82,24 @@ export default class Cart extends Component {
   // Go back to product Item page
   _onItemSelect(data){
 
-
     this.props.navigation.navigate('ProItem',{
       proInfo:data
     });
 
   }
+
+  componentWillReceiveProps(newProps){
+
+
+    if(newProps.shoppingcart.list.length>0){
+      this.setState({
+        userInfo:newProps.user.userInfo,
+        data:newProps.shoppingcart.list
+      });
+    }else{ this.props.navigation.goBack(); }
+
+  }
+
   render() {
 
 
@@ -130,7 +124,8 @@ export default class Cart extends Component {
         }}>
 
             <Content>
-              <CartBody onItemSelect={ this._onItemSelect } onChangeText={ (data)=>{ this._onChangeText(data) } } data={this.state.data} userInfo={ this.state.userInfo } />
+              <CartBody onPressGotoSettingAdd={()=>{ this.props.navigation.navigate('DeliveryPage') }} onItemSelect={ this._onItemSelect } onChangeText={ (data)=>{ this._onChangeText(data) } } data={this.state.data} userInfo={ this.state.userInfo } />
+
             </Content>
 
             {/* FOOTER BUTTON */}
@@ -152,6 +147,15 @@ export default class Cart extends Component {
 
   }
 }
+
+function mapStateToProps(state){
+  return {
+    shoppingcart:state.shoppingcart,
+    user:state.user
+  }
+}
+
+export default connect(mapStateToProps)(Cart);
 
 const s = StyleSheet.create({
 

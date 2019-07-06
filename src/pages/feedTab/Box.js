@@ -1,4 +1,6 @@
 /* @flow */
+import {  COFFEE_COLOR } from '../../config/const'
+
 
 import React, { Component } from 'react';
 import {
@@ -9,14 +11,14 @@ import {
 } from 'react-native';
 
 import { Icon } from 'native-base';
-import {  COFFEE_COLOR } from '../../config/const'
+
 
 export default class Box extends Component {
   render() {
 
     const { code, name} = this.props.data;
     return (
-      <TouchableOpacity style={{
+      <TouchableOpacity onPress={ this.props.onPress } style={{
         height:90,
         width:'32%',
         backgroundColor:'#fff',
@@ -30,7 +32,7 @@ export default class Box extends Component {
         <Icon style={{
           color:COFFEE_COLOR
         }} name={ code } />
-        <Text> { name } </Text>
+        <Text style={{fontFamily:'Roboto'}}> { name } </Text>
       </TouchableOpacity>
     );
   }

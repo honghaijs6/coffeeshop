@@ -1,38 +1,78 @@
 /* @flow */
-
 import React, { Component } from 'react';
-
-import { GREY_COLOR } from '../config/const';
 
 import {
   View,
-  Text,
   StyleSheet,
+  NetInfo,
+  Text
 } from 'react-native';
 
 export default class BenHeader extends Component {
+
+
+  state = {
+    internet:true
+  }
+
+  componentWillUnmount(){
+    NetInfo.isConnected.addEventListener('connectionChange', (isConnected)=>{
+        this.setState({internet:isConnected})
+    });
+  }
+  componentDidMount(){
+    NetInfo.isConnected.addEventListener('connectionChange', (isConnected)=>{
+        this.setState({internet:isConnected})
+    });
+  }
+
+
   render() {
 
     // multi - single
     let type = this.props.type || 'multi' ;
-    type = type === 'multi' ? 'space-between' : 'center';
+
+    const arr = {
+      'multi':'space-between',
+      'single':'center',
+      'flex-start':'flex-start'
+    };
 
 
+    const display = this.state.internet ? 'none':'block';
 
     return (
-      <View style={[
-          styles.container,
-          { justifyContent:type },
-        ]}>
+      <View>
 
-        { this.props.children }
+        <View style={[styles.netInfo,{display:display}]}>
+           <Text style={styles.txt}> Check your internet connection </Text>
+        </View>
 
+        <View style={[
+            styles.container,
+            { justifyContent:arr[type] },
+          ]}>
+
+          { this.props.children }
+
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  netInfo:{
+    height: 30,
+    alignItems: 'center',
+    justifyContent:'center',
+    backgroundColor: 'red',
+    display:'none'
+  },
+  txt:{
+    color:'#fff',
+    fontFamily:'Roboto'
+  },
   container: {
     flexDirection:'row',
     height:55,borderBottomWidth:0.5,

@@ -1,34 +1,37 @@
+import USER from '../../config/user';
+
+import {  COFFEE_COLOR, GOOGLE_MAP_KEY, TIMEOUT } from '../../config/const';
+import RetroMapStyle from '../../data/retroStyle.json';
+
+import STORE_LOCATIONS from '../../data/stores.json';
+
+
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, Keyboard  } from 'react-native';
+import {connect} from 'react-redux';
 
-import MapView, { Marker, PROVIDER_GOOGLE, AnimatedRegion, Animated, Callout } from 'react-native-maps';
-
-import { Constants, Location, Permissions } from 'expo';
-
-import store from '../../redux/store';
-import {benAuth} from '../../model/authen';
+import { View, Text,  SafeAreaView,  TouchableOpacity, Keyboard  } from 'react-native';
 
 
+import MapView, { Marker, PROVIDER_GOOGLE,  } from 'react-native-maps';
 
-import { Container, Icon, Content, Button } from 'native-base';
+import {  Location, Permissions } from 'expo';
 
+import Toast from 'react-native-easy-toast';
+
+
+
+import { Container,  } from 'native-base';
+
+import BenLoader from '../../components/BenLoader';
 import BenStatusBar from '../../components/BenStatusBar';
 import BenHeader from '../../components/BenHeader' ;
 import BackButton from '../../components/BackButton';
 import BenBody from '../../components/BenBody';
 
-import { GREY_COLOR, COFFEE_COLOR, GOOGLE_MAP_KEY } from '../../config/const';
-
-import RetroMapStyle from '../../data/retroStyle.json';
-import NightMapStyle from '../../data/nightStyle.json';
-import STORE_LOCATIONS from '../../data/stores.json';
-
-
 
 import BoxSearch from './boxSearch';
 
-
-export default class MapPage extends Component{
+class MapPage extends Component{
 
 
   constructor(props){
@@ -37,8 +40,9 @@ export default class MapPage extends Component{
 
     this.state = {
 
+        loader:false,
         settingFor:'',
-        userInfo:store.getState().user.userInfo,
+        userInfo:props.userInfo,
         countMapChange:0,
         data:[],
         keyFind:'',
@@ -118,15 +122,21 @@ export default class MapPage extends Component{
     this._geoCodeAddress(address);
   }
 
-  _onSelectCurrentAddress(){
+  async _onSelectCurrentAddress(){
     /* UPDATE DATA USER INFO */
     this.state.userInfo[this.state.settingFor] = this.state.currentAdress;
-    benAuth.updateInfo(this.state.userInfo,(data)=>{
 
-       this.props.navigation.goBack();
+    this.setState({loader:true});
+    
+    const resMsg = await USER.update(this.state.userInfo.id,{
+      name:this.state.userInfo.name,
+      [this.state.settingFor]:this.state.currentAdress
+    });
+    this.setState({loader:false})
+
+    this.refs.toast.show(resMsg,3000);
 
 
-    })
   }
 
   _addressToLatLng(address,onSuccess){
@@ -270,6 +280,10 @@ export default class MapPage extends Component{
     const { mapRegion } = this.state
     this.state.settingFor = this.props.navigation.getParam('for');
 
+    const arr = {
+      home_address:"Add your home address",
+      work_address:"Add your work place address"
+    }
 
 
     return(
@@ -282,18 +296,18 @@ export default class MapPage extends Component{
               <Text style={{
                 fontSize:18,
                 fontFamily:'Roboto'
-              }}>  Add Delivery Locations  </Text>
+              }}>  { arr[this.state.settingFor] }  </Text>
             </View>
             <View></View>
         </BenHeader>
 
+        <BenLoader visible={this.state.loader} />
+
         <MapView
           style={{ flex: 1 }}
-          provider={PROVIDER_GOOGLE}
+          
           showsUserLocation={ true }
-          customMapStyle={
-            RetroMapStyle
-          }
+              
           region={mapRegion}
 
           onRegionChangeComplete={this._handleMapRegionChange}
@@ -341,8 +355,26 @@ export default class MapPage extends Component{
 
           </SafeAreaView>
 
+          <Toast position='top'
+          positionValue={200}
+            fadeInDuration={750}
+            fadeOutDuration={1000}
+            opacity={0.8}
+
+           ref="toast"/>
+
+
       </Container>
 
     )
   }
 }
+
+function mapStateToProps(state){
+  return {
+    userInfo:state.user.userInfo
+  }
+}
+
+
+export default connect(mapStateToProps)(MapPage);

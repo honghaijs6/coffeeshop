@@ -4,6 +4,7 @@ import reducerShoppingCart from './reducer-shoppingcart';
 import reducerCate from './reducer-category';
 import reducerProduct from './reducer-product';
 import reducerOrder from './reducer-order';
+import reducerSocket from './reducer-socket';
 
 
 
@@ -14,7 +15,8 @@ const allReducers = combineReducers({
   shoppingcart:reducerShoppingCart,
   category:reducerCate,
   product:reducerProduct,
-  order:reducerOrder
+  order:reducerOrder,
+  socketData:reducerSocket
 
 });
 

@@ -1,23 +1,23 @@
+import USER from '../config/user';
+/* hook */
+import {detectForm} from '../hook/before/';
+
+
 import React, { Component } from 'react';
+import { connect } from 'react-redux' ; 
+
 import {
-  View, StyleSheet, ImageBackground, ScrollView,Text,InputText,KeyboardAvoidingView,TouchableOpacity,
-  ActivityIndicator
-  } from 'react-native';
+  View, StyleSheet, ImageBackground, Text,TouchableOpacity
 
-import {  Link } from "react-router-native";
+} from 'react-native';
 
-import { Container, Content,Item,Icon , Input,  Button } from 'native-base';
-import Toast, {DURATION} from 'react-native-easy-toast';
-
+import { Content,Item,Icon , Input,  Button } from 'native-base';
+import Toast from 'react-native-easy-toast';
 import { Ionicons } from '@expo/vector-icons';
 
 
-import { benAuth } from '../model/authen';
 import BenLoader from '../components/BenLoader';
 
-
-/* hook */
-import {detectForm} from '../hook/before/';
 
 class LoginPage extends Component {
 
@@ -40,28 +40,30 @@ class LoginPage extends Component {
 
 
 
-   _onSubmitLogin(){
+   async _onSubmitLogin(){
 
 
 
      if(detectForm(['email','password'],this.state)===''){
 
-       this.setState({
-         loader:true
-       });
-
-       benAuth.doLogin(this.state,(data)=>{
 
 
-       },(err)=>{
+       this.setState({loader:true});
+       const res = await USER.authenticate(this.state.email,this.state.password);
 
+       if(res.data===undefined){
+        this.refs.toast.show('There is no user record corresponding to this identifier',4000)
+       }else if(res.userInfo !== undefined){
+         const ret = await  USER.checkLoginStatus();
          this.setState({
-           loader:false
+           email:'',
+           password:''
          });
+       }
+       this.setState({loader:false});
 
-         this.refs.toast.show(err.message,3000)
 
-       })
+
 
      }else{
        this.setState({
@@ -86,8 +88,21 @@ class LoginPage extends Component {
   _whereStateChange(newState){
     this.setState(Object.assign(this.state,newState));
 
+  }
+
+  componentDidMount(){
+    USER.checkLoginStatus();  
+  }
+  componentWillReceiveProps(newProps){
+    const userInfo = newProps.user;
+    
+    if(userInfo.isLoggedIn !==false){
+      this.props.navigation.navigate('Home') ; 
+    }
 
   }
+  
+
   render() {
 
 
@@ -116,7 +131,10 @@ class LoginPage extends Component {
                         alignSelf:'center',
                         justifyContent:'space-between'
                     }}>
-                        <ImageBackground source={require('../../assets/images/mylogo.png')} style={{width: 80, height: 106, alignSelf: 'center', marginBottom: 20}} />
+                        <ImageBackground 
+                            source={require('../../assets/mylogo.png')} 
+                            style={{width: 106, height: 106, alignSelf: 'center', marginBottom: 20}} 
+                        />
 
 
                         <View style={{
@@ -125,12 +143,27 @@ class LoginPage extends Component {
                         }}>
                             <Item style={ s.item}>
                                 <Icon style={{ color:'#fff' }} name='mail' />
-                                <Input keyboardType="email-address"  placeholderTextColor="rgba(255,255,255,0.3)" autoCapitalize='none' onChangeText={(text)=>{ this._onChangeText({email:text}) }} style={{ color:'#ffffff'}} placeholder='E-mail'/>
+                                <Input keyboardType="email-address" 
+                                    defaultValue={this.state.email}  
+                                    placeholderTextColor="rgba(255,255,255,0.3)" 
+                                    autoCapitalize='none' 
+                                    onChangeText={(text)=>{ this._onChangeText({email:text}) }} 
+                                    style={{ color:'#ffffff'}} placeholder='E-mail'
+                                  />
                             </Item>
 
                             <Item style={ s.item}>
                                 <Icon style={{ color:'#fff' }} name='unlock' />
-                                <Input type="password"  onChangeText={(text)=>{ this._onChangeText({password:text}) }} autoCapitalize='none' placeholderTextColor="rgba(255,255,255,0.3)" style={{ color:'#ffffff'}}   placeholder='Password'/>
+                                <Input 
+                                    type="password" 
+                                    secureTextEntry={true} 
+                                    defaultValue={this.state.password} 
+                                    onChangeText={(text)=>{ this._onChangeText({password:text}) }} 
+                                    autoCapitalize='none' 
+                                    placeholderTextColor="rgba(255,255,255,0.3)" 
+                                    style={{ color:'#ffffff'}}   
+                                    placeholder='Password'
+                                  />
                             </Item>
                         </View>
 
@@ -143,10 +176,10 @@ class LoginPage extends Component {
                                 <Text style={[s.text, {color: 'rgba(87,60,35,0.8)'}]}> Login </Text>
                             </Button>
 
-                            <Button onPress={ this._onSubmitLoginWithFacebook } full style={[s.button,{backgroundColor:'rgba(68,103,176,0.6)'}]}>
+                            {/*<Button onPress={ this._onSubmitLoginWithFacebook } full style={[s.button,{backgroundColor:'rgba(68,103,176,0.6)'}]}>
                                 <Icon style={{ color:'#fff' }} name='logo-facebook' />
                                 <Text style={s.text}> Login with Facebook </Text>
-                            </Button>
+                            </Button>*/}
 
                         </View>
 
@@ -185,7 +218,14 @@ class LoginPage extends Component {
     }
 }
 
-export default LoginPage;
+const mapStateToProps = (state) => {
+  return {
+    user:state.user 
+  }
+}
+
+export default connect(mapStateToProps)(LoginPage) ; 
+
 
 const s = StyleSheet.create({
     text:{ fontFamily:'Roboto',color:'#fff'},

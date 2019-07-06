@@ -1,6 +1,13 @@
+import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const'
+import { AVATAR_URL } from '../../config/const';
+import Api from '../../model/api';
+
+
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Container, Icon,  Text, Content } from 'native-base';
+
+import moment from 'moment';
 
 // LIB Component
 import BenHeader from '../../components/BenHeader'
@@ -8,16 +15,15 @@ import BenAvatar from '../../components/BenAvatar';
 import MyAvatar from '../../components/MyAvatar';
 import BenNoti from '../../components/BenNoti';
 
-import { GREY_COLOR, COFFEE_COLOR } from '../../config/const'
+
+import BenLoader from '../../components/BenLoader';
 
 import MyCard from './MyCard';
 import CardHeader from './CardHeader';
-import CardContent from './CardContent';
 import CardFooter from './CardFooter';
 import CardImage from './CardImage';
 
 import Box from './Box';
-import { benAuth } from '../../model/authen';
 
 export default class FeedPage extends Component{
 
@@ -26,22 +32,41 @@ export default class FeedPage extends Component{
 
     this.state = {
 
+      loader:false,
       typeAction:'',
       onAction:'',
       tab:'feed',
 
-      userInfo: props.userInfo
+      userInfo: props.userInfo,
+
     }
 
+    this.box = [
+      { code:'star', name:'Collect Star' },
+      { code:'cafe', name:'Orders' },
+      { code:'pizza', name:'Coupon' },
 
+    ];
+
+    this.data = [];
+
+
+    this._setup();
 
     this._onPressAvarar  = this._onPressAvarar.bind(this);
     this._onPressNoti = this._onPressNoti.bind(this) ;
+
   }
 
 
   /* WHEN*/
-
+  _setup(){
+    this.Api = new Api('feeds');
+    this.Api.set('method',{
+      name:'listAll',
+      params:'all'
+    })
+  }
 
   _onPressAvarar(){
     alert('Click avatar ')
@@ -53,11 +78,67 @@ export default class FeedPage extends Component{
 
   _onCardPress(data){
 
-      this.props.navigation.navigate('FeedView');
+    this.Api.getInfo(data.id,(idata)=>{
+      this.props.navigation.navigate('FeedView',{
+        data:idata
+      });
+
+    })
+  }
+
+  _fetchData(){
+
+    this.setState({loader:true})
+    //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
+
+    this.Api.fetch((res)=>{
+      this.data = res.data.rows;
+
+      this.setState({
+        loader:false,
+        onAction:'_fetchData'
+      });
+
+    });
+
 
 
 
   }
+
+  componentWillReceiveProps(newProps){
+    if(this.state.tab===newProps.onTab){
+
+      this._fetchData() ;
+      this.setState({
+        userInfo:newProps.userInfo
+      });
+
+    }
+
+  }
+
+  _goto(code){
+    switch(code){
+
+      case 'star':
+        this.props.navigation.navigate('CollectStarPage')
+      break ;
+
+      case 'cafe':
+        this.props.onPressChangeTab({tab:'order'});
+      break;
+
+      case 'pizza':
+        this.props.navigation.navigate('CouponPage')
+      break ;
+      case 'login':
+        this.props.navigation.navigate('Login')
+      break;
+    }
+  }
+
+
   render(){
 
 
@@ -67,120 +148,117 @@ export default class FeedPage extends Component{
         display:  this.props.onTab === this.state.tab ? 'block':'none'
       }}>
         <BenHeader>
-           <BenAvatar
-
-              data={{
-               uri: this.state.userInfo.photoURL ,
-               name: this.state.userInfo.name ,
-               point:this.state.userInfo.point
-             }}
-           />
+           {
+             this.state.userInfo.id !== 0 ? 
+                <BenAvatar
+                  onPress={()=>{ this.props.navigation.navigate('EditProfilePage',{
+                        userInfo:this.state.userInfo
+                      })
+                  }}
+                  data={{
+                    uri: this.state.userInfo.photoURL ,
+                    name: this.state.userInfo.name ,
+                    point:this.state.userInfo.point
+                  }}
+                />:  
+             <View style={{
+               marginLeft:10,
+               flexDirection:'row',
+               justifyContent:'center',
+               alignItems:'center'
+             }}>  
+                 <Icon style={{fontSize:22, marginRight: 10,}} name="person" /> 
+                 <TouchableOpacity onPress={ ()=>{ this._goto('login') } } style={{
+                   borderWidth:1,
+                   borderRadius:22,
+                   width:100,
+                   borderColor:COFFEE_COLOR,
+                   alignItems:"center",
+                   justifyContent:'center',
+                   height:30
+                 }}>
+                    <Text style={{ color:COFFEE_COLOR, fontFamily:'Roboto' }}> Login </Text>
+                 </TouchableOpacity>
+             </View>
+              
+           }
+           
            <BenNoti onPress={ this._onPressNoti }  />
 
         </BenHeader>
 
+        <BenLoader visible={this.state.loader} />
 
         <Content>
-          <View style={{
-            alignItems:'center',
-            paddingTop:10,
-            paddingBottom:20
-          }}>
 
-            <View style={{
-              width:'95%',
-              flexDirection:'row',
-              justifyContent:'space-between'
-            }}>
-                <Box data={{
-                  code:'star',
-                  name:'Collect Start'
-                }} />
+          <View style={ s.wraper }>
 
-                <Box data={{
-                  code:'cafe',
-                  name:'Orders'
-                }} />
+              <View style={ s.boxs}>
 
-                <Box data={{
-                  code:'pizza',
-                  name:'Coupon'
-                }} />
+                  {
+                    this.box.map((item)=>{
+                      return(
+                        <Box onPress={()=>{ this._goto(item.code) }} key={ item.code }  data={ item} />
+                      )
+                    })
+                  }
+
+              </View>
+
+            {
+                  this.data.map((item)=>{
+
+                    const creatorAvatar = item.creator_avatar === null ? AVATAR_URL : item.creator_avatar ;
+
+                    return(
+                      <MyCard key={ item.id }>
+                        <CardHeader>
+                            <MyAvatar
+                                data={{
+                                 uri:creatorAvatar,
+                                 name:item.creator,
+                                 info:moment(item.date_created).fromNow()
+                               }}
+                            />
+
+                        </CardHeader>
+
+                        <CardImage
+                          onPress={()=>{ this._onCardPress(item) }}
+                          uri={ item.photo }
+                        />
+
+                        <View style={ s.cardContent }>
+                            <View style={{
+                              marginTop: 5,
+                              marginBottom: 5
+                            }}>
+                                <Text style={{fontSize: 16,fontFamily:'Roboto',fontWeight: '500', color: COFFEE_COLOR}}>{ item.title } </Text>
+                            </View>
+                            <View>
+                                <Text style={{fontFamily: 'Roboto', color: '#666'}}>{ item.short_content.replace(/&nbsp;/g,' ') } </Text>
+                            </View>
+
+                        </View>
+
+                        <CardFooter>
+                            <TouchableOpacity style={{ flexDirection:'row'}}>
+                                 <Icon style={s.icon} name="heart" />
+                                 <Text> { item.like } </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={{ flexDirection:'row'}}>
+                                 <Icon style={s.icon} name="chatbubbles" />
+                                 <Text> { item.comments === null ? 0 : item.comments.length } </Text>
+                            </TouchableOpacity>
+                        </CardFooter>
+                      </MyCard>
 
 
-            </View>
 
-            <MyCard>
-                <CardHeader>
-                    <MyAvatar
-                        data={{
-                         uri:'https://scontent.fsgn5-6.fna.fbcdn.net/v/t1.0-1/p160x160/41795526_2082548408445932_7771390061051904000_n.jpg?_nc_cat=109&_nc_oc=AQnW3o2N69YmcjDnxCqPK-AYEGDWGy58AdAu6F6mG8LqDBuhXpyRoKX2l_I27tW92Fek7R-R893bbrzdjUPf59qk&_nc_ht=scontent.fsgn5-6.fna&oh=927a69754880b732e2c3ce267d1a0af9&oe=5CFA7E33',
-                         name:'Benjamin',
-                         info:'5 minuts ago'
-                       }}
-                    />
-
-                </CardHeader>
-
-                <CardImage
-                  onPress={()=>{ this._onCardPress() }}
-                  uri="https://i-cdn.embed.ly/1/display?key=fd92ebbc52fc43fb98f69e50e7893c13&url=https%3A%2F%2Fi.redd.it%2F6oezmf7cw7f11.jpg"
-                />
-
-                <CardContent>
-                    I have Got a cat, her name is matinda. She is a quite old for a cat
-                    She is eleven years olds. matilda is very fluffy, her back is black, and her belly, chest are white
-                </CardContent>
-
-                <CardFooter>
-                    <TouchableOpacity style={{ flexDirection:'row'}}>
-                         <Icon style={{ fontSize:20}} name="heart" />
-                         <Text> 18 </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{ flexDirection:'row'}}>
-                         <Icon style={{ fontSize:20}} name="chatbubbles" />
-                         <Text> 115 </Text>
-                    </TouchableOpacity>
-                </CardFooter>
-
-            </MyCard>
-
-            <MyCard>
-                <CardHeader>
-                    <MyAvatar
-                        data={{
-                         uri:'https://scontent.fsgn5-3.fna.fbcdn.net/v/t1.0-1/c261.310.378.378a/s160x160/46401462_1931261700314528_572870838248800256_n.jpg?_nc_cat=110&_nc_oc=AQlKpm8eY9ec2dRT5XFa-cLWV0SlMYeck1odmsj_hN31rokE4WlRSsYGwN89kFynaVkMQFIWhdw3p8ea4qFsUZIp&_nc_ht=scontent.fsgn5-3.fna&oh=2076ac91fef92b60634511aa3e3a4108&oe=5CBB2FB2',
-                         name:'Nguyen Van Loc',
-                         info:'15 minuts ago'
-                       }}
-                    />
-
-                </CardHeader>
-
-                <CardImage
-                  onPress={()=>{ this._onCardPress() }}
-                  uri="https://scontent.fsgn5-4.fna.fbcdn.net/v/t1.0-9/49128234_331015080960848_5154945226128752640_n.jpg?_nc_cat=102&_nc_oc=AQlShfz3MyrFWXJwNEpfPEzTUXidhO7gd-xk-JqcX_EB08DA73WNb6pvWpYa0N-zeHddynAsPtr3cQ09LySYe4Ut&_nc_ht=scontent.fsgn5-4.fna&oh=35bac5787d8b4a33c2c1fbaa9d0ceac5&oe=5CCCB622"
-                />
-
-                <CardContent>
-                    The new year stands before us, like a chapter in a book, waiting to be written. We can help write that story by setting goals.
-                </CardContent>
-
-                <CardFooter>
-                    <TouchableOpacity style={{ flexDirection:'row'}}>
-                         <Icon style={{ fontSize:20}} name="heart" />
-                         <Text> 18 </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{ flexDirection:'row'}}>
-                         <Icon style={{ fontSize:20}} name="chatbubbles" />
-                         <Text> 115 </Text>
-                    </TouchableOpacity>
-                </CardFooter>
-
-            </MyCard>
-
+                    )
+                  })
+                }
 
           </View>
 
@@ -191,3 +269,21 @@ export default class FeedPage extends Component{
     )
   }
 }
+
+const s = StyleSheet.create({
+  cardContent:{
+    padding: 10,
+    fontFamily: 'Roboto'
+  },
+  icon:{ fontSize:20,color:BLACK_COLOR},
+  wraper:{
+    alignItems:'center',
+    paddingTop:10,
+    paddingBottom:20
+  },
+  boxs:{
+    width:'95%',
+    flexDirection:'row',
+    justifyContent:'space-between'
+  }
+})

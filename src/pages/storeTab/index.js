@@ -1,22 +1,16 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-
-import MapView, { Marker, PROVIDER_GOOGLE, AnimatedRegion, Animated, Callout } from 'react-native-maps';
-
-import { Constants, Location, Permissions } from 'expo';
-
-
-
-import { Container, Icon, Content, Button } from 'native-base';
-
-import BenHeader from '../../components/BenHeader' ;
-
 import { GREY_COLOR, COFFEE_COLOR, GOOGLE_MAP_KEY } from '../../config/const';
-
 import RetroMapStyle from '../../data/retroStyle.json';
-import NightMapStyle from '../../data/nightStyle.json';
+
 import STORE_LOCATIONS from '../../data/stores.json';
 
+
+import React, { Component } from 'react';
+import { View, Text } from 'react-native';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { Container } from 'native-base';
+
+
+import BenHeader from '../../components/BenHeader' ;
 import BoxSearch from './boxSearch';
 
 
@@ -122,7 +116,7 @@ export default class StorePage extends Component{
          }
        });
 
-       
+
 
      })
      .catch((error) => {
@@ -134,61 +128,69 @@ export default class StorePage extends Component{
 
     const { mapRegion } = this.state
 
-    return(
-      <Container style={{
-        backgroundColor:GREY_COLOR,
-        display:  this.props.onTab === this.state.tab ? 'block':'none'
-      }}>
+    if(this.props.onTab === this.state.tab){
 
-        <BenHeader type="single">
-            <View>
-              <Text style={{
-                fontSize:18,
-                fontFamily:'Roboto'
-              }}> Stores </Text>
-            </View>
-        </BenHeader>
+      
+      return(   
+        <Container style={{
+          backgroundColor:GREY_COLOR,
+          display:  this.props.onTab === this.state.tab ? 'block':'none'
+        }}>
+  
+          <BenHeader type="single">
+              <View>
+                <Text style={{
+                  fontSize:18,
+                  fontFamily:'Roboto'
+                }}> Stores </Text>
+              </View>
+          </BenHeader>
+  
+  
+          <MapView
+            style={{ flex: 1 }}
+  
+            
+            showsUserLocation={ true }
+            customMapStyle={  
+              RetroMapStyle
+            }
+  
+            region={mapRegion}
+  
+          >
+              <Marker draggable
+                 coordinate={{
+                   latitude:mapRegion.latitude,
+                   longitude: mapRegion.longitude,
+                 }}
+  
+                 pinColor={ COFFEE_COLOR }
+                 title={'King Kong Milk Tea'}
+  
+  
+  
+              >
+              </Marker>
+  
+          </MapView>
+  
+          <BoxSearch
+              onItemAddressPress={ (address)=>{ this._onItemAddressPress(address) } }
+              keyFind={ this.state.currentAdress } data={ this.props.stores }  
+              onCloseSearch={ ()=>{ this._onCloseSearch() } }
+  
+          />
+  
+  
+  
+        </Container>
+  
+      )
+    }
 
+    return <View></View>
 
-        <MapView
-          style={{ flex: 1 }}
-
-          provider={PROVIDER_GOOGLE}
-          showsUserLocation={ true }
-          customMapStyle={
-            RetroMapStyle
-          }
-
-          region={mapRegion}
-
-        >
-            <Marker draggable
-               coordinate={{
-                 latitude:mapRegion.latitude,
-                 longitude: mapRegion.longitude,
-               }}
-
-               pinColor={ COFFEE_COLOR }
-               title={'King Kong Milk Tea'}
-
-
-
-            >
-            </Marker>
-
-        </MapView>
-
-        <BoxSearch
-            onItemAddressPress={ (address)=>{ this._onItemAddressPress(address) } }
-            keyFind={ this.state.currentAdress } data={ this.state.data }
-            onCloseSearch={ ()=>{ this._onCloseSearch() } }
-
-        />
-
-
-
-      </Container>
-
-    )
+    
   }
 }

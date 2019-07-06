@@ -31,6 +31,10 @@ export default class BenTabs extends Component {
         const data = this.props.data ;
         let tabColor = COFFEE_COLOR;
 
+        const notiOrder = this.props.notiOrder || 0 ;
+        const notiOrderDisplay = parseInt(notiOrder) > 0 ? 'block' : 'none';
+
+
 
 
         return (
@@ -44,7 +48,14 @@ export default class BenTabs extends Component {
                       {
                         data.map((item,index)=>{
 
-                          const activeColor = this.state.onTab === item.tab ? tabColor : BLACK_COLOR;
+                          const activeColor = this.props.onTab === item.tab ? tabColor : BLACK_COLOR;
+
+
+                          const Notification = item.tab === 'order' ? (
+                            <View style={[s.notiHolder,{ display:notiOrderDisplay }]}>
+                                  <Text style={{color:'#fff', fontSize:10}}> { notiOrder } </Text>
+                            </View>
+                          ) : null;
 
                           if(!item.hidden ){
                             return(
@@ -59,11 +70,14 @@ export default class BenTabs extends Component {
                                       color:activeColor
                                     }} name={item.icon}></Icon>
                                     <Text style={[
-                                        {fontSize:12},
+                                        {fontSize:12,fontFamily: 'Roboto'},
                                         {color:activeColor}
 
                                     ]} > { item.name } </Text>
                                 </Button>
+
+                                { Notification }
+
                               </View>
                             )
                           }
@@ -80,6 +94,18 @@ export default class BenTabs extends Component {
 
 
 const s = StyleSheet.create({
+
+    notiHolder:{
+      position:'absolute',
+      backgroundColor:'#000',
+      width:15,
+      height:15,
+      justifyContent:'center',
+      alignItems:'center',
+      borderRadius:3,
+      right:'24%',
+      backgroundColor:'#DD4B39'
+    },
     container:{
         flex:1,
         justifyContent:'space-between',

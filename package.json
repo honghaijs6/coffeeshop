@@ -9,18 +9,28 @@
   "dependencies": {
     "@expo/vector-icons": "^9.0.0",
     "expo": "^32.0.0",
+<<<<<<< HEAD
     "firebase": "^5.8.1",
+=======
+    "firebase": "^6.1.1",
+>>>>>>> f6391bc4053bbcf7070774c3120c85b325df0799
     "native-base": "^2.12.1",
     "react": "16.5.0",
+    "react-moment": "^0.8.4",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-axios": "^0.17.1",
+    "react-native-barcode-builder": "^1.0.5",
     "react-native-datepicker": "^1.7.2",
     "react-native-easy-toast": "^1.1.0",
     "react-native-htmlview": "^0.13.0",
     "react-native-maps": "^0.23.0",
-    "react-navigation": "^3.0.9",
+    "react-native-progress-steps": "^1.2.6",
+    "react-native-swiper": "^1.5.14",
+    "react-navigation": "^3.11.0",
     "react-redux": "^6.0.0",
-    "react-router-native": "^4.3.0",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "shorthash": "0.0.2",
+    "socket.io-client": "^2.1.1"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"

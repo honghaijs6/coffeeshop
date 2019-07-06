@@ -1,4 +1,5 @@
 /* @flow weak */
+import {RED_COLOR, COFFEE_COLOR, BLACK_COLOR, GREY_COLOR } from '../../config/const';
 
 import React, { Component } from 'react';
 import {
@@ -10,18 +11,13 @@ import {
   Dimensions
 } from 'react-native';
 
-import {RED_COLOR, COFFEE_COLOR, BLACK_COLOR, GREY_COLOR } from '../../config/const';
 
 import {  Icon, Content } from 'native-base';
 import BenBody from '../../components/BenBody';
 
-import drinksData from './data.json';
 import NoData from '../../components/NoData';
 
-
-
 const w = Dimensions.get('window');
-
 export default class BodyDrinks extends Component{
 
 
@@ -42,14 +38,31 @@ export default class BodyDrinks extends Component{
 
 
     const data = this.props.data ;
-
+    const cateInfo = this.props.cateInfo 
 
     return(
       <Content style={{
           backgroundColor: GREY_COLOR
         }}>
 
+        <View style={{
+          marginTop:15,
+          width:'95%',
+          marginLeft:'auto',
+          marginRight:'auto',
+          marginBottom:-15
+        }}>
+            <Text style={{
+              fontFamily:'Roboto',
+              fontSize:15,
+              textTransform:'uppercase',
+              color:COFFEE_COLOR
+            }}>  
+                { cateInfo.name }
+            </Text>
+        </View>    
         <BenBody>
+            
 
             {
               data.map((item, index)=>{
@@ -60,8 +73,8 @@ export default class BodyDrinks extends Component{
                     marginTop: 15,
                     flexDirection: 'row',
                     borderBottomColor: 'rgba(0,0,0,0.1)',
-                    borderBottomWidth: 0.5,
-                    paddingBottom: 15
+                    borderBottomWidth: 0,
+
                   }}>
 
                     <TouchableOpacity style={{
@@ -74,7 +87,8 @@ export default class BodyDrinks extends Component{
                       paddingLeft: 10,
                       justifyContent: 'center',
 
-                      width: '75%',
+                      width: '66%',
+                      backgroundColor:'#fff'
 
 
                     }}>
@@ -82,8 +96,8 @@ export default class BodyDrinks extends Component{
                           <Text style={[s.txt,s.h4]}> { item.name }  </Text>
                        </TouchableOpacity>
 
-                       <Text style={s.txt}> Size 355 ml  </Text>
-                       <Text style={s.txt,s.price }> { item.price_s } $ </Text>
+                       <Text style={s.txt}> Size L  </Text>
+                       <Text style={s.txt,s.price }> { item.price_m } $ </Text>
 
                     </View>
 
@@ -104,14 +118,14 @@ export default class BodyDrinks extends Component{
 const s =  StyleSheet.create({
   h4:{
     color: COFFEE_COLOR,
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: '500',
 
   },
   price:{
     color:RED_COLOR,
-    fontSize: 20,
-    fontWeight: 'bold'
+    fontSize: 16,
+    fontWeight: '500'
   },
   txt:{
     fontSize: 16,

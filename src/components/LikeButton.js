@@ -10,27 +10,42 @@ import {
 
 import {  Icon } from 'native-base';
 
+const PINK = '#F86C6B';
+const GREY = '#333333';
 
-const LikeButton = (props) => (
+const LikeButton = (props) => {
 
-  <View style={{
-    flexDirection: 'row',
-    alignItems: 'center'
-  }}>
-      <TouchableOpacity  style={{
-        width: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
+  
+  return (
+    <View style={{
+        flexDirection: 'row',
+        alignItems: 'center'
       }}>
-         <Icon style={s.icon} name="heart" />
-
-      </TouchableOpacity>
-      { props.children }
-  </View>
-
-);
+          <TouchableOpacity
+            onPress={ props.onPress }  
+            style={{
+              width: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>  
+            <Icon style={[
+              s.icon,{
+                color: props.isLiked ? PINK : GREY
+              }
+            ]} name="heart" />
+    
+          </TouchableOpacity>
+          { props.children }
+      </View>
+  )
+};
 
 export default LikeButton;
+
+LikeButton.defaultProps = {
+  onPress:()=>{},
+  isLiked:false
+}
 
 const s = StyleSheet.create({
   txt:{

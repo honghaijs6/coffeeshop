@@ -1,7 +1,7 @@
 
 
 import store from '../redux/store';
-import {auth, database, provider, config} from "../config/firebase";
+import { database, config} from "../config/firebase";
 
 
 class moFire {
@@ -102,13 +102,91 @@ class moFire {
     })
   }
 
+  countAllWithField(field,value,onSuccess){
+
+    const query = this.db
+                    .orderByChild(field)
+                    .equalTo(value)
+
+    query.once("value",(snapshot)=>{
+      onSuccess(snapshot.numChildren());
+    })
+  }
+
+
+
+  _sortOrder(key,order='asc'){
+    return function(a, b) {
+       if(!a.hasOwnProperty(key) ||
+          !b.hasOwnProperty(key)) {
+         return 0;
+       }
+
+       const varA = (typeof a[key] === 'string') ?
+         a[key].toUpperCase() : a[key];
+       const varB = (typeof b[key] === 'string') ?
+         b[key].toUpperCase() : b[key];
+
+       let comparison = 0;
+       if (varA > varB) {
+         comparison = 1;
+       } else if (varA < varB) {
+         comparison = -1;
+       }
+       return (
+         (order == 'desc') ?
+         (comparison * -1) : comparison
+       );
+    };
+  }
+
+  find(field,value,onSuccess){
+    this.data = [] ;
+
+    this.countAllWithField(field,value,(total)=>{
+
+        this.localData.db.total = total;
+        this.db.total = total; 
+
+        const query = this.db
+                        .orderByChild(field)
+                        .startAt(`%${value}%`)
+                        .endAt(value+"\uf8ff")
+                        .limitToLast(config.paginate.max);
+                        
+                        
+
+        query.once("value",(snapshot)=>{
+
+          snapshot.forEach( (childSnapshot)=> {
+            var childKey = childSnapshot.key;
+            var childData = childSnapshot.val();
+            this.data.push(childData);
+
+          });
+
+          this.data.sort(this._sortOrder('sort'));
+          //this.data = [] ;
+          onSuccess(this.data);
+          
+          this._onSuccess('value',this.data);
+
+
+        });
+    });
+    
+  }
+
   fetch(field,value,onSuccess){
 
     this.data = [] ;
 
-    this.countAll((total)=>{
+    this.countAllWithField(field,value,(total)=>{
 
         this.localData.db.total = total;
+
+        this.db.total = total; // USE IT FOR AG-GRID FOOTER
+
         const query = this.db
                         .orderByChild(field)
                         .equalTo(value)
@@ -123,7 +201,8 @@ class moFire {
 
           });
 
-          this.data = this.data.reverse();
+          this.data.sort(this._sortOrder('sort'));
+          //this.data = [] ;
           onSuccess(this.data);
           this._onSuccess('value',this.data);
 
@@ -134,7 +213,7 @@ class moFire {
 
     });
   }
-  
+
   read(onSuccess){
 
     this.data = [] ;
@@ -144,7 +223,6 @@ class moFire {
         this.localData.db.total = total;
         const query = this.db
                         .orderByChild("createdAt")
-                        /*.equalTo(0)*/
                         .limitToLast(config.paginate.max);
 
         query.once("value",(snapshot)=>{
@@ -156,8 +234,8 @@ class moFire {
 
           });
 
-          //this.data = this.data.reverse();
 
+          this.data.sort(this._sortOrder('sort'));
 
           onSuccess(this.data);
           this._onSuccess('value',this.data);
@@ -174,10 +252,11 @@ class moFire {
 
     switch (type) {
       case 'value':
-        store.dispatch({
+
+        /*store.dispatch({
           type: type +'-'+this.model,
           list:data
-        });
+        });*/
 
       break;
 

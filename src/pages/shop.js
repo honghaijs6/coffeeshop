@@ -1,14 +1,17 @@
-import React, { Component } from 'react';
+/*
+MAIN TAB ON SHOP
+*/
+import moFire from '../model/moFirebase';
+import Api from '../model/api';
+import USER from '../config/user';
 
-// Lib
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import BenTabs  from "../components/BenTabs";
 import BenStatusBar  from "../components/BenStatusBar";
-
-
-import moFire from '../model/moFirebase';
-
-
 import BenLoader from '../components/BenLoader';
+
 
 /* TABS : 5 tab items */
 import FeedTab from './feedTab/';
@@ -22,13 +25,19 @@ import AccountTab from './userTab/';
 class shop extends Component {
 
     _isMounted = false;
+    _timeID = 2000;
+
 
     constructor(props){
+
       super(props);
 
-      this.store = props.screenProps;
 
-      this.state = state = {
+      this.state  = {
+
+
+        socketRes:{},
+
         loader:false,
         onAction:'',
         navigation:props.navigation,
@@ -41,48 +50,72 @@ class shop extends Component {
         ],
         onTab:'order',
         tab:{},
-        userInfo:props.screenProps.getState().user.userInfo,
-
-
+        userInfo: JSON.stringify(props.user.userInfo) === '{}' ? props.user.tempInfo : props.user.userInfo, // get data from reducer
+        stores:[]
       }
 
+
       this.data = {
-        categories:[]
+        categories:[],
+        orders:[]
       };
 
-      this._listenUserInfo();
-
-      this._setup()
-
+      this._setup() ;
 
     }
+
 
     _setup(){
+
+
       this.moCate = new moFire('categories');
+      this.moStore = new moFire('stores');
+
+      this.moOrder = new Api('orders');
+      
+
+
     }
 
-    _listenUserInfo(){
-      this.unsubscribe = this.store.subscribe(()=>{
-        const userInfo = this.store.getState().user.userInfo;
+    _readOrders(){
 
+      if(this.state.userInfo.id !== 0){
+        this.moOrder.set('method',{
+          name:'listAll',
+          params:'all?creator_id='+this.state.userInfo.id+'&status=lt2'
+        })
+  
+        this.moOrder.fetch((res)=>{
+          res = res.data ;
+          if(res.name==='success'){
+            this.data.orders = res.rows ;
+  
+            this.setState({onAction:'_readOrders'}) ;
+          }
+        });
+      }
+      
+    }
+
+    _loadStores(){
+      this.moStore.read((data)=>{
+        
         this.setState({
-          userInfo:userInfo
+          stores:data
         });
 
+        
       })
-    }
-
-    componentWillUnmount(){
-      this._isMounted = false;
-      this.unsubscribe();
-
     }
 
     componentDidMount(){
 
       this._isMounted = true;
+      this.setState({loader:true});
 
-      this.setState({loader:true})
+      USER.checkLoginStatus();
+         
+
       this.moCate.read((data)=>{
 
         this.data.categories = data;
@@ -94,14 +127,34 @@ class shop extends Component {
           })
         }
 
-      })
+      });
+
+      // read stores
+      this._loadStores();
+
+      // READ ORDERS
+      this._readOrders();
+
+    }
+
+    componentWillReceiveProps(newProps){
+
+
+      this.setState({
+        userInfo: JSON.stringify(newProps.user.userInfo) !== '{}' ? newProps.user.userInfo : newProps.user.tempInfo
+      });
+      // RECIEW FROM SOCKET
+      const {socketData} = newProps ;
+      if(socketData.appState==='active'){
+        this._readOrders();
+      }
+
     }
 
 
     _onChangeTab(data){
 
       this._isMounted = false;
-      this.unsubscribe();
 
       this.setState({
         onTab:data.tab,
@@ -110,20 +163,19 @@ class shop extends Component {
 
       if(data.tab==='order'){
 
-        
         this.moCate.read((data)=>{
-
-
           this.setState({
             onAction:'fetch_categories'
           })
+        });
 
+        // READ AGAIN ;
+        this._readOrders();
 
-
-        })
       }
-
     }
+
+
 
     onStateChange(newState){
 
@@ -133,7 +185,7 @@ class shop extends Component {
             let combineState = Object.assign(this.state,newState);
             combineState.onTab = newState.toTab
 
-            this.setState( combineState );s
+            this.setState( combineState );
 
          break;
          default:
@@ -143,21 +195,31 @@ class shop extends Component {
     }
     render() {
 
-
+        //alert(JSON.stringify(this.props.user)); 
+      
         return (
             <BenTabs
-              onPress={(data)=>{ this._onChangeTab(data) }}
+
+              onPress={(data)=>{ this._onChangeTab(data) }}  
               onTab={ this.state.onTab }
               data={ this.state.tabs }
+              notiOrder={ this.data.orders.length }
             >
               <BenLoader visible={this.state.loader} />
-              <BenStatusBar/>
 
-              <FeedTab { ...this.state } />
-              <MissionTab { ...this.state } />
-              <OrderTab data={this.data} { ...this.state } />
-              <StoreTab { ...this.state } />
+              <BenStatusBar/>
+          
+               
+
+              <OrderTab  data={this.data} { ...this.state } />
               <AccountTab { ...this.state } />
+              <FeedTab onPressChangeTab={ (data)=>{ this._onChangeTab(data) } } { ...this.state } />
+              <MissionTab { ...this.state } />
+              <StoreTab 
+                { ...this.state } 
+                
+              />
+
 
 
 
@@ -165,4 +227,11 @@ class shop extends Component {
         );
     }
 }
-export default shop;
+
+function mapStateToProps(state){
+  return {
+    user:state.user,
+    socketData:state.socketData
+  }
+}
+export default  connect(mapStateToProps)(shop) ;

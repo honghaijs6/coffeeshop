@@ -1,4 +1,7 @@
 /* @flow */
+import USERS_LEVEL_CONTENT  from './data.json';
+import { USERS_LEVEL, COFFEE_COLOR, BLACK_COLOR } from '../../config/const';
+
 
 import React, { Component } from 'react';
 import {
@@ -7,11 +10,8 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
-
-import USERS_LEVEL_CONTENT  from './data.json';
-import { USERS_LEVEL, COFFEE_COLOR, BLACK_COLOR } from '../../config/const';
-
 import { Icon } from 'native-base'
+
 
 export default class LevelBoard extends Component {
 
