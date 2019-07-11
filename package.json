@@ -9,11 +9,7 @@
   "dependencies": {
     "@expo/vector-icons": "^9.0.0",
     "expo": "^32.0.0",
-<<<<<<< HEAD
-    "firebase": "^5.8.1",
-=======
     "firebase": "^6.1.1",
->>>>>>> f6391bc4053bbcf7070774c3120c85b325df0799
     "native-base": "^2.12.1",
     "react": "16.5.0",
     "react-moment": "^0.8.4",

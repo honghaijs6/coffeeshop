@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "King Kong Tea Milk",
+    "name": "KK Milktea&Juice",
     "slug": "coffeeshop",
     "privacy": "public",
     "sdkVersion": "32.0.0",
@@ -12,7 +12,7 @@
       "icon": "./assets/images/notification.png"
     },
 
-    "version": "1.0.13",
+    "version": "1.0.15",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
