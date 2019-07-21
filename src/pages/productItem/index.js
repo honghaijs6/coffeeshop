@@ -1,6 +1,13 @@
 /* @flow */
 import Model from '../../model/model';
-import { GREY_COLOR, COFFEE_COLOR, RED_COLOR } from '../../config/const' ;
+import { GREY_COLOR, COFFEE_COLOR, RED_COLOR, STORAGE_FAVORIES } from '../../config/const' ;
+
+
+
+// hooks
+import isSaveProduct from '../../hook/ultil/isSaveProduct';
+import setStorage from '../../hook/ultil/setStorage';
+import removeItemStorage from '../../hook/ultil/removeItemStorage';
 
 
 import React, { Component } from 'react';
@@ -12,7 +19,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
-  AsyncStorage
 } from 'react-native';
 
 import { Container,  Content, Icon } from 'native-base';
@@ -40,7 +46,8 @@ class ProductItem extends Component {
       amount:1, // cureent amount
       info:{}, // current product info
       shoppingcart:  props.shoppingcart,
-      favoryList:[]
+      favoryList:[],
+      isLiked:false
 
     }
 
@@ -115,7 +122,7 @@ class ProductItem extends Component {
 
     }else{
       // remove item on shoppingcart ;
-      this.moOrder.removeItemDataStore(this.state.info.uid);
+      this.moOrder.removeItemDataStore(this.state.info.uid,this.props.dispatch);
       this.goBack();
 
 
@@ -124,25 +131,22 @@ class ProductItem extends Component {
 
   }
 
-  _loadFavoryList(){
-    
-    AsyncStorage.getItem('favoryList').then((data)=>{
-      this.setState({
-        favoryList:data || []
-      });
-      
-    })
-  }
-  componentDidMount(){
+  
+  async componentDidMount(){
 
     let info =  this.props.navigation.getParam('proInfo',{});
     info['price'] = info['price'] || info['price_m'];
     const cartInfo = this._getInfoOnShoppingCart(info.uid);
-    
+
+
+    const isLike = await isSaveProduct(info);
+
+
 
     this.setState({
       amount:info.amount || this.state.amount ,
-      info:Object.assign(info,cartInfo)
+      info:Object.assign(info,cartInfo),
+      isLiked:isLike
     });
     
   }
@@ -162,8 +166,26 @@ class ProductItem extends Component {
     return json;
   }
 
-  _toggleLike = ()=>{
+  
+  async _toggleLike(){
     
+    const isSave = await isSaveProduct(this.state.info);
+
+    if(!isSave){
+      const resSetStorage = await setStorage(STORAGE_FAVORIES,this.state.info,this.props.dispatch);
+      this.setState({
+        isLiked:!this.state.isLiked
+      })
+    }else{
+      // REMOVE ITEM
+      const resRemoveItem  = await removeItemStorage(this.state.info,this.props.dispatch);
+      
+      this.setState({
+        isLiked:! this.state.isLiked
+      })
+    }
+    
+
 
   }
   render() {
@@ -179,7 +201,7 @@ class ProductItem extends Component {
           <BenHeader>
             <BackButton onPress={ this._onBackBtnPress } />
 
-            <LikeButton onPress={ this._toggleLike } />
+            <LikeButton isLiked={this.state.isLiked} onPress={ ()=>{ this._toggleLike() } } />
 
           </BenHeader>
 
@@ -270,7 +292,8 @@ class ProductItem extends Component {
 
 function mapStateToProps(state){
   return {
-    shoppingcart:state.shoppingcart.list
+    shoppingcart:state.shoppingcart.list,
+    favories:state.favories
   }
 }
 

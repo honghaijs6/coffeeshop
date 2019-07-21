@@ -5,6 +5,7 @@ import reducerCate from './reducer-category';
 import reducerProduct from './reducer-product';
 import reducerOrder from './reducer-order';
 import reducerSocket from './reducer-socket';
+import reducerStorageFavory from './reducer-favory';
 
 
 
@@ -16,7 +17,8 @@ const allReducers = combineReducers({
   category:reducerCate,
   product:reducerProduct,
   order:reducerOrder,
-  socketData:reducerSocket
+  socketData:reducerSocket,
+  favories:reducerStorageFavory
 
 });
 

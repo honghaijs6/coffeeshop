@@ -2,6 +2,7 @@
 import {RED_COLOR, COFFEE_COLOR, BLACK_COLOR, GREY_COLOR } from '../../config/const';
 
 import React, { Component } from 'react';
+
 import {
   View,
   Text,
@@ -16,8 +17,57 @@ import {  Icon, Content } from 'native-base';
 import BenBody from '../../components/BenBody';
 
 import NoData from '../../components/NoData';
-
 const w = Dimensions.get('window');
+
+
+const ItemPro = (props)=>{
+
+  const item = props.data;
+  const photo = item.photo.replace(/ /g,'%20');
+
+  return(
+    <View style={{
+        marginTop: 15,
+        flexDirection: 'row',
+        borderBottomColor: 'rgba(0,0,0,0.1)',
+        borderBottomWidth: 0,
+
+      }}>
+
+        <TouchableOpacity style={{
+          backgroundColor:'rgba(0,0,0,0.1)'
+          }} onPress={()=>{ props.onPress(item) }} >
+          <Image 
+            resizeMode="cover" 
+            style={{width:120,height: 120}}  
+            source={{
+              uri: photo+`&w=120&buster=${Math.random()}` ,
+              cache: 'only-if-cached'
+            }}  
+
+          />
+        </TouchableOpacity>
+
+        <View style={{
+          paddingLeft: 10,
+          justifyContent: 'center',
+          width: '66%',
+          backgroundColor:'#fff'
+        
+        }}>
+          <TouchableOpacity onPress={()=>{ props.onPress(item) }}>
+              <Text style={[s.txt,s.h4]}> { item.name }  </Text>
+          </TouchableOpacity>
+
+          <Text style={s.txt}> Size L  </Text>
+          <Text style={s.txt,s.price }> { item.price_m } $ </Text>
+
+        </View>
+
+    </View>
+  )
+}
+
 export default class BodyDrinks extends Component{
 
 
@@ -67,41 +117,9 @@ export default class BodyDrinks extends Component{
             {
               data.map((item, index)=>{
 
-                const photo = item.photo.replace(/ /g,'%20');
+                
                 return (
-                  <View key={index} style={{
-                    marginTop: 15,
-                    flexDirection: 'row',
-                    borderBottomColor: 'rgba(0,0,0,0.1)',
-                    borderBottomWidth: 0,
-
-                  }}>
-
-                    <TouchableOpacity style={{
-                      backgroundColor:'rgba(0,0,0,0.1)'
-                      }} onPress={()=>{ this._onPressItem(item) }} >
-                      <Image resizeMode="cover" style={{width:120,height: 120}}  source={{uri: photo+`&w=120&buster=${Math.random()}` }}  />
-                    </TouchableOpacity>
-
-                    <View style={{
-                      paddingLeft: 10,
-                      justifyContent: 'center',
-
-                      width: '66%',
-                      backgroundColor:'#fff'
-
-
-                    }}>
-                       <TouchableOpacity onPress={()=>{ this._onPressItem(item) }}>
-                          <Text style={[s.txt,s.h4]}> { item.name }  </Text>
-                       </TouchableOpacity>
-
-                       <Text style={s.txt}> Size L  </Text>
-                       <Text style={s.txt,s.price }> { item.price_m } $ </Text>
-
-                    </View>
-
-                  </View>
+                  <ItemPro key={index} onPress={(item)=>{  this._onPressItem(item)  }} data={item} />
                 )
               })
             }

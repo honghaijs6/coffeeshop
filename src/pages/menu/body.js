@@ -36,7 +36,7 @@ const MenuBody = (props) => (
               <Text style={{color:'#555'}}>Favories</Text>
           </TabHeading>
         }>
-            <BodyFavories/>
+            <BodyFavories onPressItem={(data)=>{ props.onPressItem(data) }} />
         </Tab>
     </Tabs>
 
