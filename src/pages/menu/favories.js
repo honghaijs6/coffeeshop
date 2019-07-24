@@ -37,7 +37,7 @@ const ItemPro = (props)=>{
         <TouchableOpacity style={{
           backgroundColor:'rgba(0,0,0,0.1)'
           }} onPress={()=>{ props.onPress(item) }} >
-          <Image resizeMode="cover" style={{width:120,height: 120}}  source={{uri: photo+`&w=120&buster=${Math.random()}` }}  />
+          <Image resizeMode="cover" style={{width:120,height: 120}}  source={{uri: photo }}  />
         </TouchableOpacity>
 
         <View style={{

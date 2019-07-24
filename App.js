@@ -79,7 +79,7 @@ const RootStack = createStackNavigator(
 
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "CouponPage",
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,

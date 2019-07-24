@@ -1,5 +1,6 @@
 /* @flow */
 import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const';
+import doVerifyCoupon from '../../hook/ultil/doVerifyCoupon';
 
 import React, { Component } from 'react';
 import {
@@ -7,12 +8,14 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 
 import { Container, Content, Icon } from 'native-base';
 
 
+import BenLoader from '../../components/BenLoader';
 
 import BenStatusBar from '../../components/BenStatusBar';
 import BenHeader from '../../components/BenHeader';
@@ -22,8 +25,6 @@ import BenBody from '../../components/BenBody';
 
 import H2 from '../../components/html/h2';
 
-
-
 export default class CouponPage extends Component {
 
 
@@ -31,7 +32,8 @@ export default class CouponPage extends Component {
     super(props);
 
     this.state = {
-      content:''
+      code:'',
+      loader:false
     }
 
     this._setup();
@@ -44,12 +46,30 @@ export default class CouponPage extends Component {
 
   }
 
-
-  render() {
-
-    let myBarcode = this.props.navigation.getParam('data') ;
+  _onSubmit = async ()=>{
+    
+    this.setState({loader:true});
+    const resVerify = await doVerifyCoupon(this.state.code);
+    this.setState({loader:false});
+      
+    if(resVerify.name==='success'){
+      if(resVerify.message==='yes'){
+        
+        
+      }else{ 
+        Alert.alert('Message','this coupon code current not available')
+      }
+    }
+  }
+  
+  componentWillReceiveProps(newProps){
+    let myBarcode = newProps.navigation.getParam('data') ;
     myBarcode =  myBarcode !== undefined ? myBarcode.data : '';
-
+    this.setState({code:myBarcode});
+    
+  }
+  render() {
+    
 
     return (
       <Container>
@@ -62,18 +82,24 @@ export default class CouponPage extends Component {
           </View>
           <View></View>
         </BenHeader>
+        <BenLoader visible={this.state.loader} />
 
         <Content style={{ backgroundColor:GREY_COLOR }}>
           <BenBody width={'90%'}>
              <View style={s.wrapperInput}>
 
-                <TextInput defaultValue={ myBarcode } style={{paddingHorizontal:10, width:'62%', fontFamily:'Roboto', color:BLACK_COLOR}} placeholder="enter your coupon code" />
+                <TextInput 
+                  defaultValue={ this.state.code } 
+                  onChangeText={(code)=>{ this.setState({code}) }}
+                  style={{paddingHorizontal:10, width:'62%', fontFamily:'Roboto', color:BLACK_COLOR}} 
+                  placeholder="enter your coupon code" 
+                />
 
                 <TouchableOpacity onPress={()=>{ this.props.navigation.navigate('Scanner') }} style={[s.btn,{backgroundColor:'#fff'}]}>
                   <Icon name="barcode"></Icon>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={s.btn}>
+                <TouchableOpacity onPress={ this._onSubmit } style={s.btn}>
                   <Text style={s.btnText}> Apply </Text>
                 </TouchableOpacity>
 

@@ -41,8 +41,7 @@ const ItemPro = (props)=>{
             resizeMode="cover" 
             style={{width:120,height: 120}}  
             source={{
-              uri: photo+`&w=120&buster=${Math.random()}` ,
-              cache: 'only-if-cached'
+              uri: photo ,
             }}  
 
           />
