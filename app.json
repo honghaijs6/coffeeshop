@@ -11,7 +11,6 @@
     "notification": {
       "icon": "./assets/images/notification.png"
     },
-
     "version": "1.0.15",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -30,11 +29,9 @@
       "bundleIdentifier": "com.honghai.coffeeshop",
       "supportsTablet": false,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription":"the app needs permission to your location in order to delivery your orders",
-        "NSCameraUsageDescription":
-          "The app needs permission to your camera in order to scan barcode",
-        "NSPhotoLibraryUsageDescription":
-          "The app needs permission to your camera roll in order to add photos you've already taken for upload"
+        "NSLocationWhenInUseUsageDescription": "the app needs permission to your location in order to delivery your orders",
+        "NSCameraUsageDescription": "The app needs permission to your camera in order to scan barcode",
+        "NSPhotoLibraryUsageDescription": "The app needs permission to your camera roll in order to add photos you've already taken for upload"
       }
     },
     "android": {

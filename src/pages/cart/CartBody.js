@@ -14,6 +14,7 @@ import { Icon } from 'native-base';
 import { GREY_COLOR, COFFEE_COLOR, RED_COLOR, BLACK_COLOR } from '../../config/const' ;
 
 import CartItem from './CartItem';
+//import console = require('console');
 
 
 export default class  CartBody extends Component{
@@ -27,17 +28,35 @@ export default class  CartBody extends Component{
 
   }
 
-  calculateBill(data){
+  calculateBill(data,discount=0){
 
     let total = 0
     data.map((item)=>{
        total += item.amount * item.price
     });
-
-    return total;
+    
+    return parseFloat(total - discount).toFixed(2);
+    
   }
+
+  calculateCoupon(json){
+    let discount = 0 ;
+
+    if(JSON.stringify(json)!=='{}'){
+      const total = this.calculateBill(this.props.data) ; 
+      discount = (total * json.value)/100; 
+    }
+    
+    return parseFloat(discount).toFixed(2) ; 
+
+
+  }
+
   render(){
 
+    const styleDisPlayCoupon = this.props.coupon.code !== undefined ? 'display' : 'none';
+    const discount = this.calculateCoupon(this.props.coupon);
+    
     return(
       <View>
           <View style={{margin: 10}}>
@@ -94,8 +113,26 @@ export default class  CartBody extends Component{
                 })
               }
 
+              { /* COUPON HERE  */}
+              <View style={{
+                padding: 0,
+                marginTop: 10,
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                display: styleDisPlayCoupon
+              }}>
+                  <View style={{ flexDirection:'row', alignItems:'center'}}>
+                      <Icon name="pricetag" style={{marginRight: 10, fontSize:16, color:COFFEE_COLOR}} /> 
+                      <Text style={{fontFamily:'Roboto', fontSize:16, color:COFFEE_COLOR}}> code : { this.props.coupon.code }   </Text> 
 
+                  </View> 
+                  <View>
+                    <Text> { discount } $ </Text>
+                  </View>
+              </View>
+              { /* END COUPON */}
               {/* TOTAL */}
+              
               <View style={{
                 padding: 0,
                 marginTop: 10,
@@ -108,7 +145,7 @@ export default class  CartBody extends Component{
                 </View>
 
                 <View>
-                  <Text style={[s.txt, {fontSize: 20, color: COFFEE_COLOR}]}> { this.calculateBill(this.props.data) } $ </Text>
+                  <Text style={[s.txt, {fontSize: 20, color: COFFEE_COLOR}]}> { this.calculateBill(this.props.data, discount ) } $ </Text>
                 </View>
 
               </View>
@@ -129,9 +166,18 @@ export default class  CartBody extends Component{
                   <Text style={s.txt}> Visa/Master/JCB </Text>
                 </View>
 
-                <View>
-                  <Text>Setup </Text>
-                </View>
+                <TouchableOpacity 
+                  onPress={()=>{ this.props.onPressGotoCouponPage() }}
+                  style={{
+                    borderWidth:0.5,
+                    padding:5,
+                    borderColor:COFFEE_COLOR,
+                    borderRadius:18,
+                    backgroundColor:COFFEE_COLOR,
+                    display: this.props.coupon.code !== undefined ? 'none':'display' 
+                }}> 
+                  <Text style={{color:'#fff'}}> Get Coupon </Text>
+                </TouchableOpacity>
 
               </View>
 

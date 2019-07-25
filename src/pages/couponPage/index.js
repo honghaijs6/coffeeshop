@@ -3,6 +3,7 @@ import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const';
 import doVerifyCoupon from '../../hook/ultil/doVerifyCoupon';
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux'; 
 import {
   View,
   Text,
@@ -26,7 +27,22 @@ import BenBody from '../../components/BenBody';
 import H2 from '../../components/html/h2';
 //import console = require('console');
 
-export default class CouponPage extends Component {
+
+const CouponItem = (props)=>{
+
+  const { data } = props ; 
+  return (
+      <TouchableOpacity onPress={ props.onPress } style={{
+        flexDirection:'row',
+        alignItems:'center'
+      }}>
+        <Icon name="pricetag" style={{marginRight: 10, fontSize:16, color:COFFEE_COLOR}} /> 
+        <Text style={{fontFamily:'Roboto', fontSize:16, color:COFFEE_COLOR}}> { data.code } </Text>
+      </TouchableOpacity>
+  )
+}
+
+class CouponPage extends Component {
 
 
   constructor(props){
@@ -34,7 +50,8 @@ export default class CouponPage extends Component {
 
     this.state = {
       code:'',
-      loader:false
+      loader:false,
+      data:{}
     }
 
     this._setup();
@@ -56,8 +73,9 @@ export default class CouponPage extends Component {
     if(resVerify.name==='success'){
       if(resVerify.message==='yes'){
         
-        console.log(resVerify.data)
-        
+        this.setState({
+          data:resVerify.data
+        })
       }else{ 
         Alert.alert('Message','this coupon code current not available')
       }
@@ -68,6 +86,19 @@ export default class CouponPage extends Component {
     let myBarcode = newProps.navigation.getParam('data') ;
     myBarcode =  myBarcode !== undefined ? myBarcode.data : '';
     this.setState({code:myBarcode});
+    
+  }
+
+  // ON PRESS APPLI CODE FOR ORDERS 
+  _onPress = ()=>{
+     
+    this.props.dispatch({
+      type:'COUPON',
+      coupon:this.state.data
+    }); 
+
+    Alert.alert('Coupon code have saved success and ready  for your orders ');
+     this.props.navigation.goBack();
     
   }
   render() {
@@ -107,9 +138,9 @@ export default class CouponPage extends Component {
 
              </View>
 
-             <H2 styleText={{color:'rgba(0,0,0,0.6)'}}>History </H2>
-             <View style={s.historyList}>
-                
+             <H2 styleText={{color:'rgba(0,0,0,0.6)'}}> Coupons </H2>
+             <View style={[s.historyList,{display: this.state.data.code === undefined ? 'none' : 'display' }]}>
+                   <CouponItem data={ this.state.data } onPress={ this._onPress } />
              </View>
 
           </BenBody>
@@ -121,10 +152,22 @@ export default class CouponPage extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    user:state.user
+  };
+}
+
+export default connect(mapStateToProps)(CouponPage);
+
 const s = StyleSheet.create({
 
   historyList:{
-
+    backgroundColor:'#ffff',
+    borderWidth:0.5,
+    borderColor:COFFEE_COLOR,
+    padding:12,
+    borderStyle:'dashed'
   },
   wrapperInput:{
     marginTop: 10,

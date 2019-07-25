@@ -18,6 +18,7 @@ const iniState = {
   list:[],
   isLoggedIn:false,
   userInfo:{},
+  coupon:{},
   tempInfo:{
     "birthday": "",
     "city": "",
@@ -75,6 +76,15 @@ export default function(state = iniState ,action = {}){
         }
 
      break;
+
+     case 'COUPON':
+
+        
+        return {
+          ...state,
+          coupon:action.coupon
+        }
+     break ;
 
 
     default:

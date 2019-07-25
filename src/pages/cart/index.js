@@ -124,7 +124,12 @@ class Cart extends Component {
         }}>
 
             <Content>
-              <CartBody onPressGotoSettingAdd={()=>{ this.props.navigation.navigate('DeliveryPage') }} onItemSelect={ this._onItemSelect } onChangeText={ (data)=>{ this._onChangeText(data) } } data={this.state.data} userInfo={ this.state.userInfo } />
+              <CartBody 
+                onPressGotoCouponPage={()=>{  this.props.navigation.navigate('CouponPage') }}
+                onPressGotoSettingAdd={()=>{ this.props.navigation.navigate('DeliveryPage') }} 
+                onItemSelect={ this._onItemSelect } 
+                onChangeText={ (data)=>{ this._onChangeText(data) } } 
+                data={this.state.data} coupon={this.props.user.coupon} userInfo={ this.state.userInfo } />
 
             </Content>
 
