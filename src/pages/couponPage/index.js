@@ -24,6 +24,7 @@ import BackButton from '../../components/BackButton';
 import BenBody from '../../components/BenBody';
 
 import H2 from '../../components/html/h2';
+//import console = require('console');
 
 export default class CouponPage extends Component {
 
@@ -55,6 +56,7 @@ export default class CouponPage extends Component {
     if(resVerify.name==='success'){
       if(resVerify.message==='yes'){
         
+        console.log(resVerify.data)
         
       }else{ 
         Alert.alert('Message','this coupon code current not available')
@@ -107,7 +109,7 @@ export default class CouponPage extends Component {
 
              <H2 styleText={{color:'rgba(0,0,0,0.6)'}}>History </H2>
              <View style={s.historyList}>
-
+                
              </View>
 
           </BenBody>
