@@ -117,7 +117,7 @@ class ProductItem extends Component {
       const cart = this.state.info;
       cart.amount = this.state.amount;
 
-      this.moOrder.addDataStore(cart);  
+      this.moOrder.addDataStore(cart);
       this.goBack();
 
     }else{
@@ -131,7 +131,7 @@ class ProductItem extends Component {
 
   }
 
-  
+
   async componentDidMount(){
 
     let info =  this.props.navigation.getParam('proInfo',{});
@@ -148,7 +148,7 @@ class ProductItem extends Component {
       info:Object.assign(info,cartInfo),
       isLiked:isLike
     });
-    
+
   }
 
   goBack(){
@@ -166,9 +166,9 @@ class ProductItem extends Component {
     return json;
   }
 
-  
+
   async _toggleLike(){
-    
+
     const isSave = await isSaveProduct(this.state.info);
 
     if(!isSave){
@@ -179,12 +179,12 @@ class ProductItem extends Component {
     }else{
       // REMOVE ITEM
       const resRemoveItem  = await removeItemStorage(this.state.info,this.props.dispatch);
-      
+
       this.setState({
         isLiked:! this.state.isLiked
       })
     }
-    
+
 
 
   }
@@ -273,7 +273,7 @@ class ProductItem extends Component {
                       backgroundColor: COFFEE_COLOR,
                       alignItems: 'center'
                     }} >
-                      <Text style={{ color:'#fff', fontFamily: 'Roboto', fontSize: 18}}> $ { total } </Text>
+                      <Text style={{ color:'#fff', fontFamily: 'Roboto', fontSize: 18}}> $ { parseFloat(total).toFixed(2) } </Text>
                     </TouchableOpacity>
                 </View>
               </View>

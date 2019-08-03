@@ -11,7 +11,7 @@ export default function(state=initState,action){
 
     switch(action.type){
 
-        
+
         case 'appstate-change':
 
             return {
@@ -33,10 +33,12 @@ export default function(state=initState,action){
                   'Your order has been completed, thank you so much,  wish you have a good day'
               ];
 
-              Alert.alert(
-                'Order Processing',
-                ORD_STATUS[data.data.status]
-              );
+              if(data.data.status > 0){
+                Alert.alert(
+                  'Order Processing',
+                  ORD_STATUS[data.data.status]
+                );
+              }
 
             break ;
           }

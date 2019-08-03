@@ -34,20 +34,20 @@ export default class  CartBody extends Component{
     data.map((item)=>{
        total += item.amount * item.price
     });
-    
+
     return parseFloat(total - discount).toFixed(2);
-    
+
   }
 
   calculateCoupon(json){
     let discount = 0 ;
 
     if(JSON.stringify(json)!=='{}'){
-      const total = this.calculateBill(this.props.data) ; 
-      discount = (total * json.value)/100; 
+      const total = this.calculateBill(this.props.data) ;
+      discount = (total * json.value)/100;
     }
-    
-    return parseFloat(discount).toFixed(2) ; 
+
+    return parseFloat(discount).toFixed(2) ;
 
 
   }
@@ -56,7 +56,7 @@ export default class  CartBody extends Component{
 
     const styleDisPlayCoupon = this.props.coupon.code !== undefined ? 'display' : 'none';
     const discount = this.calculateCoupon(this.props.coupon);
-    
+
     return(
       <View>
           <View style={{margin: 10}}>
@@ -122,17 +122,17 @@ export default class  CartBody extends Component{
                 display: styleDisPlayCoupon
               }}>
                   <View style={{ flexDirection:'row', alignItems:'center'}}>
-                      <Icon name="pricetag" style={{marginRight: 10, fontSize:16, color:COFFEE_COLOR}} /> 
-                      <Text style={{fontFamily:'Roboto', fontSize:16, color:COFFEE_COLOR}}> code : { this.props.coupon.code }   </Text> 
+                      <Icon name="pricetag" style={{marginRight: 10, fontSize:16, color:COFFEE_COLOR}} />
+                      <Text style={{fontFamily:'Roboto', fontSize:16, color:COFFEE_COLOR}}> code : { this.props.coupon.code }   </Text>
 
-                  </View> 
+                  </View>
                   <View>
                     <Text> { discount } $ </Text>
                   </View>
               </View>
               { /* END COUPON */}
               {/* TOTAL */}
-              
+
               <View style={{
                 padding: 0,
                 marginTop: 10,
@@ -166,7 +166,7 @@ export default class  CartBody extends Component{
                   <Text style={s.txt}> Visa/Master/JCB </Text>
                 </View>
 
-                <TouchableOpacity 
+                <TouchableOpacity
                   onPress={()=>{ this.props.onPressGotoCouponPage() }}
                   style={{
                     borderWidth:0.5,
@@ -174,8 +174,8 @@ export default class  CartBody extends Component{
                     borderColor:COFFEE_COLOR,
                     borderRadius:18,
                     backgroundColor:COFFEE_COLOR,
-                    display: this.props.coupon.code !== undefined ? 'none':'display' 
-                }}> 
+                    display: this.props.coupon.code !== undefined ? 'none':'display'
+                }}>
                   <Text style={{color:'#fff'}}> Get Coupon </Text>
                 </TouchableOpacity>
 

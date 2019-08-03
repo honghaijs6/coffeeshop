@@ -120,7 +120,7 @@ export default class App extends React.Component {
     socket.on('feeds updated',(res)=>{
 
       console.log('socket init');
-      
+
       store.dispatch({
         type:'reset-socket',
         res:res
@@ -147,10 +147,10 @@ export default class App extends React.Component {
     });
 
   }
-  
+
   componentWillUnmount(){
 
-    
+
     AppState.removeEventListener('change', this._handleAppStateChange);
 
 
@@ -174,7 +174,7 @@ export default class App extends React.Component {
 
 
     });
-    
+
     this.setState({ isReady: true });
   }
 
@@ -182,12 +182,12 @@ export default class App extends React.Component {
 
     // APP STATE CHANGE
     AppState.addEventListener('change', this._handleAppStateChange);
-    
+
   }
 
 
   _handleAppStateChange(newState){
-    
+
     store.dispatch({
       type:'appstate-change',
       appState:newState
@@ -197,7 +197,7 @@ export default class App extends React.Component {
 
   render() {
 
-    const AppContainer =  createAppContainer(RootStack) ; 
+    const AppContainer =  createAppContainer(RootStack) ;
 
 
     if (!this.state.isReady) {

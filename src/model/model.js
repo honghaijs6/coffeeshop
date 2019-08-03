@@ -10,7 +10,7 @@ class Model {
     this.state = {}
 
   }
-
+  
 
 
   /* HOW */

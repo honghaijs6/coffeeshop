@@ -29,7 +29,7 @@ class Cart extends Component {
 
 
     this.state = {
-      
+
       typeAction:'',
       onAction:'',
       tab:'cart',
@@ -57,11 +57,11 @@ class Cart extends Component {
       }else if(this.state.userInfo.recent_address === null  ){
         msg = 'Please add your delivery address '
       }else{
-  
+
         this.props.navigation.navigate('CheckOutPage');
-  
+
       }
-  
+
       msg !== '' ? Alert.alert('Message',msg) : null
     }else{
       this.props.navigation.navigate('DealPage',{
@@ -70,7 +70,7 @@ class Cart extends Component {
       })
     }
 
-    
+
 
   }
   _onBackBtnPress(){
@@ -124,11 +124,11 @@ class Cart extends Component {
         }}>
 
             <Content>
-              <CartBody 
+              <CartBody
                 onPressGotoCouponPage={()=>{  this.props.navigation.navigate('CouponPage') }}
-                onPressGotoSettingAdd={()=>{ this.props.navigation.navigate('DeliveryPage') }} 
-                onItemSelect={ this._onItemSelect } 
-                onChangeText={ (data)=>{ this._onChangeText(data) } } 
+                onPressGotoSettingAdd={()=>{ this.props.navigation.navigate('DeliveryPage') }}
+                onItemSelect={ this._onItemSelect }
+                onChangeText={ (data)=>{ this._onChangeText(data) } }
                 data={this.state.data} coupon={this.props.user.coupon} userInfo={ this.state.userInfo } />
 
             </Content>

@@ -1,4 +1,7 @@
 
+
+import server from '../../config/server';
+
 import Model from '../../model/model'; // shoppingcart only
 import Api from '../../model/api';
 import USER from '../../config/user';
@@ -11,8 +14,15 @@ import {detectForm} from '../../hook/before/';
 import React, { Component } from 'react';
 import {
   View,
-  Text
+  Text,
+  Modal,
+  WebView,
+  StyleSheet,
+  TouchableOpacity
 } from 'react-native';
+
+import { Icon } from 'native-base';
+
 import { connect } from 'react-redux';
 
 import { Container,  Content} from 'native-base';
@@ -27,7 +37,46 @@ import BenHeader from '../../components/BenHeader';
 import BackButton from '../../components/BackButton';
 
 import CheckOutBody from './body';
-``
+//import console = require('console');
+
+
+const style = StyleSheet.create({
+  brHeader:{
+    height: 50,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#ddd'
+  },
+  brContainer:{
+    width: '100%',
+    height: '100%'
+  }
+})
+const Browser = (props)=>{
+  return(
+    <View style={style.brContainer}>
+
+        <BenStatusBar/>
+        <View  style={ style.brHeader}>
+          <BackButton onPress={()=>{ props.onClose() }} />
+
+          <Text style={{ fontFamily: 'Roboto', fontSize: 14}}> Paypal </Text>
+          <View></View>
+        </View>
+
+
+         <WebView
+           onNavigationStateChange={(data)=>{ props.onNavigationStateChange(data) }}
+           source={{uri: props.uri }}
+           injectedJavaScript={`document.f1.submit()`}
+
+         />
+    </View>
+  )
+}
 
 class CheckOutPage extends Component{
 
@@ -41,7 +90,10 @@ class CheckOutPage extends Component{
       onAction:'',
       tab:'checkout',
       shoppingcart: props.shoppingcart.list,
-      userInfo:props.user.userInfo
+      userInfo:props.user.userInfo,
+      isOpen:false,
+      uri:'',
+      checkoutStatus:''
 
     }
     this.moShoppingcart = new Model('shoppingcart');
@@ -52,18 +104,51 @@ class CheckOutPage extends Component{
     this.moOrder = new Api('orders');
 
   }
+
+  calculateBill(data,discount=0){
+
+    let total = 0
+    data.map((item)=>{
+       total += item.amount * item.price
+    });
+
+    return parseFloat(total - discount).toFixed(2);
+
+  }
+
+  calculateCoupon(json){
+    let discount = 0 ;
+
+    if(JSON.stringify(json)!=='{}'){
+      const total = this.calculateBill(this.state.shoppingcart) ;
+      discount = (total * json.value)/100;
+    }
+
+    return parseFloat(discount).toFixed(2) ;
+
+
+  }
+
   _onSuccess(){
 
 
+    const COUPON = this.props.user.coupon.code !== undefined ? this.props.user.coupon.code : '';
+
+    // calculateBill
+    const discount = this.calculateCoupon(this.props.user.coupon);
+    const total =  this.calculateBill(this.state.shoppingcart)
 
     const data = {
 
       status:0,
       creator_id:this.state.userInfo.id,
-      promo_code:'',
-      isMobile:true,
+      coupon_code:COUPON,
+      discount:discount,
+      total:total,
 
+      isMobile:true,
       cart:this.state.shoppingcart,
+
       user:{
         uid:this.state.userInfo.uid,
         name:this.state.userInfo.name,
@@ -76,21 +161,28 @@ class CheckOutPage extends Component{
       creditcard:this.state.userInfo.creditcard
     };
 
-    this.setState({loader:true})
 
+
+    this.setState({loader:true});
     this.moOrder.post(data,(res)=>{
       if(res.name==='success'){
 
-        //this.setState({loader:false})
-        // clear shoppingcart
-        this.moShoppingcart.removeStoreData()
+        this.setState({loader:false})
+        const IP = server.base()+'/paypal?id='+res.data.id;
+        this._openBrowser(IP);
 
+        //this.moShoppingcart.removeStoreData();
 
       }
     });
-    //setTimeout(()=>{ this.setState({loader:false}) },TIMEOUT)
 
 
+  }
+  _openBrowser(IP){
+    this.setState({
+      isOpen:true,
+      uri: IP
+    });
   }
   async _onCheckOut(data){
 
@@ -100,20 +192,9 @@ class CheckOutPage extends Component{
       let userInfoData = this.state.userInfo;
       userInfoData.creditcard = data ;
 
-      
-      this.setState({loader:true});
-      // SAVE USER INFO creditcard
-      const msg = await USER.update(this.state.userInfo.id,{
-        name:this.state.userInfo.name,
-        creditcard:data
-      });
 
-      this.setState({loader:false});
+      this._onSuccess();
 
-      if(msg==='Update success'){
-        this._onSuccess();
-      }else{ alert(msg) }
-      
 
     }else{
       this.refs.toast.show('Please enter correct infomation',3000);
@@ -129,24 +210,62 @@ class CheckOutPage extends Component{
     })
   }
 
+  _handleBrowserChange(data){
+
+    if(data.title==='success'){
+      this.setState({
+        isOpen:false,
+        checkoutStatus:data.title
+      });
+
+      this.moShoppingcart.removeStoreData();
+      // REMOVE COUPON CODE ON REDUX
+      this.props.dispatch({
+        type:'COUPON',
+        coupon:{}
+      });
+
+
+
+    }
+  }
+
   render(){
     return(
       <Container>
 
         <BenStatusBar/>
+
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.isOpen}
+          onRequestClose={() => {
+            this.setState({isOpen:false})
+          }}>
+          <Browser
+            onNavigationStateChange={(data)=>{
+              this._handleBrowserChange(data);
+            }}
+            onClose={()=>{  this.setState({isOpen:false}) }} uri={ this.state.uri } />
+
+        </Modal>
+
         <BenHeader type="flex-start">
           <BackButton onPress={()=>{ this.props.navigation.goBack() }} />
           <View>
             <Text style={{
               fontSize: 16, fontFamily: 'Roboto'
-            }}> Check out </Text>
+            }}> Paypal Gateway </Text>
           </View>
 
 
         </BenHeader>
         <BenLoader visible={this.state.loader} />
         <Content>
-           <CheckOutBody onPress={ (data)=>{ this._onCheckOut(data) } }  />
+
+            <CheckOutBody  status={ this.state.checkoutStatus } onPress={ (data)=>{ this._onCheckOut(data) } }  />
+
         </Content>
 
 

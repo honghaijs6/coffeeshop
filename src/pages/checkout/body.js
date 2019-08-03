@@ -41,11 +41,48 @@ export default class  CheckOutBody extends Component{
 
     return(
       <View>
-          <View style={{margin: 10}}>
+
+          {/*<View style={{margin: 10}}>
             <Text style={{ fontFamily: 'Roboto'}}> Visa / Master / JBC </Text>
-          </View>
+          </View>*/}
+
 
           <View style={{
+            marginTop: '10%',
+            padding:30,
+            backgroundColor:'#fff'
+          }}>
+
+            <Text style={{
+              fontFamily: 'Roboto',
+              fontSize: 15,
+              alignItems: 'center'
+            }}>
+              { this.props.status === '' ? 'Payment will be processed via Paypal Gateway' : this.props.status }
+            </Text>
+
+            {
+              this.props.status === ''?
+              <TouchableOpacity onPress={ ()=>{ this.props.onPress() }} style={{
+                marginTop: 15,
+                borderRadius: 6,
+                width: '100%',
+                height: 44,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: COFFEE_COLOR
+              }} >
+                <Text style={{
+                  fontFamily: 'Roboto',
+                  color:'#fff',
+                  fontSize: 18
+                }}> Continue </Text>
+              </TouchableOpacity>: null
+            }
+
+
+          </View>
+          {/*<View style={{
             padding: 10,
             backgroundColor: '#fff'
           }}>
@@ -71,17 +108,9 @@ export default class  CheckOutBody extends Component{
 
             </View>
 
-          </View>
+          </View> */}
 
-          <TouchableOpacity onPress={ ()=>{ this._onCheckOut() } } style={{
-            marginTop: '20%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: COFFEE_COLOR,
-            height: 50
-          }}>
-              <Text style={{fontFamily: 'Roboto', fontSize: 18, color: '#fff'}}> Check Out </Text>
-          </TouchableOpacity>
+
 
 
       </View>

@@ -8,7 +8,7 @@ import notification from '../config/notification';
 
 import {AsyncStorage} from 'react-native';
 
-
+const API_ENDPOINT = socket.server.base();
 
 const USER = {
 
@@ -21,7 +21,7 @@ const USER = {
     async register(data){
         return new Promise((resole,reject)=>{
 
-            const url = socket.server.host+'/users';
+            const url = API_ENDPOINT+'/users';
             axios.post(url,data).then((res)=>{
                 res = res.data ;
               
@@ -61,7 +61,7 @@ const USER = {
 
             if(parseInt(id)!==0){
 
-              const url = socket.server.host+'/users?id='+id;
+              const url = API_ENDPOINT+'/users?id='+id;
               axios.put(url,data).then((res)=>{
                   res = res.data ;
                   if(res.name==='success'){
@@ -252,7 +252,7 @@ const USER = {
 
 
                     // GET USER INFO ADD SAVE LOCALSTOREAGE
-                    const url = socket.server.host+'/users?email='+email;
+                    const url = API_ENDPOINT+'/users?email='+email;
                     axios.get(url).then((res)=>{
 
                          const data = res.data;
