@@ -50,9 +50,9 @@ class DeliveryPage extends Component {
   constructor(props){
     super(props)
 
-    
+
     const userInfo = JSON.stringify(props.user.userInfo) === '{}' ? props.user.tempInfo : props.user.userInfo
-    
+
     this.state = {
 
       loader:false,
@@ -63,7 +63,7 @@ class DeliveryPage extends Component {
       mode:'none',
       userInfo: userInfo || {} ,
 
-      
+
 
       personalItems:[
         {
@@ -71,14 +71,14 @@ class DeliveryPage extends Component {
           icon:'home',
           label:'Home',
           name:  userInfo['home_address'],
-          isEmpty: userInfo['home_address']  
+          isEmpty: userInfo['home_address']
         },
         {
           code:'office',
           icon:'briefcase',
           label:'Work place',
           name:  userInfo['work_address'] ,
-          isEmpty: userInfo['work_address'] 
+          isEmpty: userInfo['work_address']
         },
         /*{
           code:'current',
@@ -108,13 +108,13 @@ class DeliveryPage extends Component {
 
     this.state.personalItems[2]['name'] = userInfo.recent_address ||  '...' ;
     this.setState({
-      userInfo: userInfo 
+      userInfo: userInfo
     });
 
   }
 
   addressAutoComplete(key){
-    
+
 
     let uri = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input='+key+'&key='+GOOGLE_MAP_KEY;
     fetch(uri)
@@ -123,6 +123,10 @@ class DeliveryPage extends Component {
 
       const locations = responseJson.predictions;
       let data = [];
+
+      console.log(locations);
+         
+
       locations.map((item)=>{
         data.push({
           code:'search',
@@ -138,7 +142,7 @@ class DeliveryPage extends Component {
         typeAction:'get',
         onAction:'search',
       })
-      
+
 
     })
     .catch((error) => {
@@ -155,19 +159,19 @@ class DeliveryPage extends Component {
     })
   }
 
-  // 
+  //
   async _onItemPress(data){
 
-    
+
     if(data.name !=='...'){
-      
+
 
       const userInfo = this.state.userInfo;
 
       if(JSON.stringify(userInfo)!=='{}'){
-        
+
         if(data.name.length > 10){
-          
+
           this.setState({loader:true});
           const msg = await USER.update(userInfo.id,{
               name:userInfo.name,
@@ -177,15 +181,15 @@ class DeliveryPage extends Component {
           Keyboard.dismiss();
 
           // go back
-          this._whereStateChange({ 
+          this._whereStateChange({
             onAction:'goBack'
           })
 
         }
 
       }else{  alert(JSON.stringify(data)) }
-      
-      
+
+
 
     }
 
@@ -217,10 +221,10 @@ class DeliveryPage extends Component {
 
         <BenStatusBar/>
 
-        <MyHeader 
-          onBackBtnPress={()=>{  this.props.navigation.goBack()  }}  
-          onAction={ this.state.onAction } onCloseSearch={ ()=>{  this._onCloseSearch() } } 
-          onChangeText={(text)=>{ this._onTextChange(text)  }} 
+        <MyHeader
+          onBackBtnPress={()=>{  this.props.navigation.goBack()  }}
+          onAction={ this.state.onAction } onCloseSearch={ ()=>{  this._onCloseSearch() } }
+          onChangeText={(text)=>{ this._onTextChange(text)  }}
         />
 
         <BenLoader visible={ this.state.loader } />
@@ -261,7 +265,7 @@ class DeliveryPage extends Component {
 
 function mapStateToProps(state){
   return {
-    user:state.user   
+    user:state.user
   }
 }
 

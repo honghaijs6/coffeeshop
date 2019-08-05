@@ -128,14 +128,13 @@ export default class App extends React.Component {
 
     });
 
-
     // ORDERS
-    socket.on('orders created',(res)=>{
+    /*socket.on('orders created',(res)=>{
       store.dispatch({
         type:'reset-socket',
         res:res
       });
-    });
+    });*/
 
     socket.on('orders updated',(res)=>{
 

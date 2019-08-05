@@ -93,7 +93,8 @@ class CheckOutPage extends Component{
       userInfo:props.user.userInfo,
       isOpen:false,
       uri:'',
-      checkoutStatus:''
+      checkoutStatus:'',
+      orderID:0
 
     }
     this.moShoppingcart = new Model('shoppingcart');
@@ -167,7 +168,8 @@ class CheckOutPage extends Component{
     this.moOrder.post(data,(res)=>{
       if(res.name==='success'){
 
-        this.setState({loader:false})
+        this.setState({loader:false,orderID:res.data.id});
+
         const IP = server.base()+'/paypal?id='+res.data.id;
         this._openBrowser(IP);
 
@@ -184,6 +186,18 @@ class CheckOutPage extends Component{
       uri: IP
     });
   }
+
+  _closeBrowser(){
+      this.setState({isOpen:false})
+      // DELETE DON HANG
+      this.moOrder.delete(this.state.orderID,(data)=>{
+        console.log(data);
+        alert(JSON.stringify(data));
+
+      })
+
+  }
+
   async _onCheckOut(data){
 
     // VALIDATE
@@ -247,7 +261,7 @@ class CheckOutPage extends Component{
             onNavigationStateChange={(data)=>{
               this._handleBrowserChange(data);
             }}
-            onClose={()=>{  this.setState({isOpen:false}) }} uri={ this.state.uri } />
+            onClose={()=>{  this._closeBrowser() }} uri={ this.state.uri } />
 
         </Modal>
 
