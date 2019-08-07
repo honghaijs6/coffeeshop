@@ -51,7 +51,8 @@ class shop extends Component {
         onTab:'order',
         tab:{},
         userInfo: JSON.stringify(props.user.userInfo) === '{}' ? props.user.tempInfo : props.user.userInfo, // get data from reducer
-        stores:[]
+        stores:[],
+        shoppingcart:props.shoppingcart.list || []
       }
 
 
@@ -72,7 +73,7 @@ class shop extends Component {
       this.moStore = new moFire('stores');
 
       this.moOrder = new Api('orders');
-      
+
 
 
     }
@@ -84,27 +85,27 @@ class shop extends Component {
           name:'listAll',
           params:'all?creator_id='+this.state.userInfo.id+'&status=lt2'
         })
-  
+
         this.moOrder.fetch((res)=>{
           res = res.data ;
           if(res.name==='success'){
             this.data.orders = res.rows ;
-  
+
             this.setState({onAction:'_readOrders'}) ;
           }
         });
       }
-      
+
     }
 
     _loadStores(){
       this.moStore.read((data)=>{
-        
+
         this.setState({
           stores:data
         });
 
-        
+
       })
     }
 
@@ -114,7 +115,7 @@ class shop extends Component {
       this.setState({loader:true});
 
       USER.checkLoginStatus();
-         
+
 
       this.moCate.read((data)=>{
 
@@ -141,7 +142,8 @@ class shop extends Component {
 
 
       this.setState({
-        userInfo: JSON.stringify(newProps.user.userInfo) !== '{}' ? newProps.user.userInfo : newProps.user.tempInfo
+        userInfo: JSON.stringify(newProps.user.userInfo) !== '{}' ? newProps.user.userInfo : newProps.user.tempInfo,
+        shoppingcart:newProps.shoppingcart.list
       });
       // RECIEW FROM SOCKET
       const {socketData} = newProps ;
@@ -195,12 +197,12 @@ class shop extends Component {
     }
     render() {
 
-        //alert(JSON.stringify(this.props.user)); 
-      
+        //alert(JSON.stringify(this.props.user));
+
         return (
             <BenTabs
 
-              onPress={(data)=>{ this._onChangeTab(data) }}  
+              onPress={(data)=>{ this._onChangeTab(data) }}
               onTab={ this.state.onTab }
               data={ this.state.tabs }
               notiOrder={ this.data.orders.length }
@@ -208,16 +210,15 @@ class shop extends Component {
               <BenLoader visible={this.state.loader} />
 
               <BenStatusBar/>
-          
-               
 
               <OrderTab  data={this.data} { ...this.state } />
               <AccountTab { ...this.state } />
               <FeedTab onPressChangeTab={ (data)=>{ this._onChangeTab(data) } } { ...this.state } />
+
               <MissionTab { ...this.state } />
-              <StoreTab 
-                { ...this.state } 
-                
+              <StoreTab
+                { ...this.state }
+
               />
 
 
@@ -231,7 +232,8 @@ class shop extends Component {
 function mapStateToProps(state){
   return {
     user:state.user,
-    socketData:state.socketData
+    socketData:state.socketData,
+    shoppingcart:state.shoppingcart
   }
 }
 export default  connect(mapStateToProps)(shop) ;

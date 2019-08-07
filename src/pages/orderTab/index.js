@@ -124,7 +124,7 @@ export default class OrderPage extends Component{
   /*WHEN*/
 
   _onCateItemPress = (item)=>{
-    
+
 
     this.props.navigation.navigate('MenuPage', {
         cateInfo: item,
@@ -158,7 +158,7 @@ export default class OrderPage extends Component{
         display:  this.props.onTab === this.state.tab ? 'block':'none'
       }}>
 
-        <OrderHeader  onPressNavigate={ this._onPressNavigate } userInfo={ this.props.userInfo }  />
+        <OrderHeader shoppingcart={ this.props.shoppingcart } onPressNavigate={ this._onPressNavigate } userInfo={ this.props.userInfo }  />
 
 
         <Content ref={c => (this.component = c)} >

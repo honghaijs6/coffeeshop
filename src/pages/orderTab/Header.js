@@ -1,10 +1,11 @@
+
+
 import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const' ;
+
 
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity,TextInput } from 'react-native';
 import {  Icon } from 'native-base';
-
-
 import BenHeader from '../../components/BenHeader';
 
 export default class OrderHeader extends Component{
@@ -16,13 +17,15 @@ export default class OrderHeader extends Component{
 
 
   }
-  truncate = (text)=>{
-      return text.length > 32 ? `${text.substr(0, 32)}...` : text;
+
+  _onPressShopingCart(){
+    if(this.props.shoppingcart.length>0){
+      this.props.onPressNavigate('CartPage');
+    }
   }
   render(){
 
     let address = this.props.userInfo.recent_address || 'Enter your delivery address' ;
-    
 
     return(
       <View>
@@ -30,7 +33,8 @@ export default class OrderHeader extends Component{
               <TouchableOpacity onPress={ ()=>{ this.props.onPressNavigate('DeliveryPage') } }  style={{ flexDirection: 'row', paddingLeft: 10}}>
 
                   <Icon style={{ fontSize: 32, color: COFFEE_COLOR}} name="bicycle"></Icon>
-                  <View style={{ paddingHorizontal: 10, width: '90%'}}>
+
+                  <View style={{ paddingHorizontal: 10, width: '82%'}}>
 
                       <Text style={{ fontSize: 10, color: BLACK_COLOR}}><Icon style={{fontSize: 12, color: BLACK_COLOR}} name="pin" /> Delivery to </Text>
 
@@ -38,7 +42,7 @@ export default class OrderHeader extends Component{
                         flexDirection:'row'
                       }}>
                         <TextInput editable={false} selectTextOnFocus={false} style={{
-                          width:'105%',
+                          width:'101%',
                           fontFamily:'Roboto',
                           fontSize:16,
                           color:BLACK_COLOR
@@ -47,6 +51,14 @@ export default class OrderHeader extends Component{
                       </View>
 
                   </View>
+                  <TouchableOpacity onPress={()=>{ this._onPressShopingCart() }} style={{ width: '10%', flexDirection: 'row', alignSelf: 'center'}}>
+
+                      <Icon style={{ fontSize: 28, color: COFFEE_COLOR}} name="cart" />
+                      <View style={[s.notiHolder, {display: this.props.shoppingcart.length > 0 ? '' : 'none'} ]}>
+                          <Text style={{color:'#fff', fontSize:10}}> { this.props.shoppingcart.length } </Text>
+                      </View>
+
+                  </TouchableOpacity>
               </TouchableOpacity>
           </BenHeader>
 
@@ -86,6 +98,17 @@ export default class OrderHeader extends Component{
 }
 
 const s = StyleSheet.create({
+  notiHolder:{
+    position:'absolute',
+    backgroundColor:'#000',
+    width:15,
+    height:15,
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:3,
+    right:'14%',
+    backgroundColor:'#DD4B39'
+  },
   btn:{
     marginLeft: 15,
     alignItems: 'center',

@@ -124,9 +124,6 @@ class DeliveryPage extends Component {
       const locations = responseJson.predictions;
       let data = [];
 
-      console.log(locations);
-         
-
       locations.map((item)=>{
         data.push({
           code:'search',
@@ -135,6 +132,14 @@ class DeliveryPage extends Component {
           name:item.description
         });
       })
+
+      data.unshift({
+          code:'search',
+          icon:'pin',
+          label:'',
+          name:key
+      });
+
       this.data = data ;
 
 
