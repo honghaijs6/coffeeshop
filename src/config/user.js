@@ -148,7 +148,34 @@ const USER = {
       }
     },
 
-    getInfo(ID){
+    async getInfo(ID){
+
+      return new Promise((resole,reject)=>{
+        const uri = API_ENDPOINT+'/users/getInfo/'+ID;
+        axios.get(uri)
+              .then((res) => {
+
+                
+                const userInfo = res.data ;
+                this._whereStateChange({
+                  type:'LOGIN',
+                  isLoggedIn:true ,
+                  userInfo:userInfo
+                });
+                
+                resole(res.data);
+
+                
+                
+              },
+              (error) => {
+                  reject(error);
+
+              });
+      })
+    },
+
+    _getInfo(ID){
 
       
       const uri = API_ENDPOINT+'/users/getInfo/'+ID;
@@ -156,6 +183,7 @@ const USER = {
             .then((res) => {
 
               const userInfo = res.data ;
+
               this._whereStateChange({
                 type:'LOGIN',
                 isLoggedIn:true ,
@@ -190,7 +218,7 @@ const USER = {
                   
 
                   // SILENT GET USER INFO
-                  this.getInfo(info.id);
+                  this._getInfo(info.id);
 
                   notification.getExpoToken((expoToken)=>{
 

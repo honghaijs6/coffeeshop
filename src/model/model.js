@@ -57,6 +57,19 @@ class Model {
 
     return ret ;
   }
+
+  // ADD TO REDUX
+  addDataStoreAllowDup(json){
+    const baseData = store.getState()[this.strModel]['list'];
+    this.data = baseData;
+
+    this.data.push(json);
+
+    this._setStoreData(this.data);
+
+  }
+
+  // ADD TO REDUX
   addDataStore(json){
 
     const baseData = store.getState()[this.strModel]['list'];

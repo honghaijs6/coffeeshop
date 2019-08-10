@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   btnOK:{
     height:40,
     backgroundColor:'#3b853f',
-    borderRadius:12,
+    borderRadius:18,
     alignItems:'center',
     justifyContent:'center',
     paddingHorizontal:20

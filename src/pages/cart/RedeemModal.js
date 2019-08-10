@@ -40,7 +40,7 @@ export default class RedeemModal extends Component {
                 </Text>
             </View>
             {/* footer bottom */}
-            <TouchableOpacity onPress={ ()=>{ this.props.onAccept() }} style={[styles.btnOK, styles.green,s.p, {width:'100%'}]}>
+            <TouchableOpacity onPress={ ()=>{ this.props.onAccept() }} style={[styles.btnOK, styles.green,s.p, {width:'100%',marginTop:20}]}>
                 <Text style={[styles.white]}> Accept </Text>
             </TouchableOpacity>
 

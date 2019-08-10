@@ -1,6 +1,10 @@
 /* @flow */
 
-import USER from '../../config/user'
+import { MAX_REDEEM } from '../../config/const';
+
+import USER from '../../config/user';
+import Model from '../../model/model';
+
 
 import React, { Component } from 'react';
 
@@ -14,7 +18,7 @@ import {
 import { connect } from 'react-redux';
 
 
-import { Container,  Content  } from 'native-base';
+import { Container,  Content, Item  } from 'native-base';
 import {  COFFEE_COLOR,  } from '../../config/const' ;
 
 import BenStatusBar  from "../../components/BenStatusBar";
@@ -22,6 +26,7 @@ import BenHeader from '../../components/BenHeader';
 import BackButton from '../../components/BackButton';
 
 import RedeemModal from './RedeemModal';
+import ListProFreeModal from './ListProFreeModal';
 
 
 import CartBody from './CartBody';
@@ -40,12 +45,16 @@ class Cart extends Component {
       tab:'cart',
       data: props.shoppingcart.list || [],
       userInfo: props.user.userInfo || {},
-      isOpenModal:false
+      isOpenModal:false,
+      isOpenModalProduct:false
     }
 
 
     this._onOrderNow = this._onOrderNow.bind(this);
     this._onItemSelect = this._onItemSelect.bind(this);
+
+    this.moOrder = new Model('shoppingcart');
+
 
 
   }
@@ -94,16 +103,15 @@ class Cart extends Component {
 
   }
 
-  componentDidMount(){
+  async componentDidMount(){
 
     
      if(this.props.user.isLoggedIn){
 
-        USER.getInfo();
+        // LAY THONG TIN USER LIVE
+        await USER.getInfo();
+        this._isAvailableRedeem();
         
-        setTimeout(()=>{
-          this._isAvailableRedeem();
-        },2000)
         
      }else{  
         // LOGIN
@@ -117,8 +125,7 @@ class Cart extends Component {
   _isAvailableRedeem(){
     if(this.props.user.isLoggedIn){
 
-      if(this.props.user.redeem > 0){
-        //Alert.alert('Message','Woohoo!!  Now, You had have enough points to get 01 free');
+      if(this.props.user.userInfo.point >= MAX_REDEEM){
 
         this.setState({isOpenModal:true})
 
@@ -140,6 +147,26 @@ class Cart extends Component {
 
   }
 
+  _acceptGetOneFree(){
+    
+    this.setState({
+      isOpenModal:false,
+      isOpenModalProduct:true
+    });
+
+  }
+
+  // ADD PRO TO SHOPPING CART  
+  _onSelectPro(item){
+
+      item.amount = 1;
+      item.price = 0 ;
+      // add to redux store
+      this.moOrder.addDataStoreAllowDup(item);
+      this.setState({isOpenModalProduct:false});
+
+
+  }
   render() {
 
 
@@ -160,8 +187,16 @@ class Cart extends Component {
 
         
         <RedeemModal 
+            onAccept={()=>{ this._acceptGetOneFree() }}
             onClose={()=>{ this.setState({isOpenModal:false}) }}
             visible={ this.state.isOpenModal } 
+        />
+
+        <ListProFreeModal
+            onSelect={(item)=>{ this._onSelectPro(item) }}
+            onClose={()=>{ this.setState({isOpenModalProduct:false}) }}
+            visible={ this.state.isOpenModalProduct }
+
         />
 
         <View style={{

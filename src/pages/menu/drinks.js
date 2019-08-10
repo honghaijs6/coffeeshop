@@ -1,6 +1,7 @@
 /* @flow weak */
 import {RED_COLOR, COFFEE_COLOR, BLACK_COLOR, GREY_COLOR } from '../../config/const';
 
+
 import React, { Component } from 'react';
 
 import {
@@ -59,7 +60,7 @@ const ItemPro = (props)=>{
           </TouchableOpacity>
 
           <Text style={s.txt}> Size L  </Text>
-          <Text style={s.txt,s.price }> { item.price_m } $ </Text>
+          <Text style={s.txt,s.price }> 0$ </Text>
 
         </View>
 

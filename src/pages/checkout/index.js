@@ -225,7 +225,7 @@ class CheckOutPage extends Component{
     })
   }
 
-  _handleBrowserChange(data){
+  async _handleBrowserChange(data){
    
     if(data.title==='success'){
       this.setState({
@@ -234,12 +234,17 @@ class CheckOutPage extends Component{
       });
 
       this.moShoppingcart.removeStoreData();
+
       // REMOVE COUPON CODE ON REDUX
       this.props.dispatch({
         type:'COUPON',
         coupon:{}
       });
 
+      // cap nhat userInfo cho redux 
+      await USER.getInfo()
+
+      
 
 
     }

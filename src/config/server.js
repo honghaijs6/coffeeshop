@@ -3,8 +3,8 @@ import {AsyncStorage} from 'react-native';
 // "http://192.168.1.39", //"https://backendsql.herokuapp.com",
 // 3030, //443,
 const server = {
-  host: "http://192.168.1.39",
-  port: 3030,
+  host: "https://backendsql.herokuapp.com",
+  port: 443,
 
   url:'',
   paginate:{

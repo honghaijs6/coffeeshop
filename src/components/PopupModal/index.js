@@ -16,7 +16,7 @@ export default class PopupModal extends Component {
           visible={this.props.visible}
           >
             <View style={ styles.container} >
-              <View style={ styles.body}>
+              <View style={[styles.body,{...this.props.style}]}>
                 { this.props.children }
               </View>
             </View>
