@@ -205,8 +205,7 @@ class CheckOutPage extends Component{
 
       let userInfoData = this.state.userInfo;
       userInfoData.creditcard = data ;
-
-
+      
       this._onSuccess();
 
 
@@ -217,6 +216,8 @@ class CheckOutPage extends Component{
 
   }
 
+  
+
   componentWillReceiveProps(newProps){
     this.setState({
       userInfo:newProps.user.userInfo,
@@ -225,7 +226,7 @@ class CheckOutPage extends Component{
   }
 
   _handleBrowserChange(data){
-
+   
     if(data.title==='success'){
       this.setState({
         isOpen:false,

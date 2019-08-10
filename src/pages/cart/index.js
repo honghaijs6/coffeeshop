@@ -1,5 +1,7 @@
 /* @flow */
 
+import USER from '../../config/user'
+
 import React, { Component } from 'react';
 
 import {
@@ -19,6 +21,9 @@ import BenStatusBar  from "../../components/BenStatusBar";
 import BenHeader from '../../components/BenHeader';
 import BackButton from '../../components/BackButton';
 
+import RedeemModal from './RedeemModal';
+
+
 import CartBody from './CartBody';
 
 
@@ -34,7 +39,8 @@ class Cart extends Component {
       onAction:'',
       tab:'cart',
       data: props.shoppingcart.list || [],
-      userInfo: props.user.userInfo || {}
+      userInfo: props.user.userInfo || {},
+      isOpenModal:false
     }
 
 
@@ -88,14 +94,48 @@ class Cart extends Component {
 
   }
 
+  componentDidMount(){
+
+    
+     if(this.props.user.isLoggedIn){
+
+        USER.getInfo();
+        
+        setTimeout(()=>{
+          this._isAvailableRedeem();
+        },2000)
+        
+     }else{  
+        // LOGIN
+        this.props.navigation.navigate('DealPage');      
+     }
+     
+
+
+  }
+
+  _isAvailableRedeem(){
+    if(this.props.user.isLoggedIn){
+
+      if(this.props.user.redeem > 0){
+        //Alert.alert('Message','Woohoo!!  Now, You had have enough points to get 01 free');
+
+        this.setState({isOpenModal:true})
+
+      }
+    }
+  }
   componentWillReceiveProps(newProps){
 
-
     if(newProps.shoppingcart.list.length>0){
+
       this.setState({
         userInfo:newProps.user.userInfo,
         data:newProps.shoppingcart.list
       });
+
+
+
     }else{ this.props.navigation.goBack(); }
 
   }
@@ -117,6 +157,12 @@ class Cart extends Component {
 
           <Text>  </Text>
         </BenHeader>
+
+        
+        <RedeemModal 
+            onClose={()=>{ this.setState({isOpenModal:false}) }}
+            visible={ this.state.isOpenModal } 
+        />
 
         <View style={{
           flex: 1,

@@ -19,6 +19,7 @@ const iniState = {
   isLoggedIn:false,
   userInfo:{},
   coupon:{},
+  redeem:0,
   tempInfo:{
     "birthday": "",
     "city": "",
@@ -55,13 +56,7 @@ export default function(state = iniState ,action = {}){
   switch(action.type){
 
      case 'LOGIN':
-      
       let userInfo = action.userInfo; 
-      
-      //userInfo.photoURL = userInfo.photoURL || AVATAR_URL;
-      //userInfo.phone = userInfo.phone || '';
-      
-
       return {
          ...state,
          userInfo:userInfo,
@@ -77,8 +72,13 @@ export default function(state = iniState ,action = {}){
 
      break;
 
+     case 'REDEEM':
+        return {
+          ...state,
+          redeem: action.redeem
+        }
+     break;
      case 'COUPON':
-
         
         return {
           ...state,

@@ -5,6 +5,26 @@ import {
 
 
 const styles = StyleSheet.create({
+
+
+  font18:{ fontSize:18},
+  white:{ color:'#fff'},
+  green:{
+    color:'#3b853f'
+  },
+  btnOK:{
+    height:40,
+    backgroundColor:'#3b853f',
+    borderRadius:12,
+    alignItems:'center',
+    justifyContent:'center',
+    paddingHorizontal:20
+  },
+  btnNoThank:{
+    height:36,
+    color:'#3b853f'
+    
+  },
   notiHolder:{
     position:'absolute',
     backgroundColor:'#000',

@@ -57,7 +57,7 @@ const ProfileName = (props)=>{
                <Text style={s.txt}> Orders </Text>
              </View>
              <View style={s.col}>
-               <Text style={ s.txt}> { userInfo.num_order || 0 } </Text>
+               <Text style={ s.txt}> { userInfo.ORDER_NUM || 0 } </Text>
              </View>
           </View>
 

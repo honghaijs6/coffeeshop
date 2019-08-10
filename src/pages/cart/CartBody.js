@@ -6,16 +6,17 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Image,
+  Dimensions
 } from 'react-native';
 
 import { Icon } from 'native-base';
-
-import { GREY_COLOR, COFFEE_COLOR, RED_COLOR, BLACK_COLOR } from '../../config/const' ;
+import {  COFFEE_COLOR, } from '../../config/const' ;
 
 import CartItem from './CartItem';
-//import console = require('console');
 
+const iconPayPal = require('../../../assets/icon-paypal.png');
 
 export default class  CartBody extends Component{
 
@@ -113,13 +114,36 @@ export default class  CartBody extends Component{
                 })
               }
 
+              
+
+              {/* SUB TOTAL */}
+              <View style={{
+                padding: 0,
+                marginTop: 10,
+                justifyContent: 'space-between',
+                flexDirection: 'row'
+              }}>
+                  <Text style={[s.txt]}> Total </Text>
+                  <Text style={[s.txt]}> { this.calculateBill(this.props.data, 0 ) } $ </Text>
+              
+              </View>
+              {/* END SUBTOTAL */}
+
+
               { /* COUPON HERE  */}
               <View style={{
                 padding: 0,
                 marginTop: 10,
                 justifyContent: 'space-between',
                 flexDirection: 'row',
-                display: styleDisPlayCoupon
+                display: styleDisPlayCoupon,
+                borderTopWidth:0.5,
+                borderTopColor:'#ddd',
+                borderBottomWidth:0.5,
+                borderBottomColor:'#ddd',
+                height:40,
+                alignItems:'center'
+                
               }}>
                   <View style={{ flexDirection:'row', alignItems:'center'}}>
                       <Icon name="pricetag" style={{marginRight: 10, fontSize:16, color:COFFEE_COLOR}} />
@@ -127,25 +151,26 @@ export default class  CartBody extends Component{
 
                   </View>
                   <View>
-                    <Text> { discount } $ </Text>
+                    <Text> - { discount } $ </Text>
                   </View>
               </View>
               { /* END COUPON */}
-              {/* TOTAL */}
 
+
+              {/* TOTAL PAYMENT */}
               <View style={{
                 padding: 0,
                 marginTop: 10,
                 justifyContent: 'space-between',
-                flexDirection: 'row',
+                flexDirection: 'row'
               }}>
 
                 <View>
-                  <Text style={s.txt}> Total </Text>
+                  <Text style={[s.txt,{ fontSize:18}]}> Total Payment </Text>
                 </View>
 
                 <View>
-                  <Text style={[s.txt, {fontSize: 20, color: COFFEE_COLOR}]}> { this.calculateBill(this.props.data, discount ) } $ </Text>
+                  <Text style={[s.txt, {fontSize: 18, color: COFFEE_COLOR}]}> { this.calculateBill(this.props.data, discount ) } $ </Text>
                 </View>
 
               </View>
@@ -162,8 +187,10 @@ export default class  CartBody extends Component{
               }}>
 
                 <View style={{flexDirection: 'row'}}>
-                  <Icon name="card" style={{fontSize: 20, color:COFFEE_COLOR, marginRight: 10, marginLeft: 5}} />
-                  <Text style={s.txt}> Visa/Master/JCB </Text>
+                  <Image source={ iconPayPal } resizeMode="center" style={{
+                    height:26,
+                    width: 41
+                  }} />
                 </View>
 
                 <TouchableOpacity
@@ -189,6 +216,13 @@ export default class  CartBody extends Component{
 
 const s = StyleSheet.create({
 
+  row:{
+    padding: 0,
+    marginTop: 10,
+    justifyContent: 'space-between',
+    flexDirection: 'row'
+
+  },
   txt:{
     fontFamily: 'Roboto',
     fontSize: 14

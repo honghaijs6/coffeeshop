@@ -22,6 +22,8 @@ import AccountTab from './userTab/';
 
 
 
+
+
 class shop extends Component {
 
     _isMounted = false;
@@ -113,7 +115,9 @@ class shop extends Component {
 
       this._isMounted = true;
       this.setState({loader:true});
+      
 
+      // KIEM TRA TRANG THAI & CAP NHẬT USER INFO
       USER.checkLoginStatus();
 
 
@@ -132,15 +136,16 @@ class shop extends Component {
 
       // read stores
       this._loadStores();
-
       // READ ORDERS
-      this._readOrders();
+      setTimeout(()=>{
+        this._readOrders();
+      },2000)
+      
 
     }
 
     componentWillReceiveProps(newProps){
-
-
+      
       this.setState({
         userInfo: JSON.stringify(newProps.user.userInfo) !== '{}' ? newProps.user.userInfo : newProps.user.tempInfo,
         shoppingcart:newProps.shoppingcart.list

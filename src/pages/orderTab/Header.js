@@ -4,7 +4,7 @@ import { GREY_COLOR, COFFEE_COLOR, BLACK_COLOR } from '../../config/const' ;
 
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity,TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity,TextInput, Alert } from 'react-native';
 import {  Icon } from 'native-base';
 import BenHeader from '../../components/BenHeader';
 
@@ -21,7 +21,7 @@ export default class OrderHeader extends Component{
   _onPressShopingCart(){
     if(this.props.shoppingcart.length>0){
       this.props.onPressNavigate('CartPage');
-    }
+    }else{ Alert.alert('No items in your shopping cart') }
   }
   render(){
 
@@ -59,6 +59,7 @@ export default class OrderHeader extends Component{
                       </View>
 
                   </TouchableOpacity>
+
               </TouchableOpacity>
           </BenHeader>
 

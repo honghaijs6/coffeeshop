@@ -4,7 +4,7 @@ import Api from '../../model/api';
 
 
 import React, { Component } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Container, Icon,  Text, Content } from 'native-base';
 
 import moment from 'moment';
@@ -13,7 +13,6 @@ import moment from 'moment';
 import BenHeader from '../../components/BenHeader'
 import BenAvatar from '../../components/BenAvatar';
 import MyAvatar from '../../components/MyAvatar';
-import BenNoti from '../../components/BenNoti';
 
 
 import BenLoader from '../../components/BenLoader';
@@ -54,7 +53,7 @@ export default class FeedPage extends Component{
     this._setup();
 
     this._onPressAvarar  = this._onPressAvarar.bind(this);
-    this._onPressNoti = this._onPressNoti.bind(this) ;
+    
 
   }
 
@@ -72,9 +71,7 @@ export default class FeedPage extends Component{
     alert('Click avatar ')
   }
 
-  _onPressNoti(){
-    alert('click notifications')
-  }
+  
 
   _onCardPress(data){
 
@@ -138,6 +135,11 @@ export default class FeedPage extends Component{
     }
   }
 
+  _onPressShopingCart(){
+    if(this.props.shoppingcart.length>0){
+      this.props.navigation.navigate('CartPage');
+    }else{ Alert.alert('No items in your shopping cart') }
+  }
 
   render(){
 
@@ -169,7 +171,7 @@ export default class FeedPage extends Component{
              }}>  
                  <Icon style={{fontSize:22, marginRight: 10,}} name="person" /> 
                  <TouchableOpacity onPress={ ()=>{ this._goto('login') } } style={{
-                   borderWidth:1,
+                   borderWidth:1,  
                    borderRadius:22,
                    width:100,
                    borderColor:COFFEE_COLOR,
@@ -182,8 +184,18 @@ export default class FeedPage extends Component{
              </View>
               
            }
+          
+           {/* ICON CART INFO */}
+           <TouchableOpacity onPress={()=>{ this._onPressShopingCart() }} style={{ width: '10%', flexDirection: 'row', alignSelf: 'center'}}>
+
+                <Icon style={{ fontSize: 28, color: COFFEE_COLOR}} name="cart" />
+                <View style={[s.notiHolder, {display: this.props.shoppingcart.length > 0 ? '' : 'none'} ]}>
+                          <Text style={{color:'#fff', fontSize:10}}> { this.props.shoppingcart.length } </Text>
+                </View>
+
+          </TouchableOpacity>
+
            
-           <BenNoti onPress={ this._onPressNoti }  />
 
         </BenHeader>
 

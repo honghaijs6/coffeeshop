@@ -4,9 +4,10 @@ import axios from 'react-native-axios';
 import socket from './socket';
 import store from '../redux/store';
 import notification from '../config/notification';
-
-
 import {AsyncStorage} from 'react-native';
+
+// MUST BE UPDATE THIS FROM CLOUDE 
+import { MAX_REDEEM } from './const';
 
 const API_ENDPOINT = socket.server.base();
 
@@ -131,10 +132,48 @@ const USER = {
           })
 
 
-
+  
         })
     },
 
+
+    _isAvailableRedeem(userInfo){
+      
+      if(parseInt(userInfo.point) >= MAX_REDEEM){
+        
+        this._whereStateChange({
+          type:'REDEEM',
+          redeem:1
+        });
+      }
+    },
+
+    getInfo(ID){
+
+      
+      const uri = API_ENDPOINT+'/users/getInfo/'+ID;
+      axios.get(uri)
+            .then((res) => {
+
+              const userInfo = res.data ;
+              this._whereStateChange({
+                type:'LOGIN',
+                isLoggedIn:true ,
+                userInfo:userInfo
+              });
+
+              this._isAvailableRedeem(userInfo);
+
+
+            },
+            (error) => {
+                console.log(error)
+
+              }  
+            );
+      
+      
+    },
     async checkLoginStatus(){
 
       // GET EXPO TOKEN
@@ -146,15 +185,12 @@ const USER = {
 
                 const info = JSON.parse(data) || {} ;
                 
-                this._whereStateChange({
-                    type:'LOGIN',
-                    isLoggedIn: data === null ? false : true ,
-                    userInfo:info
-                });
                 
-                
-
                 if(info.id !== undefined){
+                  
+
+                  // SILENT GET USER INFO
+                  this.getInfo(info.id);
 
                   notification.getExpoToken((expoToken)=>{
 
