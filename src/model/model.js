@@ -58,11 +58,12 @@ class Model {
     return ret ;
   }
 
-  // ADD TO REDUX
+  // ADD TO REDUX : shopping cart
   addDataStoreAllowDup(json){
-    const baseData = store.getState()[this.strModel]['list'];
-    this.data = baseData;
 
+    const baseData = store.getState()[this.strModel]['list'].filter(item=>item.price > 0) ;
+    
+    this.data = baseData;
     this.data.push(json);
 
     this._setStoreData(this.data);

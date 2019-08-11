@@ -1,5 +1,8 @@
 /* @flow weak */
 
+import styles from '../../style/styles';
+
+
 import React from 'react';
 import {
   View,
@@ -29,10 +32,18 @@ const CartItem = (props) => (
             }}>
               <Text> {  props.data.amount } </Text>
             </View>
-
-            <TouchableOpacity onPress={()=>{ props.onItemSelect(props.data) }} style={{marginLeft: 10}}>
-              <Text style={{color:COFFEE_COLOR}}> { props.data.name } </Text>
-            </TouchableOpacity>
+            
+            {
+              props.data.price > 0 ? 
+              <TouchableOpacity onPress={()=>{ props.onItemSelect(props.data) }} style={{marginLeft: 10}}>
+                <Text style={[styles.textUnderline,{color:COFFEE_COLOR}]}> { props.data.name } </Text>
+              </TouchableOpacity>:
+              <View onPress={()=>{ props.onItemSelect(props.data) }} style={{marginLeft: 10}}>
+                <Text> { props.data.name } </Text>
+              </View>
+            
+            }
+            
         </View>
 
         <View style={{alignItems: 'center', height: 30}}>

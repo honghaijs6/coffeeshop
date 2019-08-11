@@ -18,6 +18,7 @@ import {  Icon, Content } from 'native-base';
 import BenBody from '../../components/BenBody';
 
 import NoData from '../../components/NoData';
+
 const w = Dimensions.get('window');
 
 
@@ -26,6 +27,7 @@ const ItemPro = (props)=>{
   const item = props.data;
   const photo = item.photo.replace(/ /g,'%20');
 
+  
   return(
     <View style={{
         marginTop: 15,
@@ -60,7 +62,7 @@ const ItemPro = (props)=>{
           </TouchableOpacity>
 
           <Text style={s.txt}> Size L  </Text>
-          <Text style={s.txt,s.price }> 0$ </Text>
+          <Text style={s.txt,s.price }> { item.price_m }$ </Text>
 
         </View>
 

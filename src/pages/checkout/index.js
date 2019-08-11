@@ -188,13 +188,15 @@ class CheckOutPage extends Component{
   }
 
   _closeBrowser(){
-      this.setState({isOpen:false})
+      
+    this.setState({isOpen:false})
+      
       // DELETE DON HANG
       this.moOrder.delete(this.state.orderID,(data)=>{
         console.log(data);
-        alert(JSON.stringify(data));
+        
+      });
 
-      })
 
   }
 
@@ -242,7 +244,7 @@ class CheckOutPage extends Component{
       });
 
       // cap nhat userInfo cho redux 
-      await USER.getInfo()
+      await USER.getInfo(this.props.user.userInfo.id);
 
       
 

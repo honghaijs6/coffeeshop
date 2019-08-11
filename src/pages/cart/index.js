@@ -1,6 +1,7 @@
 /* @flow */
 
-import { MAX_REDEEM } from '../../config/const';
+import styles from '../../style/styles';
+
 
 import USER from '../../config/user';
 import Model from '../../model/model';
@@ -13,7 +14,8 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Alert
+  Alert,
+  Image
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -31,6 +33,8 @@ import ListProFreeModal from './ListProFreeModal';
 
 import CartBody from './CartBody';
 
+
+const iconGif = require('../../../assets/redeem_icon.png');
 
 class Cart extends Component {
 
@@ -107,31 +111,15 @@ class Cart extends Component {
 
     
      if(this.props.user.isLoggedIn){
-
         // LAY THONG TIN USER LIVE
-        await USER.getInfo();
-        this._isAvailableRedeem();
-        
-        
+        const info = await USER.getInfo(this.props.user.userInfo.id);
      }else{  
         // LOGIN
         this.props.navigation.navigate('DealPage');      
      }
      
-
-
   }
 
-  _isAvailableRedeem(){
-    if(this.props.user.isLoggedIn){
-
-      if(this.props.user.userInfo.point >= MAX_REDEEM){
-
-        this.setState({isOpenModal:true})
-
-      }
-    }
-  }
   componentWillReceiveProps(newProps){
 
     if(newProps.shoppingcart.list.length>0){
@@ -187,6 +175,8 @@ class Cart extends Component {
 
         
         <RedeemModal 
+
+            userInfo={ this.props.user.userInfo }
             onAccept={()=>{ this._acceptGetOneFree() }}
             onClose={()=>{ this.setState({isOpenModal:false}) }}
             visible={ this.state.isOpenModal } 
@@ -205,6 +195,7 @@ class Cart extends Component {
         }}>
 
             <Content>
+
               <CartBody
                 onPressGotoCouponPage={()=>{  this.props.navigation.navigate('CouponPage') }}
                 onPressGotoSettingAdd={()=>{ this.props.navigation.navigate('DeliveryPage') }}
@@ -213,6 +204,14 @@ class Cart extends Component {
                 data={this.state.data} coupon={this.props.user.coupon} userInfo={ this.state.userInfo } />
 
             </Content>
+
+            {/* GIF BUTTON */}
+            <TouchableOpacity onPress={()=>{ this.setState({isOpenModal:true}) }} style={[s.btnGif,styles.boxShadow]}>
+              <Image source={ iconGif } style={{ width:45, height:45}} />
+            </TouchableOpacity>
+
+            
+            
 
             {/* FOOTER BUTTON */}
             <TouchableOpacity onPress={ this._onOrderNow } style={{
@@ -229,7 +228,7 @@ class Cart extends Component {
         </View>
 
       </Container>
-    );
+    ); 
 
   }
 }
@@ -245,6 +244,15 @@ export default connect(mapStateToProps)(Cart);
 
 const s = StyleSheet.create({
 
+  btnGif:{
+    position:'absolute',
+    right:20,
+    bottom:70,
+    height:50,
+    width:50,
+    borderRadius:25,
+    backgroundColor:'#fff'
+  },
   txt:{
     fontFamily: 'Roboto',
     fontSize: 14

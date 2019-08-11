@@ -104,11 +104,14 @@ export default class FeedPage extends Component{
   }
 
   componentWillReceiveProps(newProps){
+
+    
     if(this.state.tab===newProps.onTab){
 
       this._fetchData() ;
       this.setState({
-        userInfo:newProps.userInfo
+        userInfo:newProps.userInfo,
+        
       });
 
     }
@@ -143,7 +146,7 @@ export default class FeedPage extends Component{
 
   render(){
 
-
+    
     return(
       <Container style={{
         backgroundColor:GREY_COLOR,
@@ -183,9 +186,9 @@ export default class FeedPage extends Component{
                  </TouchableOpacity>
              </View>
               
-           }
+           }  
           
-           {/* ICON CART INFO */}
+           {/* ICON CART INFO  */}
            <TouchableOpacity onPress={()=>{ this._onPressShopingCart() }} style={{ width: '10%', flexDirection: 'row', alignSelf: 'center'}}>
 
                 <Icon style={{ fontSize: 28, color: COFFEE_COLOR}} name="cart" />
@@ -283,6 +286,17 @@ export default class FeedPage extends Component{
 }
 
 const s = StyleSheet.create({
+  notiHolder:{
+    position:'absolute',
+    backgroundColor:'#000',
+    width:15,
+    height:15,
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:3,
+    right:'14%',
+    backgroundColor:'#DD4B39'
+  },
   cardContent:{
     padding: 10,
     fontFamily: 'Roboto'

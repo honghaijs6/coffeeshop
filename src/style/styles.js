@@ -7,7 +7,14 @@ import {
 const styles = StyleSheet.create({
 
 
+  textUnderline:{ textDecorationLine: 'underline'},
   font18:{ fontSize:18},
+  boxShadow:{
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.5,
+    shadowRadius: 1
+  },
   white:{ color:'#fff'},
   green:{
     color:'#3b853f'

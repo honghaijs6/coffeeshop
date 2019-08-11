@@ -119,11 +119,15 @@ const USER = {
 
             AsyncStorage.clear(()=>{
 
+                // RESET REDUX USER
                 this._whereStateChange({
                     type:'LOGIN',
                     isLoggedIn:false,
                     userInfo:{}
                 });
+
+                // RESET REDUX SHOPPING CART
+                
 
                 resole(true);
             })
@@ -152,6 +156,8 @@ const USER = {
 
       return new Promise((resole,reject)=>{
         const uri = API_ENDPOINT+'/users/getInfo/'+ID;
+
+        
         axios.get(uri)
               .then((res) => {
 
