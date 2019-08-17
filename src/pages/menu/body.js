@@ -17,7 +17,7 @@ import BodyFoods from './foods';
 import BodyFavories from './favories';
 
 
-const MenuBody = (props) => (
+const MenuBody = (props) => (  
 
 
     <Tabs textStyle={{color:'#000'}} tabBarUnderlineStyle={{ backgroundColor: COFFEE_COLOR,height:1, }}>

@@ -28,7 +28,9 @@ import BenHeader from '../../components/BenHeader';
 import BenStatusBar  from "../../components/BenStatusBar";
 import BackButton from '../../components/BackButton';
 import LikeButton from '../../components/LikeButton';
-import BodyItem from './body';
+
+import BodyItem from './bodyItem';
+
 
 
 
@@ -47,7 +49,14 @@ class ProductItem extends Component {
       info:{}, // current product info
       shoppingcart:  props.shoppingcart,
       favoryList:[],
-      isLiked:false
+      isLiked:false,
+
+      bonus:{
+        type:"cold", // DEFAUT DATA
+        sugar:"0",
+        ice:"0",
+        subpro:[]
+      } // options and subpro here 
 
     }
 
@@ -71,6 +80,33 @@ class ProductItem extends Component {
 
   }
 
+
+  /* option change
+    {
+      type:{},
+      sugar:{},
+      ice:{}
+      subpro:[]
+    }
+  */
+  _onOptionChange(json){
+
+    const formatJson = {
+      type:json.type.id,
+      sugar:json.sugar.id,
+      ice:json.ice.id,
+      subpro: json.subpro.length > 0 && json.subpro.map((item)=>{  
+        return {
+          id:item.id,
+          name:item.name,
+          price:item.price_l,
+
+        }
+      })  
+    }
+
+    this.setState({bonus:formatJson});
+  }
 
   _onSelectPrice(json){
 
@@ -116,9 +152,12 @@ class ProductItem extends Component {
 
       const cart = this.state.info;
       cart.amount = this.state.amount;
-
+      cart.bonus = this.state.bonus;
+      
+        
       this.moOrder.addDataStore(cart);
       this.goBack();
+
 
     }else{
       // remove item on shoppingcart ;
@@ -137,7 +176,7 @@ class ProductItem extends Component {
     let info =  this.props.navigation.getParam('proInfo',{});
     info['price'] = info['price'] || info['price_m'];
     const cartInfo = this._getInfoOnShoppingCart(info.uid);
-
+    
 
     const isLike = await isSaveProduct(info);
 
@@ -188,21 +227,40 @@ class ProductItem extends Component {
 
 
   }
+
+  _preCalculate(){
+
+    const price = this.state.info.price || 0 ;
+    let TOTAL = this.state.amount * price ;
+    let TOTAL_SUBPRO = 0 ;
+    
+    if(this.state.bonus.subpro.length>0){
+      
+      this.state.bonus.subpro.map((item)=>{
+        const total = parseFloat(item.price) * 1 ;
+        TOTAL_SUBPRO += total 
+      });
+    }
+
+
+    return TOTAL + TOTAL_SUBPRO
+
+
+  }
   render() {
 
 
-      const price = this.state.info.price || 0 ;
-      const total = this.state.amount * price ;
+      const TOTAL = this._preCalculate();
+      
 
       return (
         <Container>
 
           <BenStatusBar/>
+          
           <BenHeader>
             <BackButton onPress={ this._onBackBtnPress } />
-
             <LikeButton isLiked={this.state.isLiked} onPress={ ()=>{ this._toggleLike() } } />
-
           </BenHeader>
 
           <View style={{
@@ -213,7 +271,15 @@ class ProductItem extends Component {
               <Content style={{
                 backgroundColor:GREY_COLOR
                 }}>
-                  <BodyItem onSelectPrice={ this._onSelectPrice } info={this.state.info} />
+                  <BodyItem 
+                    onSelectPrice={ this._onSelectPrice } 
+                    info={this.state.info} 
+                    onOptionChange={(json)=>{ this._onOptionChange(json) }}
+
+                    bonus={ this.state.bonus }
+
+
+                  />
 
               </Content>
 
@@ -260,7 +326,8 @@ class ProductItem extends Component {
 
                     </View>
                 </View>
-
+                
+                {/* BUTTON ORDER RIGHT */}
                 <View>
                     <TouchableOpacity onPress={ this._onBtnOrder }  style={{
 
@@ -273,7 +340,7 @@ class ProductItem extends Component {
                       backgroundColor: COFFEE_COLOR,
                       alignItems: 'center'
                     }} >
-                      <Text style={{ color:'#fff', fontFamily: 'Roboto', fontSize: 18}}> $ { parseFloat(total).toFixed(2) } </Text>
+                      <Text style={{ color:'#fff', fontFamily: 'Roboto', fontSize: 18}}> $ { parseFloat(TOTAL).toFixed(2) } </Text>
                     </TouchableOpacity>
                 </View>
               </View>
@@ -283,10 +350,7 @@ class ProductItem extends Component {
 
         </Container>
     );
-
-
-
-
+    
   }
 }
 
