@@ -110,7 +110,20 @@ class CheckOutPage extends Component{
 
     let total = 0
     data.map((item)=>{
-       total += item.amount * item.price
+       total += item.amount * parseFloat(item.price) ;
+
+       if(item.bonus !== undefined){
+
+        if(item.bonus.subpro){
+         const { subpro } = item.bonus;
+         subpro.map((item2)=>{
+           total += parseFloat(item2.price)
+         });
+         
+        }
+      }
+
+
     });
 
     return parseFloat(total - discount).toFixed(2);
@@ -161,8 +174,7 @@ class CheckOutPage extends Component{
       payment:"creditcard",
       creditcard:this.state.userInfo.creditcard
     };
-
-
+    
 
     this.setState({loader:true});
     this.moOrder.post(data,(res)=>{

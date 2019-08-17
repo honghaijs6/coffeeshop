@@ -64,7 +64,7 @@ export default class  CheckOutBody extends Component{
             {
               this.props.status === ''?
               <TouchableOpacity onPress={ ()=>{ this.props.onPress() }} style={{
-                marginTop: 15,
+                marginTop: 15,  
                 borderRadius: 6,
                 width: '100%',
                 height: 44,

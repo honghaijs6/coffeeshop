@@ -33,8 +33,26 @@ export default class  CartBody extends Component{
 
     let total = 0
     data.map((item)=>{
-       total += item.amount * item.price
+       total += item.amount * parseFloat(item.price);
+
+       if(item.bonus !== undefined){
+
+         if(item.bonus.subpro){
+          const { subpro } = item.bonus;
+          subpro.map((item2)=>{
+            total += parseFloat(item2.price)
+          });
+          
+         }
+
+         
+       }
+
     });
+
+    // ADD ON BONUS 
+
+
 
     return parseFloat(total - discount).toFixed(2);
 
@@ -59,7 +77,7 @@ export default class  CartBody extends Component{
     const discount = this.calculateCoupon(this.props.coupon);
 
     return(
-      <View>
+      <View style={{ paddingBottom:60}}>
           <View style={{margin: 10}}>
             <Text style={{ fontFamily: 'Roboto'}}> Delivery infomation </Text>
           </View>
@@ -94,7 +112,7 @@ export default class  CartBody extends Component{
                 }}>
                 <Text> { this.state.userInfo.recent_address || 'add your delivery address' } </Text>
               </TouchableOpacity>
-
+   
             </View>
 
           </View>

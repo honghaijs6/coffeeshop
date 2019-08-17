@@ -18,6 +18,8 @@ import {
 } from 'react-native';
 import { Icon } from 'native-base';
 
+//import console = require('console');
+
 
 const SelectList = (props)=>{
     
@@ -174,47 +176,63 @@ export default class bodyItem extends Component {
         // GET PRODUCT INFO AND DEFAUT BONUS 
         setTimeout(()=>{
 
+
+
             if(newProps.info.bonus !== undefined){
+
+                //console.log(newProps.info.bonus);
+
+
                 const { bonus } = newProps.info;
+                let { types, sugars, ices, products } = this.state ;
                 
-                let types = this.state.types ;
+                
                 types.map((item)=>{
                     item.isSelect = false
                     if(item.id == bonus.type){
                         item.isSelect = true ;
                     }
-                })
+                });
 
-                /*this.setState({
-                    
-                    sugars:this.state.sugars.map((item)=>{
-                        item.isSelect = false;
-                        if(item.id == bonus.sugar){
-                            item.isSelect = true
+                sugars.map((item)=>{
+                    item.isSelect = false;
+                    if(item.id == bonus.sugar){
+                        item.isSelect = true
+                    }
+                });
+
+                ices.map((item)=>{
+                    item.isSelect = false;
+                    if(item.id == bonus.ice){
+                        item.isSelect = true
+                    }
+                });
+
+                products.map((item)=>{
+                    if(bonus.subpro){
+                        if(bonus.subpro.length >0 ){
+                            bonus.subpro.map((item2)=>{
+                                if(item2.id == item.id){
+                                    item.isSelect = true
+                                }
+                            })
                         }
-                    }),
-                    ices: this.state.ices.map((item)=>{
-                        item.isSelect = false;
-                        if(item.id == bonus.ice){
-                            item.isSelect = true 
-                        }
-                    }),
-                    products: this.state.products.map((item)=>{
-                        if(bonus.subpro){
-                            if(bonus.subpro.length >0 ){
-                                bonus.subpro.map((item2)=>{
-                                    if(item2.id == item.id){
-                                        item.isSelect = true
-                                    }
-                                })
-                            }
-                        }
-                    })
-                })*/
+                    }
+                });
+
+
+
+                this.setState({
+                    types:types,
+                    sugars:sugars,
+                    ices:ices,
+                    products:products
+                });
+                
             }
             
 
-        },200)
+        },100)
 
 
 

@@ -105,7 +105,11 @@ class ProductItem extends Component {
       })  
     }
 
-    this.setState({bonus:formatJson});
+    let info = this.state.info;
+    info['bonus'] = formatJson;
+
+    this.setState({info:info});
+
   }
 
   _onSelectPrice(json){
@@ -152,7 +156,7 @@ class ProductItem extends Component {
 
       const cart = this.state.info;
       cart.amount = this.state.amount;
-      cart.bonus = this.state.bonus;
+      
       
         
       this.moOrder.addDataStore(cart);
@@ -233,14 +237,21 @@ class ProductItem extends Component {
     const price = this.state.info.price || 0 ;
     let TOTAL = this.state.amount * price ;
     let TOTAL_SUBPRO = 0 ;
+
+
+    //this.state.bonus = this.state.info.bonus !== undefined ? this.state.info.bonus : this.state.bonus
     
-    if(this.state.bonus.subpro.length>0){
+    if(this.state.info.bonus !== undefined){
+      if(this.state.info.bonus.subpro.length>0){
       
-      this.state.bonus.subpro.map((item)=>{
-        const total = parseFloat(item.price) * 1 ;
-        TOTAL_SUBPRO += total 
-      });
+        this.state.info.bonus.subpro.map((item)=>{
+          const total = parseFloat(item.price) * 1 ;
+          TOTAL_SUBPRO += total 
+        });
+      }
+
     }
+    
 
 
     return TOTAL + TOTAL_SUBPRO
@@ -276,7 +287,7 @@ class ProductItem extends Component {
                     info={this.state.info} 
                     onOptionChange={(json)=>{ this._onOptionChange(json) }}
 
-                    bonus={ this.state.bonus }
+                    bonus={ this.state.info.bonus || {} }
 
 
                   />
