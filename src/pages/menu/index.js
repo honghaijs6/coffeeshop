@@ -144,9 +144,12 @@ class Menu extends Component {
   _onPressItem(info){
 
 
+    // PASS ALL PRO INFO - CATE INFO 
     this.props.navigation.navigate('ProItem',{
-      proInfo:info
-    })
+      proInfo:info,
+      cateInfo:this.state.cateInfo
+    });
+
 
 
 

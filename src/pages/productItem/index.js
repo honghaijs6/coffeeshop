@@ -47,6 +47,7 @@ class ProductItem extends Component {
       tab:'productitem',
       amount:1, // cureent amount
       info:{}, // current product info
+      cateInfo:{},
       shoppingcart:  props.shoppingcart,
       favoryList:[],
       isLiked:false,
@@ -178,10 +179,11 @@ class ProductItem extends Component {
   async componentDidMount(){
 
     let info =  this.props.navigation.getParam('proInfo',{});
+    const cateInfo = this.props.navigation.getParam('cateInfo',{});
+
+
     info['price'] = info['price'] || info['price_m'];
     const cartInfo = this._getInfoOnShoppingCart(info.uid);
-    
-
     const isLike = await isSaveProduct(info);
 
 
@@ -189,10 +191,13 @@ class ProductItem extends Component {
     this.setState({
       amount:info.amount || this.state.amount ,
       info:Object.assign(info,cartInfo),
-      isLiked:isLike
+      isLiked:isLike,
+      cateInfo:cateInfo
     });
 
   }
+
+  
 
   goBack(){
     this.props.navigation.goBack();
@@ -283,8 +288,10 @@ class ProductItem extends Component {
                 backgroundColor:GREY_COLOR
                 }}>
                   <BodyItem 
+
                     onSelectPrice={ this._onSelectPrice } 
                     info={this.state.info} 
+                    cateInfo={ this.state.cateInfo }
                     onOptionChange={(json)=>{ this._onOptionChange(json) }}
 
                     bonus={ this.state.info.bonus || {} }

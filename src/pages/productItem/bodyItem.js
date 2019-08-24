@@ -4,6 +4,7 @@ import { GREY_COLOR, COFFEE_COLOR, RED_COLOR } from '../../config/const' ;
 
 // HOOKS
 import doLoadSubProByCate from '../../hook/ultil/doLoadSubPro';
+import doLoadSubProByGroup from '../../hook/ultil/doLoadSubProByGroup';
 
 
 import React, { Component } from 'react';
@@ -64,6 +65,7 @@ const MultiSelect = (props)=>{
             const nameMarked = item.isSelect ? 'checkmark-circle' : 'checkmark-circle-outline';
             const colorMarked = item.isSelect ? { color:COFFEE_COLOR } : { color :'#333'};
 
+            const price = parseFloat(item.price_l) > 0 ?   item.price_l+'$' : '';
             return(
                 <TouchableOpacity key={ item.id } onPress={()=>{ props.onSelected(item) }} style={s.btnSelect}>
 
@@ -74,7 +76,7 @@ const MultiSelect = (props)=>{
                             <Text style={[s.txt, colorMarked]}> { item.name } </Text>
                         </View>
                         <View style={{ textAlign:'right'}}>
-                            <Text style={[s.txt,{ fontSize:16, color:'red', textAlign:'right'}]}> { item.price_l} $</Text>
+                            <Text style={[s.txt,{ fontSize:16, color:'red', textAlign:'right'}]}> { price } </Text>
                         </View>
 
                 
@@ -115,7 +117,8 @@ export default class bodyItem extends Component {
 
         ],
 
-        products:[] // SAN PHAM KEM THEO
+        products:[], // SAN PHAM KEM THEO,
+        formatProduct:{} // after fortmat and group by group_name
     };
   }
 
@@ -123,12 +126,36 @@ export default class bodyItem extends Component {
   _onToggleMultiSelect(json){
 
     const arr = this.state.products ;
-    arr.map((item)=>{
-        if(item.id == json.id){
-            item.isSelect = !item.isSelect;
-        }
-    });
 
+    if(json.IS_MULTI==1){
+        arr.map((item)=>{
+            if(item.id == json.id){
+                item.isSelect = !item.isSelect;
+            }
+        });
+    }else{
+
+        arr.map((item)=>{   
+
+            if(item.group_name===json.group_name){
+
+                item.isSelect = false ;
+                if(item.id == json.id){
+                    item.isSelect = !item.isSelect;
+                }
+                
+                
+            }else{
+                if(item.id == json.id){
+                    item.isSelect = !item.isSelect;
+                }
+            }
+
+            
+        });
+    
+    }
+    
     this.setState({ products:arr});
 
     this._whereStateChange();
@@ -160,23 +187,45 @@ export default class bodyItem extends Component {
 
   }
 
-  async componentWillReceiveProps(newProps){
 
+  _formatProductByGroup(products){
+
+    let result = products.reduce(function (r, a) {
+        r[a.group_name] = r[a.group_name] || [];
+        r[a.group_name].push(a);
+        return r;
+    }, Object.create(null));
+
+    
+    this.setState({
+        formatProduct:result
+    });
+    
+
+
+  }
+  async componentWillReceiveProps(newProps){
+  
     if(this.state.products.length === 0){
+
+        const { cateInfo } = newProps;
         const categoriesId = newProps.info.categories; 
-        const res = await doLoadSubProByCate(categoriesId);
+        
+        const res =  await doLoadSubProByGroup(cateInfo.groups); //await doLoadSubProByCate(categoriesId);
+        this._formatProductByGroup(res.rows) ; 
+
+        
         if(res.rows !== undefined){
             this.setState({
                 products:res.rows
             });
         }
-
+        
         
 
         // GET PRODUCT INFO AND DEFAUT BONUS 
         setTimeout(()=>{
-
-
+            
 
             if(newProps.info.bonus !== undefined){
 
@@ -259,8 +308,10 @@ export default class bodyItem extends Component {
 
         //const stylePrice_s = info['price_s'].toString() === info['price'].toString() ? {color:COFFEE_COLOR} : { color:'#333' };
         const stylePrice_m = info['price_m'].toString() === info['price'].toString() ? {color:COFFEE_COLOR} : { color:'#333' };
-    
         const photo = this.props.info.photo.replace(/ /g,'%20');
+        
+        const formatProduct = this.state.formatProduct; 
+        
         return(
     
           <View>
@@ -307,27 +358,37 @@ export default class bodyItem extends Component {
                 </TouchableOpacity>
               </View>
               
+             {
+                 JSON.stringify(formatProduct) !== '{}' && Object.keys(formatProduct).map((item,index)=>{
+                    const data = formatProduct[item]; 
+                    return(
+                       <View key={index} style={[s.p]}>
+                           <Text style={[s.optionTitle]}> { item }  </Text>
+                           <MultiSelect onSelected={(item)=>{ this._onToggleMultiSelect(item) }} data={ data } />
+                       </View>    
+                    )
+                 })
+                
+             }
+
               {/* OPTION LUONG DUONG */}
-              <View style={[s.p]}>
-                <Text style={[s.optionTitle]}> Amount of Sugar  </Text>
-                <SelectList onSelected={(item)=>{ this._onToggleSelect('sugars',item) }} data={ this.state.sugars } />
-              </View>
               
               
-              {/* OPTION LUONG DA */}
+              
+              {/* OPTION LUONG DA 
               <View style={[s.p]}>
                 <Text style={[s.optionTitle]}> Amount of Ice  </Text>
                 <SelectList onSelected={(item)=>{ this._onToggleSelect('ices',item) }} data={ this.state.ices } />
-              </View>
+              </View>*/}
               
-              {/* OPTION SAN PHAM KEM THEO */}
+              {/* OPTION SAN PHAM KEM THEO 
               <View style={[s.p,{ paddingBottom:50}]}>
                 <Text style={[s.optionTitle]}> Add more  </Text>
                 <MultiSelect 
                     onSelected={(item)=>{ this._onToggleMultiSelect(item) }} 
                     data={ this.state.products } 
                 />
-              </View>
+              </View>*/}
               
     
     
