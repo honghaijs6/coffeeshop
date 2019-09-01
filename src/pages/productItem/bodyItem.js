@@ -334,11 +334,11 @@ export default class bodyItem extends Component {
                  </View>
               </View>
     
-              {/* OPTION NHIET DO */}
+              {/* OPTION NHIET DO 
               <View style={[s.p]}>
                 <Text style={[s.optionTitle]}> Type  </Text>
                 <SelectList onSelected={(item)=>{ this._onToggleSelect('types',item) }} data={ this.state.types } />
-              </View>
+              </View>*/}
               
               {/* OPTION SIZE */}
               <View>
