@@ -134,7 +134,7 @@ export default class StorePage extends Component{
       return(   
         <Container style={{
           backgroundColor:GREY_COLOR,
-          display:  this.props.onTab === this.state.tab ? 'block':'none'
+          display:  this.props.onTab === this.state.tab ? 'flex':'none'
         }}>
   
           <BenHeader type="single">

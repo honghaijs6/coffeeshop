@@ -12,7 +12,7 @@ import { COFFEE_COLOR } from '../config/const';
 
 const NoData = (props) => {
 
-  const isDisplay = props.visible ? 'block' : 'none';
+  const isDisplay = props.visible ? 'flex' : 'none';
   return (
     <View style={{
       alignItems:'center',

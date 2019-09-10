@@ -32,7 +32,7 @@ export default class BenTabs extends Component {
         let tabColor = COFFEE_COLOR;
 
         const notiOrder = this.props.notiOrder || 0 ;
-        const notiOrderDisplay = parseInt(notiOrder) > 0 ? 'block' : 'none';
+        const notiOrderDisplay = parseInt(notiOrder) > 0 ? 'flex' : 'none';
 
 
 

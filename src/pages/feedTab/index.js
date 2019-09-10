@@ -143,14 +143,14 @@ export default class FeedPage extends Component{
       this.props.navigation.navigate('CartPage');
     }else{ Alert.alert('No items in your shopping cart') }
   }
-
+ 
   render(){
 
     
-    return(
+    return(  
       <Container style={{
         backgroundColor:GREY_COLOR,
-        display:  this.props.onTab === this.state.tab ? 'block':'none'
+        display:  this.props.onTab === this.state.tab ? 'flex':'none'
       }}>
         <BenHeader>
            {

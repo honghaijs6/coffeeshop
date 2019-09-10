@@ -73,7 +73,7 @@ export default class  CartBody extends Component{
 
   render(){
 
-    const styleDisPlayCoupon = this.props.coupon.code !== undefined ? 'display' : 'none';
+    const styleDisPlayCoupon = this.props.coupon.code !== undefined ? 'flex' : 'none';
     const discount = this.calculateCoupon(this.props.coupon);
 
     return(
@@ -219,7 +219,7 @@ export default class  CartBody extends Component{
                     borderColor:COFFEE_COLOR,
                     borderRadius:18,
                     backgroundColor:COFFEE_COLOR,
-                    display: this.props.coupon.code !== undefined ? 'none':'display'
+                    display: this.props.coupon.code !== undefined ? 'none':'flex'
                 }}>
                   <Text style={{color:'#fff'}}> Get Coupon </Text>
                 </TouchableOpacity>

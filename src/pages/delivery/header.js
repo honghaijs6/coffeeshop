@@ -53,7 +53,7 @@ export default class MyHeader extends React.Component{
           }} placeholder="Add delivery address" />
 
         <TouchableOpacity onPress={ ()=>{ this._onPress() } } style={{
-            display: this.props.onAction === '' ? 'none':'block',
+            display: this.props.onAction === '' ? 'none':'flex',
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: 'red'

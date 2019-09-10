@@ -67,7 +67,7 @@ export default class LevelBoard extends Component {
 
                   return(
                     <View key={index} style={{
-                      display: this.state.onTab === index ? 'block' : 'none',
+                      display: this.state.onTab === index ? 'flex' : 'none',
                     }}>
 
                     {

@@ -5,45 +5,47 @@ import {
   View,
   Text,
   StyleSheet,
-  ActivityIndicator
+  ActivityIndicator,
+  Dimensions
 
 } from 'react-native';
 
 import { Icon } from 'native-base';
 
+const HEIGHT = Math.round(Dimensions.get('window').height);
 
 const BenLoader = function(props){
 
-  let isDisplay = props.visible ? 'block':'none';   
+  let isDisplay = props.visible ? 'flex':'none';   
 
 
 
   return(
     <View style={{
       position: 'absolute',
-      zIndex: 1,
-      display: isDisplay,
+      zIndex: 3000,
+      
       left: 0,
       right:0,
-      top: 0,
-      bottom: 0,
+      top: HEIGHT/2 - 34 ,
+      
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center' 
     }}>
       <View style={{
         width: 100,
         height: 100,
         borderRadius: 6,
+        display: isDisplay,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(59,133,63,0.81)',
+        backgroundColor: '#00a6a8',
       }}>
-          <ActivityIndicator color="#fff" size="large" />
+          <ActivityIndicator visible={ props.visible } color="#fff" size="large" />
           <Text style={{
             color:'#fff',
-            fontFamily:'Roboto',
             fontSize:11
-          }}><Icon style={{color:'#fff', fontSize:12, marginRight: 10,}} name="cafe" /> King Kong </Text>
+          }}> please wait...  </Text>
       </View>
 
     </View>

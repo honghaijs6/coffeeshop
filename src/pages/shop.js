@@ -17,7 +17,7 @@ import BenLoader from '../components/BenLoader';
 import FeedTab from './feedTab/';
 import MissionTab from './missionTab/';
 import OrderTab from './orderTab';
-import StoreTab from './storeTab/';
+import StoreTab from './storeTab/';  
 import AccountTab from './userTab/';
 
 

@@ -155,7 +155,7 @@ export default class OrderPage extends Component{
     return(
       <Container style={{
         backgroundColor:GREY_COLOR,
-        display:  this.props.onTab === this.state.tab ? 'block':'none'
+        display:  this.props.onTab === this.state.tab ? 'flex':'none'
       }}>
 
         <OrderHeader shoppingcart={ this.props.shoppingcart } onPressNavigate={ this._onPressNavigate } userInfo={ this.props.userInfo }  />

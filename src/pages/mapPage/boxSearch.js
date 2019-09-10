@@ -45,7 +45,7 @@ export default class BoxSearchLocation extends Component {
               }} placeholder="Search" />
 
               <TouchableOpacity onPress={ ()=>{ this.props.onCloseSearch() }}  style={{
-                  display: this.props.onAction === '' ? 'none':'block',
+                  display: this.props.onAction === '' ? 'none':'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
 

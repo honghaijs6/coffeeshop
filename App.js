@@ -55,7 +55,7 @@ const RootStack = createStackNavigator(
     Register:Register,
     Home: Shop,
     FeedView:FeedView,
-
+    
 
     MenuPage:MenuPage,
     ProItem:ProItemPage,

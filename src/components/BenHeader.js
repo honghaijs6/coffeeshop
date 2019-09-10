@@ -39,7 +39,7 @@ export default class BenHeader extends Component {
     };
 
 
-    const display = this.state.internet ? 'none':'block';
+    const display = this.state.internet ? 'none':'flex';
 
     return (
       <View>
