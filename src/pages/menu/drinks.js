@@ -10,7 +10,8 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  Platform
 } from 'react-native';
 
 
@@ -27,6 +28,7 @@ const ItemPro = (props)=>{
   const item = props.data;
   const photo = item.photo.replace(/ /g,'%20');
 
+  const percentWidth  = Platform.OS === 'android' ? '105%' : '100%';
   
   return(
     <View style={{
@@ -34,6 +36,7 @@ const ItemPro = (props)=>{
         flexDirection: 'row',
         borderBottomColor: 'rgba(0,0,0,0.1)',
         borderBottomWidth: 0,
+        width:percentWidth
 
       }}>
 

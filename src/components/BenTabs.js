@@ -51,11 +51,11 @@ export default class BenTabs extends Component {
                           const activeColor = this.props.onTab === item.tab ? tabColor : BLACK_COLOR;
 
 
-                          const Notification = item.tab === 'order' ? (
+                          const Notification = item.tab === 'order' && parseInt(notiOrder) > 0 ? (
                             <View style={[s.notiHolder,{ display:notiOrderDisplay }]}>
                                   <Text style={{color:'#fff', fontSize:10}}> { notiOrder } </Text>
                             </View>
-                          ) : null;
+                          ) : (null);
 
                           if(!item.hidden ){
                             return(

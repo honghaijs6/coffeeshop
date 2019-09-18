@@ -54,9 +54,14 @@ export default class OrderHeader extends Component{
                   <TouchableOpacity onPress={()=>{ this._onPressShopingCart() }} style={{ width: '10%', flexDirection: 'row', alignSelf: 'center'}}>
 
                       <Icon style={{ fontSize: 28, color: COFFEE_COLOR}} name="cart" />
-                      <View style={[s.notiHolder, {display: this.props.shoppingcart.length > 0 ? 'flex' : 'none'} ]}>
-                          <Text style={{color:'#fff', fontSize:10}}> { this.props.shoppingcart.length } </Text>
-                      </View>
+
+                      {
+                        parseInt(this.props.shoppingcart.length) > 0 ? 
+                        <View style={[s.notiHolder, {display: this.props.shoppingcart.length > 0 ? 'flex' : 'none'} ]}>
+                            <Text style={{color:'#fff', fontSize:10}}> { this.props.shoppingcart.length } </Text>
+                        </View>:(null)
+                      }
+                      
 
                   </TouchableOpacity>
 

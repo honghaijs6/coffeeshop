@@ -12,7 +12,8 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } from 'react-native';
 import {  Icon, Content } from 'native-base';
 
@@ -25,13 +26,15 @@ const ItemPro = (props)=>{
   const item = props.data;
   const photo = item.photo.replace(/ /g,'%20');
 
+  const  percentWidth = Platform.OS === 'android' ? '105%':'100%';
+
   return(
     <View style={{
         marginTop: 15,  
         flexDirection: 'row',
         borderBottomColor: 'rgba(0,0,0,0.1)',
         borderBottomWidth: 0,
-
+        width:percentWidth
       }}>
 
         <TouchableOpacity style={{

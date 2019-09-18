@@ -59,6 +59,9 @@ export default class StorePage extends Component{
 
 
   _addressToLatLng(address,onSuccess){
+
+     address = address.replace('#',',');
+
      const uri = 'https://maps.googleapis.com/maps/api/geocode/json?address= '+address+'&key='+GOOGLE_MAP_KEY ;
      fetch(uri)
      .then((response) => response.json())
@@ -97,6 +100,8 @@ export default class StorePage extends Component{
   }
 
   _geoCodeAddress(address){
+
+    address = address.replace('#',',');
      const uri = 'https://maps.googleapis.com/maps/api/geocode/json?address= '+address+'&key='+GOOGLE_MAP_KEY ;
 
      fetch(uri)

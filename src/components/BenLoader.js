@@ -39,13 +39,13 @@ const BenLoader = function(props){
         display: isDisplay,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#00a6a8',
+        backgroundColor: 'rgba(59, 133, 63,0.7)',
       }}>
           <ActivityIndicator visible={ props.visible } color="#fff" size="large" />
           <Text style={{
             color:'#fff',
             fontSize:11
-          }}> please wait...  </Text>
+          }}> King Kong...  </Text>
       </View>
 
     </View>

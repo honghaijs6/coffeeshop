@@ -22,7 +22,7 @@ const MenuBody = (props) => (
 
     <Tabs textStyle={{color:'#000'}} tabBarUnderlineStyle={{ backgroundColor: COFFEE_COLOR,height:1, }}>
         <Tab heading={
-          <TabHeading>
+          <TabHeading style={{ backgroundColor:'#fefefe'}}>
             <Text style={{color:'#555'}}>Drinks</Text>  
         </TabHeading>
         }>
@@ -32,7 +32,7 @@ const MenuBody = (props) => (
             <BodyFoods/>
         </Tab>*/}
         <Tab heading={
-          <TabHeading>
+          <TabHeading style={{ backgroundColor:'#fefefe'}}>
               <Text style={{color:'#555'}}>Favories</Text>
           </TabHeading>
         }>
